@@ -19,7 +19,7 @@ package String;
 import java.util.HashMap;
 import java.util.Map;
 
-/*  Sliding Window: Time = O(n) Space = O(min(m, n))
+/*  Sliding Window + HashMap: Time = O(n) Space = O(min(m, n))
     The solution with HashSet requires at most 2n steps. In fact, it could be optimized to require only n steps.
     We could define a mapping of the characters to its index. Then we can skip the characters immediately when we found a repeated character.
     The reason is that if s[j] have a duplicate in the range [i,j) with index j', we don't need to increase i little by little.
@@ -41,6 +41,19 @@ public class LongestSubstringWithoutRepeatingCharacters {
         return ans;
     }
 }
+
+/*  Sliding Window + Array
+
+        int n = s.length(), ans = 0;
+        int[] index = new int[128]; // current index of character
+        // try to extend the range [i, j]
+        for (int j = 0, i = 0; j < n; j++) {
+            i = Math.max(index[s.charAt(j)], i);
+            ans = Math.max(ans, j - i + 1);
+            index[s.charAt(j)] = j + 1;
+        }
+        return ans;
+ */
 
 /*  Sliding Window + HashSet: Time = O(n) Space = O(min(m, n))
     If a substring Sij from index i to j-1 is already checked to have no duplicate characters.
