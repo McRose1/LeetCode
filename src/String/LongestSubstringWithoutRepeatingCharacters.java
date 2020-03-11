@@ -100,3 +100,10 @@ public class LongestSubstringWithoutRepeatingCharacters {
         return true;
     }
  */
+
+
+Window (i, j) with unique characters
+1. Use a hashtable to store the last index of each characters
+2. Keep track the valid startin point 
+    a. When there is a match update the starting point to the current one
+i = max(i, m[s[j]] + 1), len = j - i + 1
