@@ -45,27 +45,32 @@ package String;
     Input: "MCMXCIV"
     Output: 1994
  */
-
+/*  Time = O(n) Space = O(1)
+    "ab" pattern: b is larger than a
+    The value changes from a + b to b - a
+    Sums all symbols up, when encounter "ab" pattern, minus 2*a (4 -> IV, 6 -> VI)
+ */
 public class RomantoInteger {
     public int romanToInt(String s) {
         int res = 0;
+        // 从右往左
         for (int i = s.length() - 1; i >= 0; i--) {
             char c = s.charAt(i);
             switch (c) {
-                case 'I':
-                    res += (res >= 5 ? -1 : 1);
+                case 'I':                               // 1
+                    res += (res >= 5 ? -1 : 1);         // 4, 6
                     break;
                 case 'V':
                     res += 5;
                     break;
-                case 'X':
-                    res += 10 * (res >= 50 ? -1 : 1);
+                case 'X':                               // 10
+                    res += 10 * (res >= 50 ? -1 : 1);   // 40, 60
                     break;
                 case 'L':
                     res += 50;
                     break;
-                case 'C':
-                    res += 100 * (res >= 500 ? -1 : 1);
+                case 'C':                               // 100
+                    res += 100 * (res >= 500 ? -1 : 1); // 400, 600
                     break;
                 case 'D':
                     res += 500;
@@ -78,3 +83,27 @@ public class RomantoInteger {
         return res;
     }
 }
+
+/*  从左往右
+
+        int res = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == 'I') res+= 1;
+            if (s.charAt(i) == 'V') res+= 5;
+            if (s.charAt(i) == 'X') res+= 10;
+            if (s.charAt(i) == 'L') res+= 50;
+            if (s.charAt(i) == 'C') res+= 100;
+            if (s.charAt(i) == 'D') res+= 500;
+            if (s.charAt(i) == 'M') res+= 1000;
+        }
+        // 6 subtraction
+        if (s.indexOf("IV") != -1) res-= 2;
+        if (s.indexOf("IX") != -1) res-= 2;
+        if (s.indexOf("XL") != -1) res-= 20;
+        if (s.indexOf("XC") != -1) res-= 20;
+        if (s.indexOf("CD") != -1) res-= 200;
+        if (s.indexOf("CM") != -1) res-= 200;
+
+        return res;
+ */
+

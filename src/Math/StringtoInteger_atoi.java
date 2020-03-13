@@ -51,24 +51,31 @@ package Math;
  */
 public class StringtoInteger_atoi {
     public int myAtoi(String str) {
+        // delete trailing whitespace
         str = str.trim();
+        // corner case
         if (str == null || str.length() == 0) return 0;
+
         char firstChar = str.charAt(0);
         int sign = 1;
         int idx = 0;
         long sum = 0;
+        // positive number
         if (firstChar == '+') {
             sign = 1;
             idx++;
+        // negative number
         } else if (firstChar == '-') {
             sign = -1;
             idx++;
         }
         for (int i = idx; i < str.length(); i++) {
+            // if encounter non-digit, return the result
             if (!Character.isDigit(str.charAt(i))) {
                 return (int) sum * sign;
             }
             sum = sum * 10 + str.charAt(i) - '0';       // 123 = (1 * 10 + 2) * 10 + 3
+            // deal with the overflow
             if (sign == 1 && sum > Integer.MAX_VALUE) return Integer.MAX_VALUE;
             if (sign == -1 && sum > Integer.MAX_VALUE) return Integer.MIN_VALUE;
         }

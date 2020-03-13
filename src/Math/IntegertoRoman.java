@@ -1,4 +1,6 @@
-/*
+package Math;
+
+/*  12. Integer to Roman
     Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
     Symbol       Value
     I             1
@@ -52,9 +54,9 @@ public class IntegertoRoman {
         StringBuilder st = new StringBuilder();
 
         for (int i = 0; i < values.length; i++) {
-            while (num >= values[i]) {
-                num -= values[i];
-                st.append(strs[i]);
+            while (num >= values[i]) {      // 1994 > 1000; 994 > 900; 94>=90; 4>=4
+                num -= values[i];           // 1994-1000=994; 994-900=94; 94-90=4; 4-4=0
+                st.append(strs[i]);         // M; MCM; MCMXC; MCMXCIV
             }
         }
         return st.toString();
