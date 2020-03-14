@@ -17,16 +17,13 @@ package Array;
     Your function should return length = 5, with the first five elements of nums containing 0, 1, 3, 0, and 4.
  */
 /*
-    Two Pointers - when elements to remove are rare
-
+    Two Pointers - when elements to remove are rare: Time = O(n) both left and right traverse at most n steps Space = O(1)
     Consider cases where the array contains few elements to remove.
     nums = [1, 2, 3, 5, 4], val = 4
     nums = [4, 1, 2, 3, 5], val = 4
-
-    Time = O(n). Both left and right traverse at most n steps.
-    The number of assignment operations is equal to the number of elements to remove.
-    Space = O(1)
-
+    The previous algorithm will do unnecessary copy operation
+    Note that the last element that was swapped in could be the value you want to remove itself.
+    But don't worry, in the next iteration we will still check this element.
     [0,1,2,2,3,0,4,2], val = 2
      l              r
     [0,1,2,2,3,0,4,2]
@@ -58,8 +55,7 @@ public class RemoveElement {
         return right;
     }
 }
-/*
-    Two Pointers:
+/*  Two Pointers: Time: O(n) both slow and fast traverse at most 2n steps Space: O(1)
 
     [0,1,2,2,3,0,4,2], val = 2
      s
@@ -89,7 +85,4 @@ public class RemoveElement {
             }
         }
         return slow;
-
-    Time: O(n). Assume the array has a total of n elements, both left and right traverse at most 2n steps.
-    Space: O(1).
  */
