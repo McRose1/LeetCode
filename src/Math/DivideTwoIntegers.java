@@ -22,20 +22,19 @@ package Math;
     For the purpose of this problem, assume that your function returns 2^31 − 1 when the division result overflows.
  */
 
-/*  移位倍增法 + Iteration: Time = O(logn) Space = O(1)
+/*  Bit Manipulation (移位倍增法) + Iteration: Time = O(logn) Space = O(1)
     Corner Case:
     1. +, - -> boolean
     2. overflow -> 两个整数相除，不可能出现除出来的数比原来的数大，只有一种情况: MIN_VALUE/-1
     3. = 0: 3/5
     4. 正常
+    先转换成long，然后都变成正数（因为-2147483648）负数比正数多一个
+    10 / 3 -> 3 << 1, 6 << 1, 12 << 1 (10 < 12) -> 2 个 3
+    10-6 / 3 -> 3 << 1, 6 << 1 (4 < 6) -> 1 个 3
+    10 / 3 = 2 + 1 = 3
  */
-//  先转换成long，然后都变成正数（因为-2147483648）负数比正数多一个
 public class DivideTwoIntegers {
     public int divide(int dividend, int divisor) {
-        // 除数为 0
-        if (divisor == 0) {
-            return dividend >= 0 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
-        }
         // 被除数为 0
         if (dividend == 0) {
             return 0;
@@ -46,17 +45,17 @@ public class DivideTwoIntegers {
         }
         // 不想正负情况一起判断，所以都先变成正数再做减法
         boolean isNegative = (dividend < 0 && divisor > 0) || (dividend > 0 && divisor < 0);
-        long a = Math.abs((long)dividend);
-        long b = Math.abs((long)divisor);
+        long a = Math.abs((long)dividend);  // a = 10
+        long b = Math.abs((long)divisor);   // b = 3
         int result = 0;
-        while (a >= b) {
+        while (a >= b) {                    // 10 > 3; 4 > 3
             int shift = 0;
             // a最大是 2147483648，但是由于a是long，我们的b<<shift可以超过，所以没关系
             while (a >= (b << shift)) {
-                shift++;
+                shift++;                    // 2; 1
             }
-            a -= b << (shift - 1);
-            result += 1 << (shift - 1);
+            a -= b << (shift - 1);          // a = 10 - 6 = 4; a = 4 - 3 = 1
+            result += 1 << (shift - 1);     // 2; 2 + 1 = 3
         }
         return isNegative ? -result : result;
     }
@@ -66,11 +65,11 @@ public class DivideTwoIntegers {
         int a = dividend < 0 ? dividend : -dividend;
         int a = divisor < 0 ? divisor : -divisor;
         // 由于不使用 long，有两个地方可能导致越界
-        // 1. (b << shift)可能会越界：-3<<30等于正数，相当于越过了0 这个界限
+        // 1. (b << shift)可能会越界：-3<<30等于正数，相当于越过了 0 这个界限
         // 2. shift 最多只可能移位 31：如果a=-2147483647永远是最小值，b=-1<<31 = -2147483647 进入死循环
         while (a <= b) {
             int shift = 0;
-            while (a <= (b << shift) && (b <<shift) < 0 & shift <31) {
+            while (a <= (b << shift) && (b << shift) < 0 & shift < 31) {
                 shift++;
             }
             a -= b << (shift - 1);
@@ -86,7 +85,7 @@ public class DivideTwoIntegers {
         if ((dividend > 0 && divisor < 0) || (dividend < 0 && divisor > 0)) sign = -1;
         long ldividend = Math.abs((long)dividend);
         long ldivisor = Math.abs((long)divisor);
-        if (ldividend < ldivisor || ldividend == 0) return 0;
+        if (ldividend < ldivisor) return 0;
         long lres = divide(ldividend, ldivisor);
         int res = 0;
         if (lres > Integer.MAX_VALUE) {

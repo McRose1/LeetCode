@@ -12,6 +12,7 @@ package Array;
  */
 /*  Single Pass Approach: Time = O(n) Space = O(1)
     First, we observe that for any given sequence that is in descending order, no next larger permutation is possible.
+    For example, no next permutation is possible for: [9,5,4,3,1]
     We need to find the first pair of two successive numbers a[i] and a[i-1] from the right, which satisfy a[i]>a[i-1].
     Now, no rearrangements to the right of a[i-1] can create a larger permutation since that subarray consists of numbers in descending order.
     We need to replace the number a[i-1] with the number which is just larger than itself among the numbers lying to its right section, say a[j].
@@ -33,19 +34,19 @@ package Array;
         ^ ^ ^ ^
  */
 public class NextPermutation {
-    public void nextPermutation(int[] nums) {
-        int i = nums.length - 2;
+    public void nextPermutation(int[] nums) {       // 123; 321
+        int i = nums.length - 2;                    // i = 1; 1
         while (i >= 0 && nums[i + 1] <= nums[i]) {
-            i--;
+            i--;                                              // i = -1
         }
         if (i >= 0) {
-            int j = nums.length - 1;
-            while (j >=0 && nums[j] <= nums[i]) {
+            int j = nums.length - 1;                // j = 2
+            while (j >= 0 && nums[j] <= nums[i]) {
                 j--;
             }
-            swap(nums, i, j);
+            swap(nums, i, j);                       // swap(2, 3)
         }
-        reverse(nums, i + 1);
+        reverse(nums, i + 1);   // swap(321, 0)
     }
 
     private void reverse(int[] nums, int start) {
