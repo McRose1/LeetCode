@@ -72,7 +72,7 @@ public class CountingBits {
 
 /*  DP
 
-        int[] dp = new int[num + 1];
+        int[] dp = new int[num + 1];    // default value is 0 -> dp[0] = 0
         for (int i = 1; i <= num; i++) {
             dp[i] = i % 2 == 1? dp[i/2] + 1 : dp[i/2];
         }
@@ -81,9 +81,9 @@ public class CountingBits {
 
 /*  Integer.bitCount()
 
-    int[] count = new int[num + 1];
-        for (int i = 0; i <= num; i++) {
-            count[i] = Integer.bitCount(i);
-        }
-        return count;
+        int[] count = new int[num + 1];
+            for (int i = 0; i <= num; i++) {
+                count[i] = Integer.bitCount(i);
+            }
+            return count;
  */

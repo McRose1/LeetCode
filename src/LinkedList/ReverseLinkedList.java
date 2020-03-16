@@ -12,15 +12,22 @@ package LinkedList;
  */
 
 /*  Recursion: Time = O(n) Space = O(n)
-
+    the key is to work backwards
+    Assume that the rest of the list had already been reversed, how do I reverse the front part?
+    Assume from node nk+1 to nm had been reversed and you are at nk:
+    n1 -> ... -> nk-1 -> nk -> nk+1 <- ... <- nm
+    we want nk+1's next node to point to nk:
+    nk.next.next = nk;
+    Be very careful that n1's next must point to null
  */
 public class ReverseLinkedList {
     public ListNode reverseList(ListNode head) {
         if (head == null || head.next == null) return head;
 
-        ListNode new_head = reverseList(head.next);
+        // 调用递归一直到链表的尾部，再一个一个地往前 return
+        ListNode new_head = reverseList(head.next); // head = 4
 
-        head.next.next = head;  // 4->5 --> 5->4
+        head.next.next = head;  // 4->5->null --> 5->4
         head.next = null;       // 5->4->null
         return new_head;        // return 5
     }
@@ -37,10 +44,10 @@ public class ReverseLinkedList {
         ListNode prev = null;
         ListNode cur = head;
         while (cur != null) {
-            ListNode nextNode = cur.next;
+            ListNode nextTemp = cur.next;
             cur.next = prev;
             prev = cur;
-            cur = nextNode;
+            cur = nextTemp;
         }
         return prev;
     }

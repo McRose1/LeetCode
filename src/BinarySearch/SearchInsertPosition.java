@@ -23,7 +23,9 @@ package BinarySearch;
     Output: 0
  */
 
-//  三种情况：target____target_____target
+/*  Binary Search: Time = O(logn) Space = O(1)
+    三种情况：target____target_____target
+ */
 public class SearchInsertPosition {
    public int searchInsert(int[] nums, int target) {
        int start = 0;
@@ -44,3 +46,24 @@ public class SearchInsertPosition {
        }
    }
 }
+
+/*  my version
+
+        if (nums[0] > target) return 0;
+        if (nums[nums.length - 1] < target) return nums.length;
+
+        int left = 0;
+        int right = nums.length - 1;
+        while (left + 1 < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) return mid;
+            else if (nums[mid] > target) {
+                right = mid;
+            } else {
+                left = mid;
+            }
+        }
+        if (nums[left] == target) return left;
+        if (nums[right] == target) return right;
+        else return right;
+ */
