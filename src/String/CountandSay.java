@@ -28,27 +28,31 @@ package String;
  */
 //  Iteration
 public class CountandSay {
-    public String countAndSay(int n) {
+    public String countAndSay(int n) {      // 4
         int i = 1;
         String res = "1";
         while (i < n) {
             int count = 0;
             StringBuilder sb = new StringBuilder();
-            char c = res.charAt(0);
-            for (int j = 0; j <= res.length(); j++) {
+            char c = res.charAt(0);                             // 1; 1; 2
+            for (int j = 0; j <= res.length(); j++) {           //          0; 1; 2
                 if (j != res.length() && res.charAt(j) == c) {
-                    count++;
+                    count++;                                    // 1; 1; 2; 1
+                // j == res.length() -> 遍历到尾部开始清算结果
                 } else {
-                    sb.append(count);
-                    sb.append(c);
-                    if (j != res.length()) {
+                    sb.append(count);                           // 1; 2;    1;  1
+                    sb.append(c);                               // 11; 21;  12; 1221
+                    // res 里面有多个数字的情况
+                    if (j != res.length()) {                            // j = 1
+                        // 初始化下一个数字的个数为 1
                         count = 1;
-                        c = res.charAt(j);
+                        // 更新下一个比对值
+                        c = res.charAt(j);                              // c = "21".charAt(1) = 1
                     }
                 }
             }
-            res = sb.toString();
-            i++;
+            res = sb.toString();        // res = "11"; "21"; "1221"
+            i++;                        // i = 2; 3; 4
         }
         return res;
     }
@@ -58,22 +62,21 @@ public class CountandSay {
 
         if (n == 1) return "1";
 
-        StringBuilder sb = new StringBuilder();
-
         // 找到 n - 1 的结果
-        String str = countAndSay(n - 1);
+        String res = countAndSay(n - 1);
 
+        StringBuilder sb = new StringBuilder();
+i
         // 对 n - 1 的结果进行表示
-        char c = '1';
-        int count = 0;
-        for (int i = 0; i < str.length(); i++) {
-            c = str.charAt(i);
-            count = 1;
-            while ((i + 1) < str.length() && str.charAt(i + 1) == c) {
-                count++;
-                i++;
+        for (int i = 0; i < res.length(); i++) {    // res = "1"; "11"; "21"
+            char c = res.charAt(i);                      // 1; 1; 2; 1
+            int count = 1;
+            // 判断是否有多个连续重复数字
+            while ((i + 1) < res.length() && res.charAt(i + 1) == c) {  // 0+1=1<2
+                count++;    // 2
+                i++;        // 1
             }
-            sb.append(count + "" + c);
+            sb.append(count + "" + c);      // 11; 21; 12; 1211
         }
         return sb.toString();
 

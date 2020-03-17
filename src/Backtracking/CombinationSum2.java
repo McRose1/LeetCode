@@ -27,15 +27,14 @@ package Backtracking;
       [5]
     ]
  */
-/*  Backtrack: Time = O(2^n) Space = O(n)
-    How to remove duplicates?
-    1. Use set
-    2. Disallow same number in same depth
- */
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+/*  Backtrack: Time = O(2^n) Space = O(n)
+    How to remove duplicates?
+    1. Disallow same number in same depth
+    2. Use set（很少人选这种）
+ */
 public class CombinationSum2 {
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
         List<List<Integer>> res = new ArrayList<>();
@@ -51,10 +50,45 @@ public class CombinationSum2 {
         }
         if (target < 0) return;
         for (int i = start; i < candidates.length; i++) {
+            // 跳过重复的数字
             if (i != start && candidates[i] == candidates[i - 1]) continue;
             current.add(candidates[i]);
+            // i -> i + 1 ，因为每个数字只能用一次，所以下次遍历的时候不从自己开始
             findCombinations(candidates, i + 1, target - candidates[i], current, res);
             current.remove(current.size() - 1);
         }
     }
 }
+
+/*  my version
+    相当于多了一个 boolean 数组判断，只要每次递归 i+1 然后再递归前再判断就可以避免 duplicate
+
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(candidates);
+        boolean[] used = new boolean[candidates.length];
+        backtrack(res, new ArrayList<>(), candidates, used, target, 0);
+        return res;
+    }
+
+    private void backtrack(List<List<Integer>> res, List<Integer> list, int[] candidates, boolean[] used, int target, int start) {
+        if (target < 0) return;
+        else if (target == 0) {
+            res.add(new ArrayList<>(list));
+            return;
+        }
+        for (int i = start; i < candidates.length; i++) {
+            if (i != start && !used[i - 1] && candidates[i] == candidates[i - 1]) {
+                continue;
+            }
+            if (!used[i]) {
+                list.add(candidates[i]);
+                used[i] = true;
+                backtrack(res, list, candidates, used, target - candidates[i], i);
+                used[i] = false;
+                list.remove(list.size() - 1);
+            }
+        }
+        return;
+    }
+ */
