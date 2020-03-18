@@ -29,15 +29,15 @@ for (int i = 0; i < nums.length; i++) {
     // skip same number for current position
     if (i >= 1 && nums[i] == nums[i - 1] && !visited[i - 1]) continue;  // 重复数字只取第一个，删去 [1(index=1),1(index=0),2] 这个组合
 
-visited[0] == false -> i=0 -> visited[0] = true -> list.add(nums[0]) -> [1]  
-visited[1] == false -> i >= 1 && nums[1] == nums[0] && !visited[0] = false -> visited[1] = true -> list.add(nums[1]) -> [1,1]
-----> [1,1,2]
-回退
-[1, 1] -> visited[2] = false 继续回退
-[1] -> visited[1] = false -> i = 2 -> list.add(nums[2]) -> [1, 2]
-i = 0 -> visited[0] = true -> continue;
-i = 1 -> visited[1] = false -> i>=1 && nums[1] == nums[0] !visited[0] == false -> visited[1] = true -> list.add(nums[1]) 
-----> [1,2,1]
-回退
-[1, 2] -> visited[2] = false -> i = 3 -> 继续回退
-[1] -> visited[1] = false -> i = 2
+这道变形题改起来明显 SWAP 的方法更容易
+
+  HashSet<Integer> set = new HashSet<>();     // 保存当前要交换的位置已经有过哪些数字了
+  for (int i = start; i < nums.length; i++) {
+      if (set.contains(nums[i])) {    // 如果存在了就跳过，不用去交换
+          continue;
+      }
+      set.add(nums[i]);
+      swap(nums, i, start);
+      backtrack(res, nums, start + 1);
+      swap(nums, i, start);
+  }
