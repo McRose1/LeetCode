@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Permutation2 {
+public class Permutations2 {
     public List<List<Integer>> permuteUniques(int[] nums) {
         List<List<Integer>> res= new ArrayList<>();
         if (nums == null || nums.length == 0) return res;
@@ -35,7 +35,7 @@ public class Permutation2 {
         for (int i = 0; i < nums.length; i++) {
             if (visited[i]) continue;
             // skip same number for current position
-            if (i >= 1 && nums[i] == nums[i - 1] && !visited[i - 1]) continue;  // 重复数字只取第一个，没有!visited[i]会删掉[1,1,2]
+            if (i >= 1 && nums[i] == nums[i - 1] && !visited[i - 1]) continue;  // 重复数字只取第一个，删去 [1(index=1),1(index=0),2] 这个组合
             list.add(nums[i]);
             visited[i] = true;
             backtrack(res, list, nums, visited);
