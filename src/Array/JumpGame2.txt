@@ -1,0 +1,40 @@
+给定数组中每一个元素代表：从该位置允许跳跃的最大距离
+问我们最少跳几次
+
+第一反应会想到 DP     但是貌似这题会超时
+
+下面的标签看到有贪心算法，显然，因为让我们从最大里选最小
+
+[2, 3, 1, 1, 4]
+如果正常走的话，2->1->1->4 需要 3 步，显然不对
+每步如果一开始选 max，如何回退到更小的值是个问题
+
+其实就是相当于我们每次 在可跳范围内 选择可以使得跳的更远的位置
+可跳范围会有一个边界，我们可以记为 curEnd，比如从 index = 0的位置出发，curEnd 初始化为0
+跳的最远距离，记为 furthest，比如从 index = 0的位置出发，furtherest 为 2（1 和 2都能从 0 到达）
+
+当 index = 1 的时候，我们仅更新 furthest，但我们不更新边界，因为我们所可以跳到的范围还没有探索完毕，没准 index=2 的 furthest 更远呢
+
+当 index = 2 时我们到达此时的边界，可以开始清算，此时新的边界正是这个范围内的 furthest，如果边界已经达到最后一个元素
+
+还有一点要注意的是，这题的前提假设已经说了：You can assume that you can always reach the last index.
+这简化了我们做题的过程，相当于我们不用考虑不能到达终点的情况
+如果 follow up 涵盖了这一情况，那么就像篮子王写的代码那样：
+
+if (nums == null || nums.length <= 1) return 0;
+        int curMax = 0;
+        int nextMax = 0;
+        int step = 0;
+        int index = 0;
+        // 外循环
+        while (index <= curMax) {
+            // 内循环
+            while (index <= curMax) {
+                nextMax = Math.max(nextMax, index + nums[index]);
+                index++;
+            }
+            curMax = nextMax;
+            step++;
+            if (curMax >= nums.length - 1) return step;
+        }
+        return 0;
