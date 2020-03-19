@@ -1,0 +1,22 @@
+从一个 array 里面拿出 subarray 使其元素相加最大，输出最大的和
+
+tag 标为 Divide and Conquer 和 DP 
+
+实话说，D&C 的套路模板并不太清楚
+
+先试试 DP 吧        [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+  
+DP 状态转移方程
+DP 数组表示  -> dp[i] 0~i 之间所有可能的 subarray 元素之和最大的值
+dp[] = new int[nums.length + 1]
+dp[0] = 0
+dp[1] -> [-2] -> nums[1]
+dp[2] -> [-2, 1] -> dp[1] + nums[1] = -1 但是显然答案是 1， 所以应该是 Math.max(nums[2], dp[1] + nums[2]) -> dp[2] = 1
+dp[3] -> [-2, 1, -3] -> Math.max(nums[3], dp[2] + nums[3]) -> dp[3] = -2
+以此类推，状态转移方程就出现了:
+dp[i] = Math.max(dp[i - 1] + nums[i], nums[i])
+
+What about Divide and Conquer?
+时间复杂度 worse 到 O(nlogn)
+个人觉得这种方法在这题不太适用
+了解一下这个思想吧
