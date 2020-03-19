@@ -1,0 +1,23 @@
+Anagram，相同字母异序次，即组成的字母相同但是顺序不同
+
+tag 提示为 hashtable，想到用 HashMap，但是没有想到这个 HashMap<String, List<String>>
+其实这里我们可以发现，hashmap 的 value 就是我们要加入 res 的 List<String>
+
+KJ JR 方法为 每个 String sort 以后看是否一样
+key 就为 sorted string
+
+{"aet": ["ate","eat","tea"],
+ "ant": ["nat","tan"],
+ "abt": ["bat"]}
+   
+这里有几个语法要注意：
+1. Arrays.sort(任意 primitive 类型数组) 比如 Char[]，但是 String 属于 reference type
+2. String -> char[]: s.toCharArray();
+3. char[] -> String: String.valueOf(char[]) or new String(char[])
+4. 初始化 HashMap 里的 List<String> 需要 map.put(key, new ArrayList<>());
+5. 将结果存入 List<List<String>> 可以不用事先 initialize 一个 res，可以直接 return new ArrayList<>(map.values());
+6. map.values() -> Collection view of values in HashMap
+
+也可以 通过字母的 count 来分类，比上面少了 Arrays.sort() 这个 O(KlogK) 的时间消耗
+用 26 个字母的数组来作为构建 HashMap 的基础
+比如 aab 作为 key, 我们将其转换为 #2#1#0#0....#0 （2 个 a，1 个 b）
