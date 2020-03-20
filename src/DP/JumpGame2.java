@@ -1,4 +1,4 @@
-package Array;
+package DP;
 
 /*  45. Jump Game 2
     Given an array of non-negative integers, you are initially positioned at first index of the array.
@@ -17,7 +17,7 @@ package Array;
 
 /*  Greedy: Time = O(n) Space = O(1)
     furthest 记录当前位置 i 能走的最远距离
-    curEnd 记录 jump 步数后，能走的最远距离（边界）
+    curEnd 记录从当前 index 出发，能走的最远距离（边界）
     当位置 i 到达 jump 能走的 curEnd 边界时，jump++，更新 curEnd = furthest
  */
 public class JumpGame2 {

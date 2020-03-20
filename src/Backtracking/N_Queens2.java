@@ -1,4 +1,4 @@
-package DFS_BFS;
+package Backtracking;
 
 /*  52. N-Queens 2
     The n-queens puzzle is the problem of placing n queens on an nxn chessboard such that no two queens attack each other.
@@ -24,7 +24,9 @@ package DFS_BFS;
 
 import java.util.HashSet;
 import java.util.Set;
-//  DFS + backtracking: 行列、对角线
+/*  backtracking: 行列、对角线
+    参考 N-Queen 简化就好了
+ */
 public class N_Queens2 {
     public int res = 0;
     Set<Integer> col = new HashSet<>();
@@ -32,13 +34,14 @@ public class N_Queens2 {
     Set<Integer> diff = new HashSet<>();
     // 左下到右上这条对角线的点横纵坐标之和相等
     Set<Integer> sum = new HashSet<>();
+
     public int totalNQueens(int n) {
         if (n <= 0) return 0;
-        dfs(0, n);
+        backtrack(0, n);
         return res;
     }
 
-    private void dfs(int level, int n) {
+    private void backtrack(int level, int n) {
         if (level == n) {
             res++;
             return;
@@ -49,7 +52,7 @@ public class N_Queens2 {
                 col.add(j);
                 diff.add(level - j);
                 sum.add(level + j);
-                dfs(level + 1, n);
+                backtrack(level + 1, n);
                 // backtracking
                 col.remove(j);
                 diff.remove(level - j);
