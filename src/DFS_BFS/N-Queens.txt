@@ -1,0 +1,22 @@
+最经典题没有之一
+
+行列对角线保证只有一个
+
+tag 里写了 backtracking
+先试试看能不能用那套模板来做    ->    好像要复杂一点😂
+
+看 B2B 视频。。。
+ 
+Choice
+Constraints 
+Goal
+
+isValid() helper function ---->  写的有点复杂就放弃了
+
+windliang 的版本是往 backtrack 函数里面传 List<Integer> 来记录列中放 queen 的情况，看的有点迷糊。。。
+
+还是安卓大宝贝的 3 个 HashSet 的版本好理解一些
+对角线冲突 -> 左对角线的点，x,y坐标相减=0，右对角线的点，x,y坐标相加为相等的数
+直接传 char[][]，在 backtrack 的函数里面直接往 char[][] board 里面 添加 queen
+传参数的时候引入 level 变量，代表行，每次进行下一步递归的时候 level + 1
+
