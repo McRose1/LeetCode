@@ -1,4 +1,4 @@
-package String;
+package SlidingWindow;
 
 /*  3. Longest Substring Without Repeating Characters
     Given a string, find the length of the longest substring without repeating characters.
@@ -15,10 +15,8 @@ package String;
     Input: "pwwkew"
     Output: 3
  */
-
 import java.util.HashMap;
 import java.util.Map;
-
 /*  Sliding Window + HashMap: Time = O(n) Space = O(min(m, n))
     The solution with HashSet requires at most 2n steps. In fact, it could be optimized to require only n steps.
     We could define a mapping of the characters to its index. Then we can skip the characters immediately when we found a repeated character.
