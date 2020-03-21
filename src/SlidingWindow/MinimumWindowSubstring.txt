@@ -1,0 +1,33 @@
+Sliding Window 经典题
+
+In any sliding window based problem we have two pointers.
+One right pointer whose job is to expand the current window 
+One left pointer whose job is to contract a given window.
+At any point in time only one of these pointers move and the other one remains fixed.
+
+We keep expanding the window by moveing the right pointer.
+When the window has all the desired characters, we contract (if possisble) and save the smallest window till now.
+
+s = "ADOBECODEBANC"
+t = "ABC"
+-> "BANC"
+
+HashMap:
+key: distinct character 
+value: frequency 
+<A, 1>
+<B, 1>
+<C, 1>
+
+每次 match 就让 frequency 减 1
+valid substring 就让 slow pointer++
+不 valid 就让 fast pointer++
+
+match_count == map.size() 说明我们都找到了，但是我们仍然需要找到长度最短的 match 的 substring，
+让slow_pointer 往右一位，我们希望它仍然是 valid 的 substring 可以使得 length 变小，如果不 valid，需要更新 map 和 count_match，再次移动 faster pointer
+
+如果 B 的 frequency 已经为 0 但是现在我们有 match 到 B，需要把 frequency - 1 = -1，为了之后缩短 substring 的时候使用
+DOBECODEBA 要缩短的时候从左往右让 B 的 frequency 变为 0
+-> CODEBA
+
+min_len
