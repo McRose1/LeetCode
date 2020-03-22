@@ -24,31 +24,35 @@ import java.util.Map;
     We can skip all the elements in the range [i,j'] and let i to be j'+1 directly.
  */
 public class LongestSubstringWithoutRepeatingCharacters {
-    public int lengthOfLongestSubstring(String s) {
+    public int lengthOfLongestSubstring(String s) {             // "pwwkew"
         int n = s.length(), ans = 0;
-        Map<Character, Integer> map = new HashMap<>(); // current index of character
+        // current index of character
+        Map<Character, Integer> map = new HashMap<>();
         // try to extend the range [slow, fast]
         for (int slow = 0, fast = 0; fast < n; fast++) {
             if (map.containsKey(s.charAt(fast))) {
-                slow = Math.max(map.get(s.charAt(fast)), slow);
+                slow = Math.max(map.get(s.charAt(fast)), slow); // slow=max(2,0)=2
             }
-            ans = Math.max(ans, fast - slow + 1);
+            ans = Math.max(ans, fast - slow + 1); // ans=0-0+1=1;2
             // already fast' + 1
-            map.put(s.charAt(fast), fast + 1);
+            map.put(s.charAt(fast), fast + 1);  // {p,1}; {w,2}
         }
         return ans;
     }
 }
 
-/*  Sliding Window + Array
+/*  Sliding Window + Array: Time = O(n) Space = O(m)
+    用数组记录 index 代替 HashMap
 
-        int n = s.length(), ans = 0;
-        int[] index = new int[128]; // current index of character
+        int n = s.length(), ans = 0;                // "pwwkew"
+        // current index of character
+        int[] index = new int[128];
         // try to extend the range [i, j]
-        for (int j = 0, i = 0; j < n; j++) {
-            i = Math.max(index[s.charAt(j)], i);
-            ans = Math.max(ans, j - i + 1);
-            index[s.charAt(j)] = j + 1;
+        for (int j = 0, i = 0; j < n; j++) {        // j=0,i=0; j=1
+            i = Math.max(index[s.charAt(j)], i);    // i=max(index[p],0)=0; max(0,0)=0
+            ans = Math.max(ans, j - i + 1);         // ans=max(0,0-0+1)=1; max(1,2)=2
+            // 记录下一个 valid 起始点的坐标
+            index[s.charAt(j)] = j + 1;             // index[p]=0+1=1; index[w]=2
         }
         return ans;
  */
@@ -57,26 +61,50 @@ public class LongestSubstringWithoutRepeatingCharacters {
     If a substring Sij from index i to j-1 is already checked to have no duplicate characters.
     We only need to check if s[j] is already in the substring sij.
     using HashSet as a sliding window
+    slow pointer 一步一步移，比 HashMap 直接将 slow pointer 移动到 valid index 要慢很多
 
-        int n = s.length();
+        int n = s.length();                             // "pwwkew"
         HashSet<Character> set = new HashSet<>();
         int ans = 0, i = 0, j = 0;
         while (i < n && j < n) {
             // try to extend the range [i, j]
             if (!set.contains(s.charAt(j))){
                 // right boundary
-                set.add(s.charAt(j++));
-                ans = Math.max(ans, j - i);
+                set.add(s.charAt(j++));             // {p},j=1; {w},j=2
+                ans = Math.max(ans, j - i);         // max(0,1)=1; max=2
             }
             else {
                 // left boundary
-                set.remove(s.charAt(i++));
+                set.remove(s.charAt(i++));          // remove(p),i=1; remove(w),i=2
             }
         }
         return ans;
  */
 
-/*  Brute Force + HashSet: Time = O(n^3) Space = O(min(n, m))
+/*  my version(optimized brute force): Time = O(n^2) -> O(n*128) Space = O(128)
+
+        if (s == null || s.length() == 0) return 0;
+        int len = s.length();
+        int temp = 0;
+        int max = Integer.MIN_VALUE;
+        boolean[] seen = new boolean[128];
+
+        for (int i = 0; i < len; i++) {
+            int j = i;
+            while (j < len && !seen[s.charAt(j)]) {
+                temp++;
+                seen[s.charAt(j)] = true;
+                max = Math.max(max, temp);
+                j++;
+            }
+            Arrays.fill(seen, false);
+            seen[s.charAt(i)] = true;
+            temp = 1;
+        }
+        return max;
+ */
+
+/*  Brute Force + HashSet: Time = O(n^3) -> O(n*128^2) TLE Space = O(min(n, m))
 
     public int lengthOfLongestSubstring(String s) {
         int n = s.length();
@@ -99,12 +127,3 @@ public class LongestSubstringWithoutRepeatingCharacters {
     }
  */
 
-/*
-
-Window (i, j) with unique characters
-1. Use a hashtable to store the last index of each characters
-2. Keep track the valid startin point 
-    a. When there is a match update the starting point to the current one
-i = max(i, m[s[j]] + 1), len = j - i + 1
-
- */
