@@ -1,0 +1,17 @@
+滑动窗口 一般适用于 substring 的题
+
+暴力解法是从左到右以每一个 index 为起点，遍历整个 String，设置一个 seen 的数组，如果重复了就算一次这个 substring 的长度
+
+永远使这个 window 是 valid 的
+Window (i, j) with unique characters
+1. Use a hashtable to store the last index of each characters Map{Character, Integer(Index)} 碰到重复的让 index 从这个位置右移一位
+2. Keep track the valid starting point 
+    a. When there is a match update the starting point to the current one
+i = max(i, m[s[j]] + 1), len = j - i + 1
+
+思路就是用 map 存当前遍历到的 char 和目前的 index（这里有一个 trick，存进去的时候先让 index+1，这样 slow 指针就可以直接从这个 index 开始遍历）
+pw | wekw
+当 fast 到 index=2 时，slow 也要移到 index=2，但是需要用到的 index 其实是上一步 fast 的 index=1 时存在 map 里的 1
+
+可以用 HashSet, HashMap 和 size = 128（ASCII 码的数量）的数组
+performance HashSet < HashMap < Int[128]
