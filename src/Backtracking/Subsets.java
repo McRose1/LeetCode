@@ -18,7 +18,8 @@ package Backtracking;
       []
     ]
  */
-
+import java.util.ArrayList;
+import java.util.List;
 /*  Backtracking: Time = O(N*2^N) to generate all subsets and then copy them into output list. Space = O(2^N)
     Let us loop over the length of combination, rather than the candidate numbers,
     and generate all combinations for a given length with the help of backtracking technique.
@@ -30,31 +31,25 @@ package Backtracking;
         Proceed to add more integers into the combination: backtrack(i + 1, curr).
         Backtrack by removing nums[i] from curr.
  */
-import java.util.ArrayList;
-import java.util.List;
-
 public class Subsets {
-    List<List<Integer>> output = new ArrayList<>();
-    int n, k;   // k = size of subset
-
     public List<List<Integer>> subsets(int[] nums) {
-        n = nums.length;
-        for (k = 0; k < n + 1; ++k) {
-            backtrack(0, new ArrayList<Integer>(), nums);
+        List<List<Integer>> res = new ArrayList<>();
+        for (int k = 0; k <= nums.length; ++k) {
+            backtrack(0, k, res, new ArrayList<Integer>(), nums);
         }
-        return output;
+        return res;
     }
-    public void backtrack(int first, ArrayList<Integer> curr, int[] nums) {
+    public void backtrack(int first, int k, List<List<Integer>> res, ArrayList<Integer> curr, int[] nums) {
         // if the combination is done
         if (curr.size() == k) {
-            output.add(new ArrayList<>(curr));
+            res.add(new ArrayList<>(curr));
             return;
         }
-        for (int i = first; i < n; ++i) {
+        for (int i = first; i < nums.length; ++i) {
             // add i into the current combination
             curr.add(nums[i]);
             // use next integers to complete the combination
-            backtrack(i + 1, curr, nums);
+            backtrack(i + 1, k, res, curr, nums);
             // backtrack
             curr.remove(curr.size() - 1);
         }

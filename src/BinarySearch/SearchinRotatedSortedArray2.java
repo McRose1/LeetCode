@@ -19,7 +19,7 @@ package BinarySearch;
  */
 
 /*  Binary Search: Time = best(O(logn)) worst(O(n)) Space = O(1)
-    [1, 3, 1, 1, 1]: 左半段 [1, 3, 1] 无序
+    [1, 3, 1, 1, 1]
     当 nums[start] == nums[mid] 的时候需要单独考虑，can't directly check which half the target may be in.
  */
 public class SearchinRotatedSortedArray2 {
@@ -43,10 +43,11 @@ public class SearchinRotatedSortedArray2 {
                 } else {
                     end = mid;
                 }
-                // IMPORTANT: Handle the worst case: 1 1 1 1 0 1 1
-                // If nums[start] == nums[mid], just move start to the next index.
+            // IMPORTANT: Handle the worst case: 1 1 1 1 0 1 1
+            // If nums[start] == nums[mid], just move start to the next index.
             } else {
-                start++;
+                // 因为我们知道 nums[mid] 不可能等于 target，所以可以舍弃
+                start++;            // [1, 3, 1, 1, 1] -> [3, 1, 1, 1]
             }
         }
         if (nums[start] == target || nums[end] == target) return true;

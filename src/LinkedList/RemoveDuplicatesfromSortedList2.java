@@ -20,8 +20,8 @@ public class RemoveDuplicatesfromSortedList2 {
         dummy.next = head;
         ListNode pre = dummy;
         ListNode cur = head;
+        boolean equal = false;
         while (cur != null && cur.next != null) {
-            boolean equal = false;
             // cur 和 cur.next 相等，cur 不断后移
             while (cur.next != null && cur.val == cur.next.val) {
                 cur = cur.next;
@@ -36,7 +36,7 @@ public class RemoveDuplicatesfromSortedList2 {
             else {
                 pre = cur;
             }
-            // cur 后移
+            // 每一次 cur 都要后移
             cur = cur.next;
         }
         return dummy.next;

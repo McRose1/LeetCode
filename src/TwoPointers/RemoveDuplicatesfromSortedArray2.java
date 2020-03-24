@@ -1,4 +1,4 @@
-package Array;
+package TwoPointers;
 
 /*  80. Remove Duplicates from Sorted Array 2 (LC26 follow up)
     Given a sorted array nums,
@@ -13,7 +13,9 @@ package Array;
     Example 2:
     Given nums = [0,0,1,1,1,1,2,3,3],
     Your function should return length = 7, with the first seven elements of nums being modified to 0, 0, 1, 1, 2, 3 and 3 respectively.
+ */
 
+/*  Two Pointers
     [0,0,1,1,1,1,2,3,3]
          s
          f
@@ -34,7 +36,6 @@ package Array;
     [0,0,1,1,2,3,3,3,3]
                    s   f
  */
-
 public class RemoveDuplicatesfromSortedArray2 {
     public int removeDuplicates(int[] nums) {
         if (nums.length <= 2) return nums.length;

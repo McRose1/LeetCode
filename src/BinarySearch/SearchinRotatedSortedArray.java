@@ -28,15 +28,19 @@ public class SearchinRotatedSortedArray {
         while (left + 1 < right) {
             int mid = left + (right - left) / 2;
             if (nums[mid] == target) return mid;
+            // 先确定 mid 在左边
             if (nums[mid] > nums[left]) {
+                // 再确定 target 在左边的 mid 左边
                 if (target <= nums[mid] && target >= nums[left]) {
-                    // 左边中间
                     right = mid;
+                // 再确定 target 在左边的 mid 右边
                 } else left = mid;
+            // 先确定 mid 在右边
             } else {
+                // 再确定 target 在右边的 mid 右边
                 if (target >= nums[mid] && target <= nums[right]) {
-                    // 右边中间
                     left = mid;
+                // 再确定 target 在右边的 mid 左边
                 } else right = mid;
             }
         }
