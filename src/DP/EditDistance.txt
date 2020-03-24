@@ -1,0 +1,46 @@
+二维 DP hard 题
+
+每次只看末尾匹配 -> 子问题
+
+"horse" -> "ros"
+
+B2B：
+    r o s
+  0 1 2 3
+h 1 1 2 3
+o 2 2 1 2
+r 3 2 2 2
+s 4 3 3 2
+e 5 4 4 3 -> answer 
+
+
+花花酱：
+D("abbc", "acc")              // 2
+  = D("abb", "ac")            // 2, no edit on last c
+    = 1 + min(D("ab", "ac"),  // 1, delete ab[b]
+              D("abb", "a"),  // 2, insert a[c]
+              D("ab", "a"))   // 1, replace ab[b] to a[c]
+              
+D("ab", "ac")               // 1
+  = 1 + min(D("a", "ac"),   // 1, delete a[b]
+            D("ab", "a"),   // 1, insert a[c]
+            D("a", "a"))    // 0, replace a[b] to a[c]
+            
+D("a", "a") = D("", "") = 0 // no edit on last a 
+
+D("ab", "a")                // 1
+  = 1 + min(D("a", "a"),    // 0, delete a[b]
+            D("ab", ""),    // 2, insert [a]
+            D("a", ""))     // 1, replace a[b] to [a]
+            
+D("ab", "") = len("ab") = 2 // delete a[b], delete [b]
+
+d(i, j) = minDistance(word1[0..i-1], word2[0..j-1])
+
+d(i, j) = 
+1. i if j == 0
+2. j if i == 0
+3. d(i - 1, j - 1) if word1[i - 1] == word2[j - 1]
+4. min(d(i - 1, j),
+       d(i, j - 1),
+       d(i - 1, j - 1)) + 1
