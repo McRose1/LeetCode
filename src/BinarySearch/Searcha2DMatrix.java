@@ -1,4 +1,4 @@
-package Matrix;
+package BinarySearch;
 
 /*  74. Search a 2D Matrix
     Write an efficient algorithm that searches for a value in an m x n matrix.
@@ -32,18 +32,23 @@ package Matrix;
  */
 public class Searcha2DMatrix {
     public boolean searchMatrix(int[][] matrix, int target) {
-        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return false;
+        int m = matrix.length;
+        int n = matrix[0].length;
+        if (matrix == null || m == 0 || n == 0) return false;
         int startRow = 0;
-        int endRow = matrix.length - 1;
-        int endCol = matrix[0].length - 1;
+        int endRow = m - 1;
+        int endCol = n - 1;
         int row = -1;
         while (startRow + 1 < endRow) {
             int mid = startRow + (endRow - startRow) / 2;
             if (matrix[mid][endCol] < target) startRow = mid;
             else endRow = mid;
         }
-        if (matrix[startRow][endCol] >= target) row = startRow;
-        else if (matrix[endRow][endCol] >= target) row = endRow;
+        if (matrix[startRow][endCol] >= target) {
+            row = startRow;
+        } else if (matrix[endRow][endCol] >= target) {
+            row = endRow;
+        }
         else return false;
 
         int start = 0;

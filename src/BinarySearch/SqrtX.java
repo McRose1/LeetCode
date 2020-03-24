@@ -1,4 +1,4 @@
-package Math;
+package BinarySearch;
 
 /*  69. Sqrt(x)
     Implement int sqrt(int x).
@@ -18,8 +18,8 @@ package Math;
 // Binary Search: Time = O(logx) Space = O(1)
 public class SqrtX {
     public int mySqrt(int x) {
-        if (x <= 0) return 0;
-        int low = 1, high = x;
+        if (x <= 1) return x;
+        int low = 2, high = x;
         while (low <= high) {
             int mid = low + (high - low) / 2;
             if (mid > x / mid) {

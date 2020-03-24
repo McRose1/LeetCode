@@ -40,35 +40,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-/*
-    1) .
+/*  Stack
+    1) . -> 忽略
     2) .. -> level up -> stack
-    3)
+    3) "" -> 忽略
  */
 public class SimplifyPath {
     public String simplifyPath(String path) {
-        if (path == null || path.length() == 0) return "";
-        Stack<String> stack = new Stack<>();
-        // erase whitespace
-        path = path.trim();
-        String[] strArray = path.split("/");    // a,b,"","",c,d,"",.,.,"",..
-
-        for (int i = 0; i < strArray.length; i++) {
-            // ..
-            if (strArray[i].equals("..") && !stack.isEmpty()) {
-                stack.pop();                          // d
-            // . , .. , "" 以外
-            } else if (!strArray[i].equals(".") && !strArray[i].equals("..") && !strArray[i].equals("")) {
-                stack.push(strArray[i]);        // a,b,c,d -> a,b,c
-            }
-        }
-        // 组装
-        List<String> list = new ArrayList<>(stack);     // bottom to top: a,b,c
-        return "/" + String.join("/", list);    // /a/b/c
-    }
-}
-
-/*
         Stack<String> stack = new Stack<>();
         String[] paths = path.split("/");
         for (String s : paths) {
@@ -84,9 +62,29 @@ public class SimplifyPath {
         while (!stack.isEmpty()) {
             res = "/" + stack.pop() + res;  // 从右往左
         }
+        // 防止出现：/../
         if (res.length() == 0) {
             return "/";
         }
         return res;
+    }
+}
 
+/*
+        if (path == null || path.length() == 0) return "";      // "/a//b////c/d//././/.."
+        Stack<String> stack = new Stack<>();
+        String[] strArray = path.split("/");    // a,b,"","",c,d,"",.,.,"",..
+
+        for (int i = 0; i < strArray.length; i++) {
+            // .. -> 把 stack 顶部的元素 pop 掉
+            if (strArray[i].equals("..") && !stack.isEmpty()) {
+                stack.pop();                                         // d 出栈
+            // . , .. , "" 以外 -> 字母表示的路径名
+            } else if (!strArray[i].equals(".") && !strArray[i].equals("..") && !strArray[i].equals("")) {
+                stack.push(strArray[i]);        // a,b,c,d -> a,b,c
+            }
+        }
+        // 组装
+        List<String> list = new ArrayList<>(stack);     // bottom to top: a,b,c
+        return "/" + String.join("/", list);    // /a/b/c
  */
