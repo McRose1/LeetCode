@@ -1,0 +1,13 @@
+Rainbow Sort 
+
+i = 0 -> all letters to the left-hand side of i are all 'a's
+j = 0 -> (j is actually the current index) all letters in [i, j) are all 'b's
+k = n - 1 -> (all letters to the right-hand side of k are all 'c's)
+unknown area is [j...k]
+
+三个挡板：
+a a | b | x x x | c 
+[0, i): a
+[i, j): b
+[j, k]: unchecked elements 
+(k, len - 1]: c
