@@ -1,0 +1,37 @@
+83题的进阶版本
+只要出现 duplicate 就删除
+最后只留下 distinct 的元素
+
+。。。不会做
+
+链表里的双指针
+指针 pre 代表重复数字的前边的位置
+指针 cur 用来遍历链表
+
+d 1 2 3 3 3 4 cur 和 cur.next 不相等，pre 移到 cur 的地方，cur后移
+^ ^ 
+p c 
+
+d 1 2 3 3 3 4 cur 和 cur.next 不相等，pre 移到 cur 的地方，cur后移
+  ^ ^
+  p c
+
+d 1 2 3 3 3 4 5 cur 和 cur.next 相等, pre 保持不变，cur 后移
+    ^ ^
+    p c
+
+d 1 2 3 3 3 4 5 cur 和 cur.next 相等, pre 保持不变，cur 后移
+    ^   ^
+    p   c
+
+d 1 2 3 3 3 4 5 cur 和 cur.next 不相等, pre.next 直接指向 cur.next， 删除所有 3，cur 后移
+    ^     ^
+    p     c
+
+d 1 2 4 5 cur 和 cur.next 不相等，pre 移到 cur 的地方，cur后移
+    ^ ^
+    p c
+
+d 1 2 4 5 遍历结束
+      ^ ^
+      p c
