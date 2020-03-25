@@ -1,0 +1,17 @@
+和第一题相比的区别是输入的数组存在 duplicate
+
+记得第一题是在 main function 里面 for 循环 
+
+Subsets 其实没有 permutation 复杂
+如果要处理 [1, 2, 2]
+要记住 Subsets 每次遍历从下一个元素开始（不走回头路）
+                    [](√)
+              /      |          \
+        1(√)        2(√)        2(x)
+       /   \          |      
+     12(√) 12(x)    22(√)
+      |                 
+     122(√)            
+我们发现，这整个图就是 Subsets 1 的答案
+     
+其实就是比第一题多了一开始的 sort 以及 backtrack 里多了一层判断: if (i > start && nums[i] == nums[i - 1])
