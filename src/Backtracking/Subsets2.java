@@ -23,33 +23,30 @@ import java.util.List;
 
 //  Backtracking
 public class Subsets2 {
-    List<List<Integer>> output = new ArrayList<>();
-    int n, k;   // k = size of subset
-
     public List<List<Integer>> subsetsWithDup(int[] nums) {
-        n = nums.length;
+        List<List<Integer>> res = new ArrayList<>();
         Arrays.sort(nums);
-        for (k = 0; k < n + 1; ++k) {
-            backtrack(0, new ArrayList<Integer>(), nums);
+        for (int size = 0; size <= nums.length; size++) {
+            backtrack(nums, res, new ArrayList<Integer>(), size, 0);
         }
-        return output;
+        return res;
     }
-    public void backtrack(int first, ArrayList<Integer> curr, int[] nums) {
+    public void backtrack(int[] nums, List<List<Integer>> res, ArrayList<Integer> list, int size, int start) {
         // if the combination is done
-        if (curr.size() == k) {
-            output.add(new ArrayList<>(curr));
+        if (list.size() == size) {
+            res.add(new ArrayList<>(list));
             return;
         }
-        for (int i = first; i < n; ++i) {
-            if (i > first && nums[i] == nums[i - 1]) {
+        for (int i = start; i < nums.length; i++) {
+            if (i > start && nums[i] == nums[i - 1]) {
                 continue;
             }
             // add i into the current combination
-            curr.add(nums[i]);
+            list.add(nums[i]);
             // use next integers to complete the combination
-            backtrack(i + 1, curr, nums);
+            backtrack(nums, res, list, size, i + 1);
             // backtrack
-            curr.remove(curr.size() - 1);
+            list.remove(list.size() - 1);
         }
     }
 }

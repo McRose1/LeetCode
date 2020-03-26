@@ -34,24 +34,24 @@ import java.util.List;
 public class Subsets {
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
-        for (int k = 0; k <= nums.length; ++k) {
-            backtrack(0, k, res, new ArrayList<Integer>(), nums);
+        for (int size = 0; size <= nums.length; size++) {
+            backtrack(nums , res, new ArrayList<Integer>(), size, 0);
         }
         return res;
     }
-    public void backtrack(int first, int k, List<List<Integer>> res, ArrayList<Integer> curr, int[] nums) {
+    public void backtrack(int[] nums, List<List<Integer>> res, ArrayList<Integer> list, int size, int start) {
         // if the combination is done
-        if (curr.size() == k) {
-            res.add(new ArrayList<>(curr));
+        if (list.size() == size) {
+            res.add(new ArrayList<>(list));
             return;
         }
-        for (int i = first; i < nums.length; ++i) {
+        for (int i = start; i < nums.length; ++i) {
             // add i into the current combination
-            curr.add(nums[i]);
+            list.add(nums[i]);
             // use next integers to complete the combination
-            backtrack(i + 1, k, res, curr, nums);
+            backtrack(nums, res, list, size, i + 1);
             // backtrack
-            curr.remove(curr.size() - 1);
+            list.remove(list.size() - 1);
         }
     }
 }
