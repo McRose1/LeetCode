@@ -1,0 +1,17 @@
+tag 是 双指针
+merge nums2 into nums1
+
+nums1: [1, 2, 3]
+        i
+nums2: [2, 5, 6]
+        j
+        
+没想出来。。。
+想着先建立一个数组或者 list 存 temp 然后最后再 copy 到 num1
+
+答案：
+其实算是三指针，还有一个指针指向 num1 的末尾
+
+先排两个 array 最大的数字先放在 num1 的末尾
+
+当 nums1 里的元素已经遍历完，还需要判断 nums2 里的情况
