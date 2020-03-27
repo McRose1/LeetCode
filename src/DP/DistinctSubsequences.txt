@@ -1,0 +1,28 @@
+tag 上标的是 DP
+
+花花酱：
+两个字符串
+二维 DP
+和 Edit Distance 非常相似
+
+dp[i][j] = num of subseqence of S[1:j] equals T[1:i]
+
+Init: dp[i][*] = 1
+
+Transition: if t[i] == s[j]:
+              dp[i][j] = dp[i - 1][j - 1] # match s[j], t[i]
+            + dp[i][j - 1]                  # skip s[j]
+            else:
+              dp[i][j] = dp[i][j - 1]        # skip s[j] 
+Ans: dp[T][S]
+
+  s    b a b g b a g
+ i/j 0 1 2 3 4 5 6 7        
+t 0  1 1 1 1 1 1 1 1 
+b 1  0 1 1 2 2 3 3 3  
+a 2  0 0 1 1 1 1 4 4 
+g 3  0 0 0 0 1 1 1 5
+
+自己实践的时候还入了很多坑：
+比如两个 for 循环里 index 的范围，应该取到 <= 而不是 <，初始化dp[]第一行的时候也是应该 <=
+还有 t.charAt(i - 1) 和 s.charAt(j - 1) 需要 index 减 1！
