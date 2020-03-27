@@ -1,0 +1,18 @@
+前一题的拓展，从 perfect binary tree 变成了普通 binary tree
+
+          1
+        /   \ 
+       2 ->  3
+     /  \     \ 
+    4 -> 5 ->  7  
+    
+cur.left.next = cur.right(if exists) or 
+cur.right.next = cur.next.(left or right)
+这题的 next 其实已经失效了3
+
+想用上一题的思路照搬，用 recursion 调用自己好像行不通
+尤其是当树很高的时候，出现最左叶子点指向最右叶子点的情况
+
+这题就只能用 iteration 来做了
+
+这题细想实在是太精妙了，需要反复看
