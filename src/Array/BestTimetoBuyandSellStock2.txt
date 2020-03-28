@@ -1,0 +1,23 @@
+和第一题的区别在于没有买卖一次的限制，无限制买卖
+
+tag 里有 greedy
+
+需要评估两个策略，
+1. 多买多卖
+2. 最低价买入，最高价卖出 [1, 2, 3, 4, 5]
+
+想不出来。。。
+
+发现逻辑记错了，记成了无脑选交易次数多的
+
+答案是说：最低点后面的最高点我们一定要选，因为最后的 maxProfit = sum(最高点) - sum（最低点）（前提，最高点和最低点是相邻的，并且最高点在最低点后面）
+looking for every peak following a valley 
+
+更为简单的逻辑：
+不用管峰值和谷值，keep on adding the profit obtaineed from every consecutive transaction 
+
+不要把思维限定在实际生活中的买卖操作
+
+
+
+
