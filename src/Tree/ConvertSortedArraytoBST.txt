@@ -1,0 +1,25 @@
+把 sorted 数组转换成 BST
+
+想着用双指针和迭代做，用 mid 当 root，分别遍历 left 和 right，整体思路是对的
+
+看答案
+
+每次都找 mid 作为当前子树的 root
+并且每次递归都返回当前 root
+这样到最后就能从底部往上一层一层返回构建好的 BST
+
+不要忘记加上递归的出口：if (left > right) return null;
+[-10, -3, 0, 5, 9]    
+          0
+        /   \ 
+  [-10, -3] [5, 9]
+      /
+    -10
+      \    
+       -3
+left=0
+right=1
+mid=0
+cur = -10
+cur.left = helper(0, -1) -> (left > right) -> null
+cur.right = helper(1, 1) -> (mid = 1) -> cur = -3

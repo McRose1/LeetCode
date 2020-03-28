@@ -1,0 +1,12 @@
+上一题的扩展，从输出是否有 valid path sum 到输出所有 valid path sum 可能的路径
+
+有点像回溯题，做了很久没做出来
+
+和答案很接近了，差一点就自己做出来了。。。
+
+加 node 的过程没有想清楚，backtrack 的过程也没想清楚
+
+这个回溯特殊就特殊在它要 backtrack 两次，因为在树中的结果是需要分类讨论的
+每次结果的结尾肯定是 leaf node，所以每产生一次结果就需要删去当前 leaf node 去探索别的结果可能
+同样对于中间的非leaf node，我们每次以这个 node 为 root 调用左右子树的 DFS function 以后，需要删去当前 root，也就是回退到这个 root 的上一个 root
+整个递归总上往下压栈，最后从下往上退栈

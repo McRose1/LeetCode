@@ -1,0 +1,9 @@
+给定一个 target，判断树中是否有从 root 到 leaf 的 path 使得 traverse 的 node 加和为 target
+
+典型的 DFS 题
+每一层下去 target 都会减去当前 node
+
+这题想着能否直接调用自己，发现可以，但是有几个 tricky 的点：
+1. 最后 return 分别左右子树调用自己的时候中间应该是 ||，任一子树存在就返回 true
+
+2. 记得需要判断此时的 node 是否为 leaf，只有 root 到 node 才算 valid path

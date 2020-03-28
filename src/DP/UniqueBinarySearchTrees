@@ -1,0 +1,53 @@
+tree 类型的 DP 题
+
+1 -> 1
+2 -> 2
+3 -> 5
+
+没有找出规律
+
+看 B2B
+
+这属于 Catalan Numbers (Sequence)
+4 -> 14
+5 -> 42
+
+分别讨论不同 root 的情况
+(1, 2) -> 1 + 1 = 2
+
+  1         2
+   \       /
+    2     1
+
+(1, 3) -> 2 + 1 + 2 = 5
+
+    1           2            3
+     \         / \          /
+    (2, 3)    1   3       (1, 2)
+    
+G(n): Catalan numbers     
+F(i, n): with i at the root and nums[1,2,3 ..., n].
+G(3) = F(1, 3) + F(2, 3) + F(3, 3)
+
+                  G(3)
+          j /       j|         \j       j -> (1-n)
+        F(1,3) +  F(2,3)  +   F(3,3)
+      /      \     /    \      /   \  
+    G(0) *  G(2)  G(1)*G(1)  G(2) * G(0)
+    
+F(i, n) = G(i - 1) * G(n - i)
+
+篮子王：
+
+state: dp[i] 当前节点有多少 unique BST
+init: dp[0] = 1, dp[1] = 1 
+func: 
+result: dp[n] 
+
+
+4:        1           2           3             4
+        /   \       /   \       /   \         /    \
+        0   3       1   2       2   1         3    0
+       1  x  5     1  x  2     2  x  1       5  x  1     ->   14    
+       
+dp[i] = sum(dp[j] * dp[i - j - 1]) 
