@@ -219,7 +219,6 @@ public class MinimumWindowSubstring {
     private Map<Character, Integer> constructMap(String t) {
         Map<Character, Integer> map = new HashMap<>();
         for (char ch : t.toCharArray()) {
-            Integer count = map.get(ch);
             map.put(ch, map.getOrDefault(ch, 0) + 1);
         }
         return map;
