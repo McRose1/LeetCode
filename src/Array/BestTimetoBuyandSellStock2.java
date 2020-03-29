@@ -27,9 +27,7 @@ package Array;
  */
 public class BestTimetoBuyandSellStock2 {
     public int maxProfit(int[] prices) {
-        if (prices == null || prices.length == 0) {
-            return 0;
-        }
+        if (prices == null || prices.length < 1) return 0;
         int maxprofit = 0;
         for (int i = 1; i < prices.length; i++) {
             if (prices[i] > prices[i - 1]) {
@@ -40,7 +38,32 @@ public class BestTimetoBuyandSellStock2 {
     }
 }
 
-/*  Brute Force: Time = O(n^n) Space = O(n)
+/*  Peak Valley Approach: Time = O(n) Space = O(1)
+    The key point is we need to consider every peak immediately following a valley to maximize the profit.
+    In case we skip one of the peaks (trying to obtain more profit), we will end up losing the profit over
+    one of the transactions leading to an overall lesser profit.
+
+        if (prices == null || prices.length < 1) return 0;
+        int i = 0;
+        int valley = prices[0];
+        int peak = prices[0];
+        int maxprofit = 0;
+        while (i < prices.length - 1) {
+            while (i < prices.length - 1 && prices[i] >= prices[i + 1]) {
+                i++;
+            }
+            valley = prices[i];
+            while (i < prices.length - 1 && prices[i] <= prices[i + 1]) {
+                i++;
+            }
+            peak = prices[i];
+            maxprofit += peak - valley;
+        }
+        return maxprofit;
+
+ */
+
+/*  Brute Force (TLE): Time = O(n^n) Space = O(n)
 
     public int maxProfit(int[] prices) {
         return calculate(prices, 0);
@@ -66,28 +89,4 @@ public class BestTimetoBuyandSellStock2 {
         }
         return max;
     }
- */
-
-/*  Peak Valley Approach: Time = O(n) Space = O(1)
-    The key point is we need to consider every peak immediately following a valley to maximize the profit.
-    In case we skip one of the peaks (trying to obtain more profit), we will end up losing the profit over
-    one of the transactions leading to an overall lesser profit.
-
-        int i = 0;
-        int valley = prices[0];
-        int peak = prices[0];
-        int maxprofit = 0;
-        while (i < prices.length - 1) {
-            while (i < prices.length - 1 && prices[i] >= prices[i + 1]) {
-                i++;
-            }
-            valley = prices[i];
-            while (i < prices.length - 1 && prices[i] <= prices[i + 1]) {
-                i++:
-            }
-            peak = prices[i];
-            maxprofit += peak - valley;
-        }
-        return maxprofit;
-
  */
