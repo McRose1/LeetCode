@@ -1,0 +1,25 @@
+非常频繁考到的设计题
+
+LRU 的机制，应该使用 map 来实现
+
+想着是用 map 里的 value 来表示 least recently used
+
+第一遍做还是先看下答案吧
+
+花花酱：
+
+Requirements:
+Access to a random key in O(1) -> HashMap
+Remove the last entry in LRU cache in O(1) -> Doubly LinkedList
+Add/move an entry to the front of LRU cache in O(1) -> Doubly LinkedList
+
+B2B:
+Hashtable + Doubly LinkedList
+             Dummy head <-> dummy tail 
+             
+每次 get 或者 put 都把这个 element 放在双向链表的头部
+
+least recently used 元素永远在双向链表的头部
+每次的 victim element 永远在双向链表的尾部
+
+          
