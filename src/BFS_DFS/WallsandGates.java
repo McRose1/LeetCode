@@ -1,4 +1,4 @@
-package DFS_BFS;
+package BFS_DFS;
 
 /*  286. Walls and Gates
     You are given a m x n 2D grid initialized with there three possible values.

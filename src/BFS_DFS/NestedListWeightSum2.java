@@ -1,4 +1,4 @@
-package DFS_BFS;
+package BFS_DFS;
 
 /*  364. Nested List Weight Sum 2
     Given a nested list of integers, return the sum of all integers in the list weighted by their depth.

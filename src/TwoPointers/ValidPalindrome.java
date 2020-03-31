@@ -1,4 +1,6 @@
-/*
+package TwoPointers;
+
+/*  125. Valid Palindrome
     Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
     Note: For the purpose of his problem, we define empty string as valid palindrome.
 
@@ -10,7 +12,7 @@
     Input: "race a car"
     Output: false
  */
-
+//  Two Pointers
 public class ValidPalindrome {
     public boolean isPalindrome(String s) {
         if (s.length() == 0) return true;
@@ -30,7 +32,3 @@ public class ValidPalindrome {
         return true;
     }
 }
-
-/*
-    2 pointers
- */

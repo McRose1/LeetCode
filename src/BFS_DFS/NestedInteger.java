@@ -1,4 +1,4 @@
-package DFS_BFS;
+package BFS_DFS;
 
 import java.util.List;
 

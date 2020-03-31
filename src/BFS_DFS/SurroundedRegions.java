@@ -1,4 +1,4 @@
-package DFS_BFS;
+package BFS_DFS;
 
 /*  130. Surrounded Regions
     Given a 2D board containing 'X' and 'O' (the letter O), capture all regions surrounded by 'X'.

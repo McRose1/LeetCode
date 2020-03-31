@@ -1,4 +1,4 @@
-package DFS_BFS;
+package BFS_DFS;
 
 /*  1192. Critical Connections in a Network
     There are n servers numbered from 0 to n-1 connected by undirected server-to-server connections

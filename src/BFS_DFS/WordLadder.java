@@ -1,4 +1,4 @@
-package DFS_BFS;
+package BFS_DFS;
 
 /*  127. Word Ladder
     Given two words (beginWord and endWord), and a dictionary's word list,
@@ -33,10 +33,58 @@ package DFS_BFS;
 
 import java.util.*;
 
-/*  Bidirectional BFS: Time = O(n*(26^(l/2))) Space = O(n)
- */
+//  BFS using Queue: Time = O(n*(26^l)) Space = O(n)
 public class WordLadder {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        if (!wordList.contains(endWord)) return 0;
+        // 直接把 wordList dump 到 set 中
+        Set<String> set = new HashSet<>(wordList);    // "hit" -> "hot" -> "dot" -> "dog" -> "cog"
+
+        Queue<String> queue = new LinkedList<>();
+        queue.offer(beginWord);                     // hit
+
+        int l = beginWord.length();
+        int len = 0;
+
+        while (!queue.isEmpty()) {
+            // 当前层数
+            len++;                                      // len = 1;
+            // 每一层的 candidates 个数就是 queue 的 size
+            for (int s = queue.size(); s > 0; s--) {
+                String str = queue.poll();              // hit
+                char[] chs = str.toCharArray();         // [h,i,t]
+                // BFS 体现在这儿，每个字母都替换一遍
+                for (int i = 0; i < l; i++) {
+                    // 保存当前值，为了后面还原
+                    char old = chs[i];
+                    // a-z 替换
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        // 跳过当前单词
+                        if (c == old) continue;
+                        chs[i] = c;
+                        // 当前替换完成的单词
+                        String temp = new String(chs);
+                        if (temp.equals(endWord)) return len + 1;
+                        // 替换完成的单词不在 wordList 中，也可跳过
+                        if (!set.contains(temp)) continue;
+                        // 从 set 中删去命中词，以防止重复使用，这样就不会倒退
+                        set.remove(temp);                      // [dot,dog,lot,log]
+                        // queue 里存的是这一层candidates替换合法的，准备下一层替换的 candidates
+                        queue.offer(temp);                      // hot
+                    }
+                    // 每个位置的字母替换以后进行下一个位置的字母替换之前，需要先还原当前单词
+                    chs[i] = old;
+                }
+            }
+        }
+        return 0;
+    }
+}
+
+/*  Bidirectional BFS: Time = O(n*(26^(l/2))) Space = O(n)
+    We can considerably cut down the search space of the standard BFS if we launch two simultaneous BFS.
+    One from the beginWord and one from the endWord.
+
         if (!wordList.contains(endWord)) return 0;
         Set<String> beginSet = new HashSet<>();
         Set<String> endSet = new HashSet<>();
@@ -73,45 +121,11 @@ public class WordLadder {
                         dict.remove(target);
                         temp.add(target);
                     }
-                    chs[i] = old;   // backtracking
-                }
-            }
-            beginSet = temp;
-        }
-        return 0;
-    }
-}
-
-/*  BFS: Time = O(n*(26^l)) Space = O(n)
-
-        if (!wordList.contains(endWord)) return 0;
-        Set<String> dict = new HashSet<>(wordList);
-
-        Queue<String> queue = new LinkedList<>();
-        queue.offer(beginWord);
-
-        int l = beginWord.length();
-        int len = 0;
-
-        while (!queue.isEmpty()) {
-            len++;
-            for (int s = queue.size(); s > 0; s--) {
-                String str = queue.poll();
-                char[] chs = str.toCharArray();
-                for (int i = 0; i < l; i++) {
-                    char old = chs[i];
-                    for (char c = 'a'; c <= 'z'; c++) {
-                        if (c == old) continue;
-                        chs[i] = c;
-                        String temp = new String(chs);
-                        if (temp.equals(endWord)) return len + 1;
-                        if (!dict.contains(temp)) continue;
-                        dict.remove(temp);
-                        queue.offer(temp);
-                    }
+                    // backtracking
                     chs[i] = old;
                 }
             }
+            beginSet = temp;
         }
         return 0;
     }

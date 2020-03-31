@@ -1,4 +1,4 @@
-package DFS_BFS;
+package BFS_DFS;
 
 /*  542. 01 Matrix
     Given a matrix consists of 0 and 1, find the distance of the nearest 0 for each cell.
