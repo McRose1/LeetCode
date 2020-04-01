@@ -1,0 +1,21 @@
+链表题，和之前的 clone graph 有点像
+node 里面包含常规链表 node 拥有的 val 和 next 以外，还有 random_index 信息
+
+那必然是需要 HasMap<original ndoe, copy node>
+
+直接顺着链表遍历
+
+还是不会做。。。
+
+山景城一姐：
+和 clone graph 思路一样，扫第一遍的时候 copy nodes，不管其他值，只加载 value， new Node(cur.val, null, null)
+
+第二次 loop 的时候再 assign next and random pointers 
+
+cloudLiang：
+这题需要解决的问题就是，当更新当前 node 的 random pointer 的时候，如果 random 指向的是很后边的节点，但此时后边的节点还有 copy 到，该如何处理
+方法就是上面所说的，先遍历一遍把所有节点提前生成保存在 HashMap里，第二遍的时候就可以直接从 HashMap 里拿了
+
+还有一次遍历，同时更新 val，next 和 random
+
+和不需要 HashMap 的做法，将 copy node 插入 original node 中间
