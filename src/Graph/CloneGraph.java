@@ -52,54 +52,68 @@ import java.util.Map;
     There is no repeated edges and no self-loops in the graph.
     The Graph is connected and all nodes can be visited starting from the given node.
  */
-/*  DFS
+/*  DFS: Time = O(n) Space = O(n): HashMap + O(H)，H 是 graph 的 depth
     用 HashMap 建立 original graph node 和 current graph node 之间的映射
+    <Key: original graph node, Value: clone graph node>
  */
 public class CloneGraph {
-    Map<Node, Node> map = new HashMap<>();
+    Map<Node, Node> visited = new HashMap<>();
     public Node cloneGraph(Node node) {
         if (node == null) return null;
-        return dfs(node);
-    }
 
-    private Node dfs(Node node) {       // 1
-        if (node == null) return null;
-        // 1. seen
-        if (map.containsKey(node)) {
-            return map.get(node);
-        } else { // 2. unseen
-            Node newNode = new Node(node.val);  // 1'
-            map.put(node, newNode);             // 1->1‘
-            List<Node> list = new ArrayList<>();
-            for (Node nei : node.neighbors) {   // 2,4
-                list.add(dfs(nei));             // list.add(dfs(2)); list.add(dfs(4))
-            }
-            newNode.neighbors = list;           // 1'->{2,4}
-            return newNode;
+        // If the node was already visited before.
+        // Return the clone from the visited dictionary.
+        if (visited.containsKey(node)) {
+            return visited.get(node);
         }
+
+        // Create a clone for the given node.
+        // Note that we don't have cloned neighbors as of now, hence [].
+        Node cloneNode = new Node(node.val, new ArrayList<>());
+        // The key is original node and value being the clone node.
+        visited.put(node, cloneNode);
+
+        // Iterate through the neighbors to generate their clones
+        // and prepare a list of cloned neighbors to be added to the cloned node.
+        for (Node nei : node.neighbors) {
+            // dfs is here, recursively explore current node's neighbors' neighbors
+            cloneNode.neighbors.add(cloneGraph(nei));
+        }
+        return cloneNode;
     }
 }
 
-/*  BFS
+/*  BFS: Time = O(n) Space = O(n): HashMap + O(W)，W 是 graph 的 breadth
     Use queue to simulate the process of BFS
 
         if (node == null) return null;
 
-        Map<Node, Node> map = new HashMap<>();
+        // Hash map to save the visited node and it's clone as key and value respectively.
+        // This helps to avoid cycles.
+        Map<Node, Node> visited = new HashMap<>();
+
+        // Put the first node in the queue
         Queue<Node> queue = new LinkedList<>();
-
         queue.add(node);
-        map.put(node, new Node(node.val));
+        // Clone the node and put it in the visited dictionary.
+        visited.put(node, new Node(node.val, new ArrayList()));
 
+        // Start BFS traversal
         while (!queue.isEmpty()) {
+            // Pop a node from the top of the queue
             Node cur = queue.remove();
+            // Iterate through all the neighbors of the node
             for (Node nei : cur.neighbors) {
-                if (!map.containsKey(nei)) {
-                    map.put(nei, new Node(nei.val));
+                if (!visited.containsKey(nei)) {
+                    // Clone the neighbors and put in the visited, if not present already
+                    visited.put(nei, new Node(nei.val, new ArrayList()));
+                    // Add the newly encountered node to the queue.
                     queue.add(nei);
                 }
-                map.get(cur).neighbors.add(map.get(nei));
+                // Add the clone of the neighbors to the neighbors of the clone node.
+                visited.get(cur).neighbors.add(visited.get(nei));
             }
         }
-        return map.get(node);
+        // Return the clone of the node from visited.
+        return visited.get(node);
  */
