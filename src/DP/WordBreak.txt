@@ -1,0 +1,32 @@
+tag 是 DP，从 list of string 里找到 string s 的部分
+
+s = "leetcode", wordDict = ["leet", "code"]
+
+s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
+
+想不出来用 DP 的思路呀。。。
+
+先从暴力解法入手，思路就是把整个问题拆分成一个个子问题，可以用递归实现
+leetcode -> dfs(l) + eetcode 
+         -> dfs(le) + etcode
+         -> dfs(lee) + tcode
+         -> dfs(leet) + code
+         
+在递归的过程中我们会发现很多步骤其实我们都重复计算过了
+
+GfG：
+                        code 
+                /         |          \
+         ode&&wb(c)  de&&wb(co) e&&wb(cod)  
+   
+题目说了提供了 a dictionary wordList，只不过给的形式是 List<String>，我们完全可以直接用它来构造 dictionary
+HashSet<String>(wordDict)
+
+记忆化递归这个思想一定要掌握
+
+再继续优化：DP
+dp[i] is true if WB of substring 0 to i is true
+
+
+
+
