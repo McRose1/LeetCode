@@ -19,7 +19,7 @@ package Stack;
  */
 
 import java.util.Stack;
-//  One Stack
+//  One Stack：这个方法优点太巧妙了
 public class MinStack {
 
     Stack<Integer> stack;
@@ -72,6 +72,7 @@ public class MinStack {
         if (minStack.isEmpty()) {
             minStack.push(x);       // -2
         } else {
+            // 这个方法的精华
             minStack.push(Math.min(minStack.peek(), x));   // -2, -2, -3
         }
     }

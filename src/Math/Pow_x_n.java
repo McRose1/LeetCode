@@ -47,6 +47,20 @@ public class Pow_x_n {
     }
 }
 
+/*  Recursion 2
+
+        double temp;
+        if (n == 0) return 1;
+
+        temp = myPow(x, n / 2);
+
+        if (n % 2 == 0) return temp * temp;
+        else {
+            if (n > 0) return x * temp * temp;
+            else return (temp * temp) / x;
+        }
+ */
+
 /*  Iteration: Time = O(logn) Space = O(1)
     将 pow 都取绝对值变为正数
     2^4 = 4^2 = 16
