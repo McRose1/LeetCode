@@ -1,0 +1,10 @@
+逆波兰式
+
+Valid operators are +, -, *, /
+也就是加减乘除
+
+只要碰到 operator，就 pop 出两个数字和这个 operator 进行计算
+注意减法和除法，被减数和被除数都是第二个 pop 出来的元素
+
+逆波兰式就是典型的栈特性
+用 Stack 就秒了
