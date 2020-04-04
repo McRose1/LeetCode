@@ -38,24 +38,24 @@ import java.util.Stack;
 public class EvaluateReversePolishNotation {
     public int evalRPN(String[] tokens) {
         int a, b;
-        Stack<Integer> s = new Stack<>();
+        Stack<Integer> stack = new Stack<>();
         for (String token : tokens) {
             if (token.equals("+")) {
-                s.add(s.pop() + s.pop());
+                stack.push(stack.pop() + stack.pop());
             } else if (token.equals("*")) {
-                s.add(s.pop() * s.pop());
+                stack.push(stack.pop() * stack.pop());
             } else if (token.equals("-")) {
-                b = s.pop();    // 减数
-                a = s.pop();    // 被减数
-                s.add(a - b);
+                b = stack.pop();    // 减数
+                a = stack.pop();    // 被减数
+                stack.push(a - b);
             } else if (token.equals("/")) {
-                b = s.pop();    // 除数
-                a = s.pop();    // 被除数
-                s.add(a / b);
+                b = stack.pop();    // 除数
+                a = stack.pop();    // 被除数
+                stack.push(a / b);
             } else {
-                s.add(Integer.parseInt(token));
+                stack.push(Integer.parseInt(token));
             }
         }
-        return s.pop();
+        return stack.pop();
     }
 }

@@ -18,7 +18,7 @@ package BinarySearch;
     This is a follow up problem to Find Minimum in Rotated Sorted Array.
     Would allow duplicates affect the run-time complexity? How and why?
  */
-
+//  Binary Search: Time = O(logn) Space = O(1)
 public class FindMinimuminRotatedSortedArray2 {
     public int findMin(int[] nums) {
         int left = 0, right = nums.length - 1;
@@ -36,3 +36,20 @@ public class FindMinimuminRotatedSortedArray2 {
         return nums[right];
     }
 }
+
+/*  my version
+
+        int left = 0;
+        int right = nums.length - 1;
+        while (left + 1 < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == nums[right]) {
+                right--;
+            } else if (nums[mid] > nums[right]) {
+                left = mid;
+            } else {
+                right = mid;
+            }
+        }
+        return Math.min(nums[left], nums[right]);
+ */
