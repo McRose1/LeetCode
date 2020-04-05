@@ -31,6 +31,24 @@ public class SqrtX {
         return high;
     }
 }
+/*  my version
+
+        if (x <= 1) return x;
+        int left = 1;
+        int right = x;
+        while (left + 1 < right) {
+            int mid = left + (right - left) / 2;
+            if (mid == x / mid) return mid;
+            else if (mid > x / mid) {
+                right = mid;
+            } else {
+                left = mid;
+            }
+        }
+        if (right > x / right) return left;
+        else return right;
+ */
+
 /*  Newton's method: Time = O(logx)
     Find better approximations to the roots of a real-valued function.
     Guess x0, then update x using the following function:
