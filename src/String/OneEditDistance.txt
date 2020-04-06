@@ -1,0 +1,15 @@
+medium 难度题
+插入
+删除
+替换
+
+判断两个 string 是否能通过一次以上操作相互转换
+
+安卓大宝贝：
+需要判断两个 string 的长度
+
+s, t lentgh <= 1 => 相等 OR 差 1（s 当做较短的 string）
+相等：replace
+相差 1：insert or remove
+
+记得要规定哪个长度小，比如规定 s 长度比 t 小 1
