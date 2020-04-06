@@ -37,22 +37,25 @@ public class OneEditDistance {
         if (s == null || t == null) {
             return false;
         }
-        int n = s.length();
-        int m = t.length();
+        int m = s.length();
+        int n = t.length();
 
+        // 长度相等
         if (n == m) {
             return isOneChangeDistance(s, t);
-        } else if (n - m == 1) {
-            return isOneRemoveDistance(s, t);
+        // s 比 t 长 1
         } else if (m - n == 1) {
+            return isOneRemoveDistance(s, t);
+        // t 比 s 长 1
+        } else if (n - m == 1) {
             return isOneRemoveDistance(t, s);
         }
         return false;
     }
     public boolean isOneChangeDistance(String s, String t) {
-        int n = s.length();
+        int m = s.length();
         boolean flag = false;
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < m; i++) {
             if (s.charAt(i) != t.charAt(i)) {
                 if (flag) {
                     return false;
@@ -80,3 +83,40 @@ public class OneEditDistance {
         return true;
     }
 }
+
+/*  AndroidBaby
+
+        int m = s.length();
+        int n = t.length();
+        // 把 s 当做较短的 string
+        if (m > n) return isOneEditDistance(t, s);
+
+        // 长度相等
+        if (m == n) {
+            int dif = 0;
+            for (int i = 0; i < m; i++) {
+                if (s.charAt(i) != t.charAt(i)) {
+                    dif++;
+                    if (dif > 1) return false;
+                }
+            }
+            return dif == 1;
+        }
+        // 长度相差为 1
+        else if (m == n - 1) {
+            int i = 0;
+            while (i < m) { // ab, acb
+                if (s.charAt(i) != t.charAt(i)) {
+                    break;
+                }
+                i++;
+            }
+            for (int j = i; j < m; j++) {
+                if (s.charAt(j) != t.charAt(j + 1)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+ */

@@ -23,9 +23,13 @@ public class FindPeakElement {
         int left = 0, right = nums.length - 1;
         while (left < right) {
             int mid = left + (right - left) / 2;
+            // 这题的精华
+            // 出现降序，最高点肯定在左半边
             if (nums[mid] > nums[mid + 1]) {
                 right = mid;
-            } else {
+            }
+            // 升序，最高点在右半边
+            else {
                 left = mid + 1;
             }
         }
@@ -34,6 +38,8 @@ public class FindPeakElement {
 }
 
 /*  Linear Scan: Time = O(n) Space = O(1)
+    利用了连续两个元素不会相等这一前提
+    升序就继续遍历，只要碰到降序，就说明此时是 peak
 
         for (int i = 0; i < nums.length - 1; i++) {
             if (nums[i] > nums[i + 1]) {
