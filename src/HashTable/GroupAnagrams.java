@@ -1,4 +1,4 @@
-package String;
+package HashTable;
 
 /*  49. Group Anagrams
     Given an array of strings, group anagrams together.
@@ -26,10 +26,11 @@ import java.util.*;
 public class GroupAnagrams {
     public List<List<String>> groupAnagrams(String[] strs) {
         if (strs.length == 0) return new ArrayList<>();
-        Map<String, List<String>> ans = new HashMap<>();
+        Map<String, List<String>> map = new HashMap<>();
+        // 初始化 count 数组
         int[] count = new int[26];
         for (String s : strs) {
-            // 初始化 count 数组
+            // 重置 count 数组各元素为 0
             Arrays.fill(count, 0);
             // 构建 count 数组
             for (char c : s.toCharArray()) {
@@ -44,12 +45,12 @@ public class GroupAnagrams {
             // 将 key 转换成 String
             String key = sb.toString();
             // 下面的过程就是从 HashMap 里创建查询
-            if (!ans.containsKey(key)) {
-                ans.put(key, new ArrayList<>());
+            if (!map.containsKey(key)) {
+                map.put(key, new ArrayList<>());
             }
-            ans.get(key).add(s);
+            map.get(key).add(s);
         }
-        return new ArrayList<>(ans.values());
+        return new ArrayList<>(map.values());
     }
 }
 

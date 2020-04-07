@@ -1,4 +1,4 @@
-package String;
+package Math;
 
 /*  168. Excel Sheet Column Title
     Given a positive integer, return its corresponding column title as appear in an Excel sheet.
@@ -30,7 +30,9 @@ public class ExcelSheetColumnTitle {
     public String covertToTitle(int n) {
         StringBuilder sb = new StringBuilder();
         while (n > 0) {
+            // 这题的关键步骤
             n--;
+
             sb.append((char)('A' + n % 26));
             n /= 26;
         }

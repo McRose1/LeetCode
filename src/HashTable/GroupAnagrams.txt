@@ -1,7 +1,7 @@
 Anagram，相同字母异序次，即组成的字母相同但是顺序不同
 
 tag 提示为 hashtable，想到用 HashMap，但是没有想到这个 HashMap<String, List<String>>
-其实这里我们可以发现，hashmap 的 value 就是我们要加入 res 的 List<String>
+其实这里我们可以发现，HashMap 的 value 就是我们要加入 res 的 List<String>
 
 KJ JR 方法为 每个 String sort 以后看是否一样
 key 就为 sorted string
