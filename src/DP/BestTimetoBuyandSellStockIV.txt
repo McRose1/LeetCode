@@ -7,6 +7,15 @@ tag 是 DP
 1. K > N/2 -> 变成了第二题 无限次交易
 2. k <= N/2 -> 类似于第三题
 
+类似第三题的话就是要搞懂状态转移方程
+i 代表交易的次数，j 代表天数
+dp[i][j] 代表在第 j 天已经交易 i 次的情况下，在这一天我们有两个选择：
+1. 不交易或者买入股票，最大利润不变：dp[i][j] = dp[i][j - 1]
+2. 卖出股票：为了能在第 j 天卖出股票，说明我们一定已经在第 t 天中的一天买入过股票 t属于（0 - j-1）
+最大利润也就等于 max(prices[j] - prices[t] + dp[i - 1][t - 1])
+prices[j] 恒不变，这个公式也就是求 prices[j] + max(dp[i - 1][t - 1] - prices[t])
+max(dp[i - 1][t - 1] - prices[t]) 也就是 tmpMax
+
 tmpMax = -prices[0];
 dp[i][j] = Math.max(dp[i][j - 1], prices[j] + tmpMax);
 tmpMax = Math.max(tmpMax, dp[i - 1][j - 1] - prices[j]);
