@@ -1,0 +1,22 @@
+买卖股票系列第四题，也是道 hard 难度题
+这题的变化在于规定了最多交易次数为 k
+
+tag 是 DP
+感觉不会做。。。
+
+1. K > N/2 -> 变成了第二题 无限次交易
+2. k <= N/2 -> 类似于第三题
+
+tmpMax = -prices[0];
+dp[i][j] = Math.max(dp[i][j - 1], prices[j] + tmpMax);
+tmpMax = Math.max(tmpMax, dp[i - 1][j - 1] - prices[j]);
+
+      3 2 6 5 0 3
+i/j   0 1 2 3 4 5 
+ 0    0 0 0 0 0 0
+ 1    0 0 4 4 4 4   
+ 2    0 0 4 4 4 7
+          tmpMax = max(-2, 4-5)=-1
+          tmpMax = max(-1, 4-0)=4
+          
+这题非常好，一定要反复回来看！
