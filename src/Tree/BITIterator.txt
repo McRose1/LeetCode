@@ -1,0 +1,24 @@
+实现一个 BST 的 iterator
+
+使得调用 next() 返回 BST 里最小的数字
+
+tag 里有 stack
+
+左 -> 根 -> 右
+in-order 
+
+LC 官方：
+其实这题就是 inorder traversal 的实现题
+可以把 inorder 的结果存在一个数组里
+调用的时候直接往数组里拿就可以了
+缺点是多了数组的空间
+We can't really pause a recursion in between and then start it off sometime later 
+
+可以用 stack 代替数组，不用一次性把所有 node 都存进去
+根据 inorder 的特性，先存最左的 node
+每次从 left child 返回 root 的时候需要判断 root 是否有 right child
+有的话重复前面的步骤，把右子树的最左 node 都 push 到 stack 里
+
+
+
+
