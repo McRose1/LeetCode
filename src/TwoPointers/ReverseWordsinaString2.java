@@ -1,4 +1,4 @@
-package String;
+package TwoPointers;
 
 /*  186. Reverse Words in a String 2
     Given an input string, reverse the string word by word.
@@ -15,8 +15,8 @@ package String;
     Follow up: Could you do it in-place without allocating extra space?
  */
 
-/*  Reverse the Whole String and Then Reverse Each Word: Time = O(N) Space = O(1)
-
+/*  Two Pointers: Time = O(N) Space = O(1)
+    Reverse the Whole String and Then Reverse Each Word
  */
 public class ReverseWordsinaString2 {
     public void reverseWords(char[] s) {
@@ -40,13 +40,13 @@ public class ReverseWordsinaString2 {
         while (start < n) {
             // go to the end of the word
             while (end < n && s[end] != ' ') {
-                ++end;
+                end++;
             }
             // reverse the word
             reverse(s, start, end - 1);
             // move to the next word
             start = end + 1;
-            ++end;
+            end++;
         }
     }
 }

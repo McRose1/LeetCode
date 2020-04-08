@@ -22,23 +22,28 @@ package DP;
     Output: 0
  */
 
-/*  State Machine: Time = O(n) Space = O(1)
-    buy1 = max(buy1, -prices[i])
-    sell1 = max(sell1, buy1 + prices[i])
-    buy2 = max(buy2, sell1 - prices[i])
-    sell2 = max(sell2, buy2 + prices[i])
+/*  一维 DP
  */
 public class BestTimetoBuyandSellStock3 {
     public int maxProfit(int[] prices) {
-        int buy1 = Integer.MIN_VALUE, buy2 = Integer.MIN_VALUE;
-        int sell1 = 0, sell2 = 0;
-        for (int price : prices) {
-            sell2 = Math.max(sell2, buy2 + price);
-            buy2 = Math.max(buy2, sell1 - price);
-            sell1 = Math.max(sell1, buy1 + price);
-            buy1 = Math.max(buy1, -price);
+        int n = prices.length;
+        if (prices == null || n < 2) return 0;
+        int K = 2;
+        int[] dp = new int[K + 1];
+        int[] min = new int[K + 1];
+        for (int k = 1; k <= K; k++) {
+            min[k] = prices[0];
         }
-        return sell2;
+
+        for (int i = 1; i < n; i++) {
+            for (int k = 1; k <= K; k++) {
+                // 找出第 1 天到第 i 天 prices[buy] - dp[buy][k - 1] 的最小值
+                min[k] = Math.min(min[k], prices[i] - dp[k - 1]);
+                // 比较不操作和选择一天买入的哪个收益更大
+                dp[k] = Math.max(dp[k], prices[i] - min[k]);
+            }
+        }
+        return dp[K];
     }
 }
 
@@ -63,29 +68,24 @@ public class BestTimetoBuyandSellStock3 {
         return dp2;
  */
 
-/*  一维 DP
+/*  State Machine: Time = O(n) Space = O(1)
+    buy1 = max(buy1, -prices[i])
+    sell1 = max(sell1, buy1 + prices[i])
+    buy2 = max(buy2, sell1 - prices[i])
+    sell2 = max(sell2, buy2 + prices[i])
 
-        int n = prices.length;
-        if (prices == null || n < 2) return 0;
-        int K = 2;
-        int[] dp = new int[K + 1];
-        int[] min = new int[K + 1];
-        for (int k = 1; k <= K; k++) {
-            min[k] = prices[0];
+        int buy1 = Integer.MIN_VALUE, buy2 = Integer.MIN_VALUE;
+        int sell1 = 0, sell2 = 0;
+        for (int price : prices) {
+            sell2 = Math.max(sell2, buy2 + price);
+            buy2 = Math.max(buy2, sell1 - price);
+            sell1 = Math.max(sell1, buy1 + price);
+            buy1 = Math.max(buy1, -price);
         }
-
-        for (int i = 1; i < n; i++) {
-            for (int k = 1; k <= K; k++) {
-                // 找出第 1 天到第 i 天 prices[buy] - dp[buy][k - 1] 的最小值
-                min[k] = Math.min(min[k], prices[i] - dp[k - 1]);
-                // 比较不操作和选择一天买入的哪个收益更大
-                dp[k] = Math.max(dp[k], prices[i] - min[k]);
-            }
-        }
-        return dp[K];
+        return sell2;
  */
 
-/*  二维 DP
+/*  二维 DP（安卓大宝贝）
 
         int n = prices.length;
         if (prices == null || n < 2) return 0;
