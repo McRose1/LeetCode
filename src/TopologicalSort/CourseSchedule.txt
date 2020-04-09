@@ -40,6 +40,17 @@ value 是从这个 node 能到达的 node
 
 有了图以后就能开始获取拓扑序列，相当于用 BFS/DFS
 
+BFS 有两种思路：
+一种是通过 queue 每次 offer 进去入度为 0 的课
+每次 poll 出来的时候就将 count++，最后判断 count 是否等于课程数
+
+也可以用入度数组来表示，最后都置为 0，说明都上过了
+
+DFS 比较难想，需要判断 graph 是否存在 cycle
+需要两种标记，一个是表明当前 DFS 已经访问过，可记为 visiting，还有一个是表明其他 DFS 已经访问过，记为 visited
+如果在一轮 DFS 中我们遇到了 2 次 visiting 的 node，说明存在 cycle
+如果遇到的是 visited，我们就已经知道通过这个 node 是不会有 cycle
+
 这题非常好，以后要回来多看看！
 
 
