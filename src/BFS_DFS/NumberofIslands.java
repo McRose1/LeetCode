@@ -22,32 +22,168 @@ package BFS_DFS;
     Output: 3
  */
 
-//  DFS: Time = O(m*n) Space = O(m*n)
+/*  DFS: Time = O(m*n) Space = O(m*n)
+    遇到 1 开始 DFS，从这个 1 开始向四个方向 DFS
+    访问过的 1 置为 0
+ */
 public class NumberofIslands {
-    int[][] dirs = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
     public int numIslands(char[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) return 0;
-        int rows = grid.length;
-        int cols = grid[0].length;
+
         int count = 0;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
                 if (grid[i][j] == '1') {
                     count++;
-                    dfs(grid, i, j, rows, cols);
+                    dfs(grid, i, j);
                 }
             }
         }
         return count;
     }
 
-    private void dfs(char[][] grid, int x, int y, int rows, int cols) {
-        if (x < 0 || x >= rows || y < 0 || y >= cols || grid[x][y] == '0') return;
+    private void dfs(char[][] grid, int x, int y) {
+        if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length || grid[x][y] == '0') return;
+
+        // 这一步是这题的关键，相当于起到 visited 数组的作用，保证 DFS 不会回退
         grid[x][y] = '0';
-        for (int[] dir : dirs) {
-            int nX = dir[0] + x;
-            int nY = dir[1] + y;
-            dfs(grid, nX, nY, rows, cols);
-        }
+
+        dfs(grid, x + 1, y);
+        dfs(grid, x - 1, y);
+        dfs(grid, x, y + 1);
+        dfs(grid, x, y - 1);
     }
 }
+
+/*  BFS: Time = O(m*n) Space = O(min(m,n))
+
+        public int numIslands(char[][] grid) {
+            if (grid == null || grid.length == 0) return 0;
+
+            int row = grid.length;
+            int col = grid[0].length;
+            int count = 0;
+
+            for (int r = 0; r < row; r++) {
+                for (int c = 0; c < col; c++) {
+                    if (grid[r][c] == '1') {
+                        count++;
+                        // mark as visited
+                        grid[r][c] = '0';
+                        Queue<Integer> nei = new LinkedList<>();
+                        // 相当于是矩阵的遍历器：0 -> m*n-1
+                        nei.add(r * col + c);
+
+                        while (!nei.isEmpty()) {
+                            int id = nei.remove();
+                            // 这里我们可以保证新的坐标在矩阵的边界内
+                            int new_r = id / col;
+                            int new_c = id % col;
+                            // 往四个方向 BFS
+                            if (new_r - 1 >= 0 && grid[new_r - 1][new_c] == '1') {
+                                nei.add((new_r - 1) * col + new_c);
+                                grid[new_r - 1][new_c] = '0';
+                            }
+                            if (new_r + 1 < row && grid[new_r + 1][new_c] == '1') {
+                                nei.add((new_r + 1) * col + new_c);
+                                grid[new_r + 1][new_c] = '0';
+                            }
+                            if (new_c - 1 >= 0 && grid[new_r][new_c - 1] == '1') {
+                                nei.add((new_r) * col + new_c - 1);
+                                grid[new_r][new_c - 1] = '0';
+                            }
+                            if (new_c + 1 < col && grid[new_r][new_c + 1] == '1') {
+                                nei.add((new_r) * col + new_c + 1);
+                                grid[new_r][new_c + 1] = '0';
+                            }
+                        }
+                    }
+                }
+            }
+            return count;
+        }
+ */
+
+/*  Union Find: Time = O(m*n) Space = O(m*n)
+
+    public int numIslands(char[][] grid) {
+        if (grid == null || grid.length == 0) return 0;
+
+        int row = grid.length;
+        int col = grid[0].length;
+
+        UnionFind uf = new UnionFind(grid);
+        for (int r = 0; r < row; r++) {
+            for (int c = 0; c < col; c++) {
+                if (grid[r][c] == '1') {
+                    grid[r][c] = '0';
+                    if (r - 1 >= 0 && grid[r - 1][c] == '1') {
+                        uf.union(r * col + c, (r - 1) * col + c);
+                    }
+                    if (r + 1 < row && grid[r + 1][c] == '1') {
+                        uf.union(r * col + c, (r + 1) * col + c);
+                    }
+                    if (c - 1 >= 0 && grid[r][c - 1] == '1') {
+                        uf.union(r * col + c, r * col + c - 1);
+                    }
+                    if (c + 1 < col && grid[r][c + 1] == '1') {
+                        uf.union(r * col + c, r * col + c + 1);
+                    }
+                }
+            }
+        }
+        return uf.getCount();
+    }
+
+    class UnionFind {
+        int count;      // # of connected components
+        int[] parent;
+        int[] rank;
+
+        public UnionFind(char[][] grid) {
+            count = 0;
+            int m = grid.length;
+            int n = grid[0].length;
+
+            parent = new int[m * n];
+            rank = new int[m * n];
+
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (grid[i][j] == '1') {
+                        parent[i * n + j] = i * n + j;
+                        count++;
+                    }
+                    rank[i * n + j] = 0;
+                }
+            }
+        }
+
+        public void union(int x, int y) {   // union with rank
+            int rootx = find(x);
+            int rooty = find(y);
+            if (rootx != rooty) {
+                if (rank[rootx] > rank[rooty]) {
+                    parent[rooty] = rootx;
+                } else if (rank[rootx] < rank[rooty]) {
+                    parent[rootx] = rooty;
+                } else {
+                    parent[rooty] = rootx;
+                    rank[rootx] += 1;
+                }
+                count--;
+            }
+        }
+
+        public int find(int i) {    // path compression
+            if (parent[i] != i) {
+                parent[i] = find(parent[i]);
+            }
+            return parent[i];
+        }
+
+        public int getCount() {
+            return count;
+        }
+    }
+ */

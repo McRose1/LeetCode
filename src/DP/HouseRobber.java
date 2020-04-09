@@ -1,4 +1,6 @@
-/*
+package DP;
+
+/*  198. House Robber
     You are a professional robber planning to rob houses along a street.
     Each house has a certain amount of money stashed,
     the only constraint stopping you from robbing each of them is that
@@ -17,6 +19,13 @@
     Output: 12
  */
 
+/*  DP: Time = O(n) Space = O(n)
+    For a given house i, we have two options:
+    1. Take the money if we didn't robber house i - 1
+    2. Skip it
+    dp[i]: Max money after "visiting" house[i]
+    dp[i] = max(dp[i - 2 + money[i], dp[i - 1]])
+ */
 public class HouseRobber {
     public int rob(int[] nums) {
         if (nums == null || nums.length == 0) return 0;
@@ -33,12 +42,4 @@ public class HouseRobber {
     }
 }
 
-/*
-    For a given house i, we have two options:
-    1. Take the money if we didn't robber house i - 1
-    2. Skip it
 
-    DP
-    dp[i]: Max money after "visiting" house[i]
-    dp[i] = max(dp[i - 2 + money[i], dp[i - 1]])
- */
