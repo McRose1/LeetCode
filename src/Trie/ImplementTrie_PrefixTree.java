@@ -27,11 +27,13 @@ public class ImplementTrie_PrefixTree {
 
     public void insert(String word) {
         TrieNode node = root;
+
         for (int i = 0; i < word.length(); i++) {
             char currentChar = word.charAt(i);
             if (!node.containsKey(currentChar)) {
                 node.put(currentChar, new TrieNode());
             }
+            // 得到当前层的 TrieNode，以进入下一层
             node = node.get(currentChar);
         }
         node.setEnd();
@@ -44,6 +46,7 @@ public class ImplementTrie_PrefixTree {
             char curLetter = word.charAt(i);
             if (node.containsKey(curLetter)) {
                 node = node.get(curLetter);
+            // 没有找到该 key
             } else {
                 return null;
             }
@@ -54,6 +57,7 @@ public class ImplementTrie_PrefixTree {
     // returns if the word is in the trie
     public boolean search(String word) {
         TrieNode node = searchPrefix(word);
+        // 找到 key 并且这个 key 还是结尾
         return node != null && node.isEnd();
     }
 

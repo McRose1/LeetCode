@@ -18,6 +18,8 @@ public class TrieNode {
         word = "";
     }
 
+    //  以下三个操作可以看作是 HashMap
+
     public boolean containsKey(char ch) {
         return links[ch -'a'] != null;
     }
@@ -27,6 +29,7 @@ public class TrieNode {
     public void put(char ch, TrieNode node) {
         links[ch -'a'] = node;
     }
+
     public void setEnd() {
         isEnd = true;
     }

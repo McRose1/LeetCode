@@ -38,13 +38,16 @@ import java.util.Queue;
  */
 public class CourseSchedule {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
+        // 统计每个 node 入度的数组
         int[] inDegree = new int[numCourses];
         int count = 0;
+        // 初始化入度数组，需要几个先修，入度就为几
         for (int[] pair : prerequisites) {
             inDegree[pair[0]]++;
         }
-        // add to queue if element's indegree is 0
+        // add to queue if element's inDegree is 0
         Queue<Integer> queue = new LinkedList<>();
+        // 直接在 inDegree 数组里遍历，不用通过 HashMap 构建 graph
         for (int i = 0; i < inDegree.length; i++) {
             // no prerequisite course
             if (inDegree[i] == 0) {
@@ -53,11 +56,14 @@ public class CourseSchedule {
         }
         // BFS
         while (!queue.isEmpty()) {
+            // queue 里存的都是入度为 0 的课程
             int pre = queue.poll();
             count++;
             for (int[] pair : prerequisites) {
+                // 遍历先修课程，也就是上完先修课程，依赖它的后面的课程入度就会减 1
                 if (pair[1] == pre) {
                     inDegree[pair[0]]--;
+                    // 如果后面这个课程的先修课程都已经上完了，就可以上这门课，入度为 0 就 offer 到 queue 中
                     if (inDegree[pair[0]] == 0) {
                         queue.offer(pair[0]);
                     }
@@ -72,7 +78,8 @@ public class CourseSchedule {
     如果正在搜索某一顶点（还未退出该顶点的 DFS），又回到了该顶点，即证明 graph 有 cycle
 
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+        // 构建邻接图
+        List<List<Integer>> graph = new ArrayList<>();
 
         for (int i = 0; i < numCourses; i++) {
             graph.add(new ArrayList<Integer>());
@@ -84,24 +91,77 @@ public class CourseSchedule {
             graph.get(course).add(prerequisite);
         }
 
+        // 已被其他 node 为起点的 DFS 访问设为 -1，已被当前 node 为起点的 DFS 访问设为 1，初始化 unvisited 为 0
         int[] visited = new int[numCourses];
         for (int i = 0; i < numCourses; i++) {
-            if (dfs(i, graph, visited)) return false;
+            // 判断 graph 是否有 cycle
+            if (dfs(i, graph, visited)) {
+                return false;
+            }
         }
         return true;
     }
 
-    private boolean dfs(int curr, ArrayList<ArrayList<Integer>> graph, int[] visited) {
+    private boolean dfs(int curr, List<List<Integer>> graph, int[] visited) {
+        // 说明在本轮 DFS 中该节点被第 2 次访问，即有 cycle
         if (visited[curr] == 1) return true;
-        if (visited[curr] == 2) return false;
+        // 说明当前 node 已被其他 node 启动的 DFS 访问，无需再重复搜索
+        // 因为我们已经知道从这个 node 出发是不会有 cycle 的
+        if (visited[curr] == -1) return false;
 
+        // 标记该 node 在本轮 DFS 被访问过，但本轮 DFS 还没有结束
+        // 如果在本轮 DFS 还能碰到这个 node 并且标记是 1，说明形成了 cycle
         visited[curr] = 1;
 
         for (int next : graph.get(curr)) {
-            if (dfs(next, graph, visited)) return true;
+            // 如果发现 cycle 就返回 true 退出 function
+            if (dfs(next, graph, visited)) {
+                return true;
+            }
         }
 
-        visited[curr] = 2;
+        // 当前 node 的所有 neighbors 已被遍历，没有 cycle，置为 -1，该轮 DFS 结束表明当前
+        visited[curr] = -1;
         return false;
     }
+ */
+
+/*  BFS + HashMap
+
+        int[] inDegree = new int[numCourses];
+        HashMap<Integer, List<Integer>> graph = new HashMap<>();
+        for (int i = 0; i < prerequisites.length; i++) {
+            inDegree[prerequisites[i][0]]++;
+            if (graph.containsKey(prerequisites[i][1])) {
+                graph.get(prerequisites[i][1]).add(prerequisites[i][0]);
+            } else {
+                List<Integer> list = new ArrayList<>();
+                list.add(prerequisites[i][0]);
+                graph.put(prerequisites[i][1], list);
+            }
+        }
+
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (inDegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+        while (!queue.isEmpty()) {
+            int cur = queue.poll();
+            List<Integer> toTake = graph.get(cur);
+            for (int i = 0; toTake != null && i < toTake.size(); i++) {
+                inDegree[toTake.get(i)]--;
+                if (inDegree[toTake.get(i)] == 0) {
+                    queue.offer(toTake.get(i));
+                }
+            }
+        }
+        // 检查最后入度数组是否各 node 都为 0
+        for (int i = 0; i < numCourses; i++) {
+            if (inDegree[i] != 0) {
+                return false;
+            }
+        }
+        return true;
  */

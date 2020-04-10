@@ -1,4 +1,4 @@
-package String;
+package HashTable;
 
 /*  205. Isomorphic Strings
     Given two strings s and t, determine if they are isomorphic.
@@ -36,18 +36,24 @@ public class IsomorphicStrings {
             char a = s.charAt(i);
             char b = t.charAt(i);
             if (map.containsKey(a)) {
-                if (map.get(a).equals(b)) continue;
-                else return false;
+                if (!map.get(a).equals(b)) {
+                    return false;
+                }
             } else {
+                // 这题的关键
                 if (!map.containsValue(b)) {
                     map.put(a, b);
-                } else return false;
+                } else {
+                    return false;
+                }
             }
         }
         return true;
     }
 }
 /*  Array: Time = O(n) Space = O(1)
+    用数组代替 map，节省空间
+    ASCII码共有256个字符
 
         int[] sChars = new int[256];
         int[] tChars = new int[256];
