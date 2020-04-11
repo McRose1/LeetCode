@@ -21,21 +21,7 @@ package Trie;
     Note: You may assume that all words are consist of lowercase letters a-z.
  */
 
-/*
-class Trie {
-    Trie[] children;
-    boolean isWord;
-    String word;
-
-    public Trie() {
-        children = new Trie[26];
-        isWord = false;
-        word = "";
-    }
-}
-
- */
-
+//  Trie
 public class AddandSearchWord_DataStructureDesign {
     private TrieNode root;
 
@@ -47,11 +33,12 @@ public class AddandSearchWord_DataStructureDesign {
         TrieNode node = root;
         for (int i = 0; i < word.length(); i++) {
             int j = word.charAt(i) - 'a';
-            if (node.links[j] == null) {
-                node.links[j] = new TrieNode();
+            if (node.children[j] == null) {
+                node.children[j] = new TrieNode();
             }
-            node = node.links[j];
+            node = node.children[j];
         }
+        // 给这个 Word 的结尾 TrieNode 做上标记
         node.isWord = true;
         node.word = word;
     }
@@ -61,15 +48,22 @@ public class AddandSearchWord_DataStructureDesign {
     }
 
     private boolean find(String word, TrieNode node, int index) {
+        // 递归的出口
+        // 当字符串遍历完毕，并且 Trie Tree 里也满足已经遍历到最后一层（TrieNode 为这个单词的结尾）
         if (index == word.length()) return node.isWord;
+
+        // 匹配到万能符，用这一层 TrieNode 数组里存在的元素（代表 26 个字母，有些元素是 null) 依次替代它调用递归
         if (word.charAt(index) == '.') {
-            for (TrieNode temp : node.links) {
+            for (TrieNode temp : node.children) {
                 if (temp != null && find(word, temp, index + 1)) return true;
             }
             return false;
-        } else {
+        }
+        // 匹配到普通字母
+        else {
             int j = word.charAt(index) - 'a';
-            TrieNode temp = node.links[j];
+            // 如果匹配不上则返回 null
+            TrieNode temp = node.children[j];
             return temp != null && find(word, temp, index + 1);
         }
     }

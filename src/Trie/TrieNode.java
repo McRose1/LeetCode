@@ -2,7 +2,7 @@ package Trie;
 
 public class TrieNode {
     // R links to node children
-    TrieNode[] links;
+    TrieNode[] children;
 
     String word;
 
@@ -13,21 +13,21 @@ public class TrieNode {
     boolean isWord;
 
     public TrieNode() {
-        links = new TrieNode[R];
-        boolean isWord;
+        children = new TrieNode[R];
+        isWord = false;
         word = "";
     }
 
     //  以下三个操作可以看作是 HashMap
 
     public boolean containsKey(char ch) {
-        return links[ch -'a'] != null;
+        return children[ch -'a'] != null;
     }
     public TrieNode get(char ch) {
-        return links[ch -'a'];
+        return children[ch -'a'];
     }
     public void put(char ch, TrieNode node) {
-        links[ch -'a'] = node;
+        children[ch -'a'] = node;
     }
 
     public void setEnd() {

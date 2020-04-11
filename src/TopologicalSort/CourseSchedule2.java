@@ -39,107 +39,112 @@ import java.util.Map;
 
 //  DFS: Time = O(n) Space = O(n)
 public class CourseSchedule2 {
-    static int WHITE = 1;
-    static int GRAY = 2;
-    static int BLACK = 3;
+    // 未被 visit 过
+    int WHITE = 1;
+    // 这本轮 DFS 中被 visit 过，标为 visiting
+    int GRAY = 2;
+    // 被别的 DFS visit 过，标为 visited
+    int BLACK = 3;
 
     boolean isPossible;
     Map<Integer, Integer> color;
-    Map<Integer, List<Integer>> adjList;
-    List<Integer> topologicalOrder;
-
-    private void init(int numCourses) {
-        this.isPossible = true;
-        this.color = new HashMap<>();
-        this.adjList = new HashMap<>();
-        this.topologicalOrder = new ArrayList<>();
-
-        // By default all vertices are WHITE
-        for (int i = 0; i < numCourses; i++) {
-            this.color.put(i, WHITE);
-        }
-    }
-
-    private void dfs(int node) {
-
-        // Don't recurse further if we found a cycle already
-        if (!this.isPossible) {
-            return;
-        }
-
-        // Start the recursion
-        this.color.put(node, GRAY);
-
-        // Traverse on neighboring vertices
-        for (Integer neighbor : this.adjList.getOrDefault(node, new ArrayList<>())) {
-            if (this.color.get(neighbor) == WHITE) {
-                this.dfs(neighbor);
-            } else if (this.color.get(neighbor) == GRAY) {
-                // An edge to a GRAY vertex represents a cycle
-                this.isPossible = false;
-            }
-        }
-
-        // Recursion ends. We mark it as black
-        this.color.put(node, BLACK);
-        this.topologicalOrder.add(node);
-    }
+    Map<Integer, List<Integer>> graph;
+    List<Integer> topoReverseOrder;
 
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-        this.init(numCourses);
+        // 这个答案特有的初始化，也可以不这么写
+        init(numCourses);
 
-        // Create the adjacency list representation of the graph
-        for (int[] prerequisite : prerequisites) {
-            int dest = prerequisite[0];
-            int src = prerequisite[1];
-            List<Integer> list = adjList.getOrDefault(src, new ArrayList<>());
-            list.add(dest);
-            adjList.put(src, list);     // 一个 src 可能有多个 dest
+        // Create the adjacency graph representation of the graph
+        for (int[] pre : prerequisites) {
+            int dest = pre[0];
+            int src = pre[1];
+            List<Integer> temp = graph.getOrDefault(src, new ArrayList<>());
+            temp.add(dest);
+            graph.put(src, temp);     // 一个 src 可能有多个 dest
         }
 
         // If the node is unprocessed, then call dfs on it.
         for (int i = 0; i < numCourses; i++) {
-            if (this.color.get(i) == WHITE) {
-                this.dfs(i);
+            if (color.get(i) == WHITE) {
+                dfs(i);
             }
         }
 
         int[] order;
-        if (this.isPossible) {
+        if (isPossible) {
             order = new int[numCourses];
             for (int i = 0; i < numCourses; i++) {
-                order[i] = this.topologicalOrder.get(numCourses - i - 1);
+                // 顺序相反从右往左读入
+                order[i] = topoReverseOrder.get(numCourses - i - 1);
             }
         } else {
             order = new int[0];
         }
         return order;
     }
+
+    private void init(int numCourses) {
+        isPossible = true;
+        color = new HashMap<>();
+        graph = new HashMap<>();
+        topoReverseOrder = new ArrayList<>();
+
+        // By default all vertices are WHITE
+        for (int i = 0; i < numCourses; i++) {
+            color.put(i, WHITE);
+        }
+    }
+
+    private void dfs(int node) {
+
+        // Don't recurse further if we found a cycle already
+        if (!isPossible) {
+            return;
+        }
+
+        // Start the recursion
+        color.put(node, GRAY);
+
+        // Traverse on neighboring vertices
+        for (Integer nei : graph.getOrDefault(node, new ArrayList<>())) {
+            if (color.get(nei) == WHITE) {
+                dfs(nei);
+            } else if (color.get(nei) == GRAY) {
+                // An edge to a GRAY vertex represents a cycle
+                isPossible = false;
+            }
+        }
+
+        // Recursion ends. We mark it as black
+        color.put(node, BLACK);
+        topoReverseOrder.add(node);
+    }
 }
 
-/*  Using Node Indegree: Time = O(n) Space = O(n)
+/*  BFS (Using Node InDegree): Time = O(n) Space = O(n)
 
         boolean isPossible = true;
-        Map<Integer, List<Integer>> adjList = new HashMap<>();
-        int[] indegree = new int[numCourses];
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        int[] inDegree = new int[numCourses];
         int[] topologicalOrder = new int[numCourses];
 
-        // Create the adjacency list representation of the graph
+        // Create the adjacency graph representation of the graph
         for (int i = 0; i < prerequisites.length; i++) {
             int dest = prerequisites[i][0];
             int src = prerequisites[i][1];
-            List<Integer> list = adjList.getOrDefault(src, new ArrayList<>());
+            List<Integer> temp = graph.getOrDefault(src, new ArrayList<>());
             list.add(dest);
-            adjList.put(src, list);
+            graph.put(src, temp);
 
             // Record in-degree of each vertex
-            indegree[dest] += 1;
+            inDegree[dest] += 1;
         }
 
         // Add all vertices with 0 in-degree to the queue
         Queue<Integer> q = new LinkedList<Integer>();
         for (int i = 0; i < numCourses; i++) {
-            if (indegree[i] == 0) {
+            if (inDegree[i] == 0) {
                 q.add(i);
             }
         }
@@ -151,13 +156,13 @@ public class CourseSchedule2 {
             topologicalOrder[i++] = node;
 
             // Reduce the in-degree of each neighbor by 1
-            if (adjList.containsKey(node)) {
-                for (Integer neighbor : adjList.get(node)) {
-                    indegree[neighbor]--;
+            if (graph.containsKey(node)) {
+                for (Integer nei : graph.get(node)) {
+                    inDegree[nei]--;
 
                     // If in-degree of a neighbor becomes 0, add it to the Q
-                    if (indegree[neighbor] == 0) {
-                        q.add(neighbor);
+                    if (inDegree[nei] == 0) {
+                        q.add(nei);
                     }
                 }
             }
@@ -167,4 +172,42 @@ public class CourseSchedule2 {
             return topologicalOrder;
         }
         return new int[0];
+ */
+
+/*  my version (BFS)
+    没用 HashMap 构建 graph，相当于用时间换空间
+
+        int[] inDegree = new int[numCourses];
+        for (int[] pre : prerequisites) {
+            inDegree[pre[0]]++;
+        }
+
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < inDegree.length; i++) {
+            if (inDegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+
+        int[] res = new int[numCourses];
+        int count = 0;
+
+        while (!queue.isEmpty()) {
+            int cur = queue.poll();
+            res[count++] = cur;
+
+            for (int[] pre : prerequisites) {
+                if (pre[1] == cur) {
+                    inDegree[pre[0]]--;
+                    if (inDegree[pre[0]] == 0) {
+                        queue.offer(pre[0]);
+                    }
+                }
+            }
+        }
+        if (count == numCourses) {
+            return res;
+        } else {
+            return new int[0];
+        }
  */

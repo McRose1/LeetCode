@@ -24,49 +24,66 @@ package Trie;
 
 import java.util.ArrayList;
 import java.util.List;
-//  Trie + DFS
+//  Backtracking + Trie
 public class WordSearch2 {
     public List<String> findWords(char[][] board, String[] words) {
         List<String> res = new ArrayList<>();
+
+        // 通过给定的输入字符串建立本题的 Trie Tree
         TrieNode root = buildTrie(words);
+
+        // 遍历矩阵，以任意点为起点开始 DFS(backtrack)
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
-                dfs(board, i, j, root, res);
+                // 注意一开始传进去的是 Trie Tree 的 root
+                backtrack(board, i, j, root, res);
             }
         }
         return res;
-    }
-
-    public void dfs(char[][] board, int i, int j, TrieNode node, List<String> res) {
-        if (i < 0 || i >= board.length || j < 0 || j >= board[0].length) return;
-        char c = board[i][j];
-        if (c == '#' || node.links[c - 'a'] == null) return;
-        node = node.links[c - 'a'];
-        if (node.word != null) {
-            res.add(node.word);
-            node.word = null;
-        }
-        board[i][j] = '#';
-        dfs(board, i - 1, j, node, res);
-        dfs(board, i + 1, j, node, res);
-        dfs(board, i, j + 1, node, res);
-        dfs(board, i, j - 1, node, res);
-        board[i][j] = c;
     }
 
     public TrieNode buildTrie(String[] words) {
         TrieNode root = new TrieNode();
         for (String word : words) {
             TrieNode node = root;
+            // 一层一层加
             for (char c : word.toCharArray()) {
                 int i = c - 'a';
-                if (node.links[i] == null) {
-                    node.links[i] = new TrieNode();
+                if (node.children[i] == null) {
+                    node.children[i] = new TrieNode();
                 }
-                node = node.links[i];
+                // 进入下一层
+                node = node.children[i];
             }
+            // 最后一层的 TrieNode 保存额外信息，因为它是单词的结尾，所以保有整个单词的信息
             node.word = word;
         }
         return root;
+    }
+
+    public void backtrack(char[][] board, int i, int j, TrieNode node, List<String> res) {
+        // 考虑越界问题
+        if (i < 0 || i >= board.length || j < 0 || j >= board[0].length) return;
+
+        char c = board[i][j];
+        // 如果已经访问过，或者在 Trie Tree 里当前 TrieNode 的下一层元素中没有当前字母
+        if (c == '#' || node.children[c - 'a'] == null) return;
+
+        // 进入 Trie Tree 的下一层
+        node = node.children[c - 'a'];
+        if (node.word != null) {
+            res.add(node.word);
+            // 用过了就清空，防止反复添加,比如：car, card，如果遍历过 car 以后不清空，遍历 card 的时候就会又加一次 car
+            node.word = null;
+        }
+        // 标记已经 visited
+        board[i][j] = '#';
+        // 往四个方向递归
+        backtrack(board, i - 1, j, node, res);
+        backtrack(board, i + 1, j, node, res);
+        backtrack(board, i, j + 1, node, res);
+        backtrack(board, i, j - 1, node, res);
+        // backtracking
+        board[i][j] = c;
     }
 }
