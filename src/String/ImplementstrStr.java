@@ -31,18 +31,18 @@ package String;
  */
 public class ImplementstrStr {
     public int strStr(String haystack, String needle) { // haystack = "aaaaab", needle = "aab"
-        int m = needle.length();            // m = 3
-        int n = haystack.length();          // n = 6
-        if (m == 0) return 0;
-        int[] pi = kmpPreprocess(needle);   // [-1, 0, 1]
+        int m = haystack.length();            // m = 3
+        int n = needle.length();          // n = 6
+        if (n == 0) return 0;
+        int[] next = kmpPreprocess(needle);   // [-1, 0]
 
         int i = 0, k = 0;
-        while (i < n && k < m) {
+        while (i < m && k < n) {
             if (k == -1 || haystack.charAt(i) == needle.charAt(k)) {
-                i++;        // i = 1; i = 2 -> i = 3 -> i = 4 -> i = 5; i = 6
-                k++;        // k = 1; k = 2 -> k = 2 -> k = 2 -> k = 2; k = 3
+                i++;
+                k++;
             } else {
-                k = pi[k];  // k = pi[2] = 1; k = pi[2] = 1; k = pi[2] = 1
+                k = next[k];
             }
         }
         if (k == needle.length()) { // 3 = 3
@@ -53,22 +53,22 @@ public class ImplementstrStr {
 
     // 构造前后缀数组的实质就是使用双指针遍历 pattern 的过程
     private int[] kmpPreprocess(String pattern) {   // aab
-        int m = pattern.length();
-        int[] pi = new int[m];
-        pi[0] = -1; // pi[0] is always -1
+        int n = pattern.length();
+        int[] next = new int[n];
+        next[0] = -1; // next[0] is always -1
         int k = -1;
         int i = 0;
 
-        while (i < m - 1) {
+        while (i < n - 1) {     // i < 2
             if (k == -1 || pattern.charAt(k) == pattern.charAt(i)) {
                 k++;        // k = 0; k = 1
                 i++;        // i = 1; i = 2
-                pi[i] = k;  // pi[1] = 0; pi[2] = 1
+                next[i] = k;  // pi[1] = 0; pi[2] = 1
             } else {
-                k = pi[k];  // k = pi[1] = 0
+                k = next[k];  // k = pi[1] = 0
             }
         }
-        return pi;
+        return next;
     }
 }
 

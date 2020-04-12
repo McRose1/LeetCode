@@ -33,39 +33,58 @@ public class KthLargestElementinanArray {
 }
 
 /*  Quick Select: Time = O(n) Space = O(n)
+    如果是快速排序算法，会递归地对两部分进行快速排序，Time = O(nlogn)
+    而在这里我们知道要找的第 N-k 小的元素在哪部分，我们不需要对两部分都做处理，Time = O(n)
+    1. 随机选择一个 pivot
+    2. 使用 partition 将 pivot 放在数组中的合适位置 pos。将小于 pivot 元素移到左边，大于等于 pivot 的元素移到右边
+    3. 比较 pos 和 N-k 以决定在哪边继续递归处理
 
     public int findKthLargest(int[] nums, int k) {
         int n = nums.length;
-        int left = 0;
-        int right = n - 1;
-        Random rand = new Random(0);
-        while (left <= right) {
-            int pivot = rand.nextInt(right - left + 1) + left;
-
-            int finalPivot = partition(nums, left, right, pivot);
-
-            if (finalPivot == n - k) {
-                return nums[finalPivot];
-            } else if (finalPivot > n - k) {
-                right = finalPivot - 1;
-            } else {
-                left = finalPivot + 1;
-            }
-        }
-        return -1;
+        // kth largest is (N - k)th smallest
+        return quickSelect(nums, 0, n - 1, n - k);
     }
-    private int partition(int[] nums, int left, int right, int pivot) {
-        int marker = left;
-        int pivotValue = nums[pivot];
-        swap(nums, pivot, right);
-        for (int search = left; search < right; search++) {
-            if (nums[search] < pivotValue) {
-                swap(nums, search, marker);
-                marker++;
+
+    // Returns the k-th smallest element of list within left-right
+    private int quickSelect(int[] nums, int left, int right, int k_smallest) {
+        // If the list contains only one element, return that element
+        if (left == right) {
+            return nums[left];
+        }
+
+        // select a random pivot_index
+        Random rand = new Random();
+        int pivot_index = left + rand.nextInt(right - left + 1);
+
+        pivot_index = partition(nums, left, right, pivot_index);
+
+        // the pivot is on (N - k)th smallest position
+        if (k_smallest == pivot_index) {
+            return nums[k_smallest];
+        } else if (k_smallest < pivot_index) {
+            return quickSelect(nums, left, pivot_index - 1, k_smallest);
+        } else {
+            return quickSelect(pivot_index + 1, right, k_smallest);
+        }
+    }
+
+    private int partition(int[] nums, int left, int right, int pivot_index) {
+        int pivotValue = nums[pivot_index];
+        // 1. move pivot to end
+        swap(nums, pivot_index, right);
+        int store_index = left;
+
+        // 2. move all smaller elements to the left
+        for (int i = left; i <= right; i++) {
+            if (nums[i] < pivotValue) {
+                swap(nums, i, store_index);
+                store_index++;
             }
         }
-        swap(nums, right, marker);
-        return marker;
+        // 3. move pivot to its final place
+        swap(nums, right, store_index);
+
+        return store_index;
     }
     private void swap(int[] nums, int i, int j) {
         int temp = nums[i];

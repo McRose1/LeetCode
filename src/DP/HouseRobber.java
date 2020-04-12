@@ -42,4 +42,27 @@ public class HouseRobber {
     }
 }
 
+/*  Optimized DP: Time = O(n) Space = O(1)
+    更新 dp[i] 的时候只需要 dp[i - 1] 和 dp[i - 2] 这两个信息
+    不需要数组，只需要几个变量
+
+        int n = nums.length;
+        if (n == 0) {
+            return 0;
+        }
+        if (n == 1) {
+            return nums[0];
+        }
+        // 相当于 dp[i - 2]
+        int pre = 0;
+        // 相当于 dp[i - 1] 和 dp[i]
+        int cur = nums[0];
+        for (int i = 2; i <= n; i++) {
+            int temp = cur;
+            cur = Math.max(pre + nums[i - 1], cur);
+            pre = temp
+        }
+        return cur;
+ */
+
 
