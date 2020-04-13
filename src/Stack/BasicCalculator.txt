@@ -1,0 +1,67 @@
+设计一个基础计算器，满足加减运算，和括号优先计算
+
+input string 里面有空格，非负数整数（0），和 ()
+给定了输入的都是 valid expression 的假设
+
+tag 是 stack
+
+其实就是考虑括号的情况
+
+本来想用逆波兰式同样的方法做的，发现 stack 简直就是完美匹配逆波兰式的算法
+而对于普通的正常算法，stack 还是有点别扭的
+
+看答案吧
+
+来offer：
+
+先想没有括号的版本：
+1. linear-scan all numbers in the expression 
+2. Accumulate each number and its sign to the result 
+
+进一步想有括号的版本：
+Challenge: the execution order is not always from left to right 
+
+1. Compute the parenthesis level of each operator 
+2. Use a stack to maintain the execution order of operators 
+3. Use a separate stack to maintain operands 
+
+        1 - (2 + (3 - 4)) - 5
+level:    0    1    2     0
+
+operator stack: [(-, 0), (+, 1), (-, 2)] -> [(-, 0), (+, 1)] -> [(-, 0)] -> [] -> [(-, 0)] -> []
+operand stack:      [1, 2, 3, 4]         ->     [1, 2, -1]   ->  [1, 1]  -> [0] -> [0, 5]  -> [-5]
+碰到优先级低的 operator 就把栈顶比它优先级高的 operator 出栈，将相对应的 operand 栈顶两个元素出栈，计算完再 push 进栈
+
+1. Compute the parenthesis level of each operator.
+2. Use a stack to maintain the execution order of operators.
+   a. if top operator < current, push
+   b. if top operator > current, pop
+3. Use a separate stack to maintain operands.
+   a. when we scan an operand, push
+   b. when we pop an operator, pop two operands and push the result
+   
+   
+LC 官方
+反转字符串：
+如果我们使用 stack 并从左到右读取表达式的元素，则最终我们也会从右到左计算表达式
+就会出现 (A - B) - C == (C - B) - A 的情况，这是不对的，因为减法既不遵循结合律也不遵循交换律
+解决方法是：反转字符串，然后再按需添加到 stack 中，我们将字符串从右到左放入 stack，并从左到右正确的计算表达式
+
+不反转字符串：
+解决 - 结合律的问题的一个非常简单的方法就是将 - 运算符看作右侧 operand 的大小，这样表达式就只剩下 + 这一个 operator
+这种方法更难想，但是比反转字符串要更符合正向思维
+
+这题细想起来真的是太难了，要回来多看，还有下次可以自己实现以下来offer 说的那个方法，感觉写起来比 LC 官方的都要简单
+
+
+
+   
+   
+
+
+
+
+
+
+
+
