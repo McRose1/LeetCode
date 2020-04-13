@@ -1,4 +1,4 @@
-package Array;
+package HashTable;
 
 /*  219. Contains Duplicate 2
     Given an array of integers and an integer k,
@@ -18,8 +18,7 @@ package Array;
     Output: false
  */
 
-/*
-    Sliding Window: Time = O(n) Space = O(k)
+/*  Sliding Window: Time = O(n) Space = O(k)
     To reduce the space complexity, keep sliding window with k length.
     Using a Set to check if any duplicate number in the sliding window.
     It iterates over the array using a sliding window. The front of the window is at i, the rear of the window is k steps back.
@@ -38,9 +37,10 @@ public class ContainsDuplicate2 {
         }
         Set<Integer> set = new HashSet<>();
         for (int i = 0; i < nums.length; i++) {
-            if (i >= k) {
-                // 维持大小为 K 的移动窗口
-                set.remove(nums[i - k]);
+            // 维持大小为 k 的移动窗口
+            if (i > k) {
+                // 删除最左边的元素
+                set.remove(nums[i - k - 1]);
             }
             if (!set.add(nums[i])) {    // set.add() return false if duplicate
                 return true;
@@ -50,11 +50,8 @@ public class ContainsDuplicate2 {
     }
 }
 
-/*
-    HashMap: Time = O(n) Space = O(n)
+/*  HashMap: Time = O(n) Space = O(n)
     keep track of every unique number index, check if it appeared before and the difference between current and previous index
-
-import java.util.HashMap;
 
         if (nums == null || nums.length == 0) {
             return false;
@@ -71,8 +68,24 @@ import java.util.HashMap;
         return false;
  */
 
-/*
-    Naive Solution: Time = O(n*k) Space = O(1)
+/*  my version（比上面那个复杂，没必要）
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (!map.containsKey(nums[i])) {
+                map.put(nums[i], i);
+            } else {
+                if (i - map.get(nums[i]) > k) {
+                    map.replace(nums[i], i);
+                } else {
+                    return true;
+                }
+            }
+        }
+        return false;
+ */
+
+/*  Naive Solution: Time = O(n*k) Space = O(1)
     enumerate and try every possible pair
 
         if (nums == null || nums.length == 0) {
