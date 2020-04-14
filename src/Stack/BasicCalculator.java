@@ -24,6 +24,72 @@ package Stack;
 
 import java.util.Stack;
 
+/*  Stack and No String Reversal: Time = O(n) Space = O(n)
+    Whenever we encounter an operator such as + or - we first evaluate the expression to the left
+    and then save this sign for the next evaluation.
+ */
+public class BasicCalculator {
+    public int calculate(String s) {                    // 7 - (8 + 9)
+        Stack<Integer> stack = new Stack<Integer>();
+        int operand = 0;
+        // For the on-going result
+        int result = 0;
+        // 1 means positive, -1 means negative
+        int sign = 1;
+
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);                  // 7; -; (; 8; +; 9; )
+            if (Character.isDigit(ch)) {
+                // Forming operand, since it could be more than one digit
+                // 这一步是这题的关键
+                operand = 10 * operand + (int) (ch - '0');  // 7; 8; 9
+            } else if (ch == '+') {
+                // Evaluate the expression to the left
+                // with result, sign, operand
+                result += sign * operand;       // res = 0+1*8=8;
+
+                // Save the recently encountered '+' sign
+                sign = 1;
+
+                // Reset operand
+                operand = 0;
+            } else if (ch == '-') {
+                result += sign * operand;       // 0+1*7=7
+                sign = -1;
+                operand = 0;
+            } else if (ch == '(') {
+                // Push the result and sign on to the stack, for later
+                // We push the result first, then sign
+                stack.push(result);     // 7
+                stack.push(sign);       // 7,-1
+
+                // Reset operand and result, as if new evaluation begins for the new sub-expression
+                // 这一步也很关键
+                sign = 1;               // 1
+                result = 0;             // 0
+            } else if (ch == ')') {
+                // Evaluate the expression to the left
+                // with result, sign and operand
+                result += sign * operand;       // res = 8+1*9=17
+
+                // ')' marks end of expression within a set of parenthesis
+                // Its result is multiplied with sign on top of stack
+                // as stack.pop() is the sign before the parenthesis
+                result *= stack.pop();          // 17*-1=-17
+
+                // Then add to the next operand on the top.
+                // as stack.pop() is the result calculated before this parenthesis
+                // (operand on stack) + (sign on stack * (result from parenthesis))
+                result += stack.pop();          // -17+7=-10
+
+                // Reset the operand
+                operand = 0;
+            }
+        }
+        return result + (sign * operand);       // -10+(1*0)=-10
+    }
+}
+
 /*  Stack and String Reversal: Time = O(n) Space = O(n)
     Reversing a string helps since we put the elements into the stack from right to right
     and evaluation for the expression is done correctly from left to right.
@@ -31,29 +97,36 @@ import java.util.Stack;
     Push the elements of the expression one by one onto the stack until get a (.
     Pop the elements from the stack one by one and evaluate the expression till we find ).
     123 >> 120 + 3 >> 100 + 20 + 3
- */
-public class BasicCalculator {
+
     public int calculate(String s) {
         int operand = 0;
+        // 用 n 来表示遇到数字的位数
         int n = 0;
         Stack<Object> stack = new Stack<>();
 
+        // 倒序遍历字符串
         for (int i = s.length() - 1; i >= 0; i--) {     // (7 - 8 + 9)
             char ch = s.charAt(i);
+            // 如果是数字
             if (Character.isDigit(ch)) {
                 // Forming the operand - in reverse order.
-                operand = (int) Math.pow(10, n) * (int) (ch - '0') + operand;   // 9; 8; 7
+                operand = (int) Math.pow(10, n) * (ch - '0') + operand;   // 9; 8; 7
+                // 遇到连续数字，位数要更新
                 n += 1;
             } else if (ch != ' ') {
+                // 说明当前有数字未处理
                 if (n != 0) {
                     // Save the operand on the stack as we encounter some non-digit.
                     stack.push(operand);    // )9; )9+8; )9+8-7
+                    // 将参数重置
                     n = 0;
                     operand = 0;
                 }
-                if (ch == '(') {    // 终止符
+                // 在倒转的字符串中，'('表示终止符，表明我们现在可以计算括号内的表达式
+                if (ch == '(') {
                     int res = evaluateExpr(stack);  // )9+8-7   res = 8
-                    stack.pop();                    // pop the ")"
+                    // pop the ")"
+                    stack.pop();
 
                     // Append the evaluated result to the stack.
                     // This result could be of a sub-expression within the parenthesis.
@@ -87,63 +160,4 @@ public class BasicCalculator {
         }
         return res;     // res = 8
     }
-}
-
-/*  Stack and No String Reversal: Time = O(n) Space = O(n)
-    Whenever we encounter an operator such as + or - we first evaluate the expression to the left
-    and then save this sign for the next evaluation.
-
-        Stack<Integer> stack = new Stack<Integer>();
-        int operand = 0;
-        int result = 0; // For the on-going result
-        int sign = 1;   // 1 means positive, -1 means negative
-
-        for (int i = 0; i < s.length(); i++) {      // (7 - 8 + 9)
-            char ch = s.charAt(i);                  // (; 7; -; 8; +; 9; )
-            if (Character.isDigit(ch)) {
-                // Forming operand, since it could be more than one digit
-                operand = 10 * operand + (int) (ch - '0');  // 7; 8; 9
-            } else if (ch == '+') {
-                // Evaluate the expression to the left
-                // with result, sign, operand
-                result += sign * operand;       // 7+(-1)*8=-1
-
-                // Save the recently encountered '+' sign
-                sign = 1;
-
-                // Reset operand
-                operand = 0;
-            } else if (ch == '-') {
-                result += sign * operand;       // 0+1*7=7
-                sign = -1;
-                operand = 0;
-            } else if (ch == '(') {
-                // Push the result and sign on to the stack, for later
-                // We push the result first, then sign
-                stack.push(result);     // 0
-                stack.push(sign);       // 01
-
-                // Reset operand and result, as if new evaluation begins for the new sub-expression
-                sign = 1;
-                result = 0;
-            } else if (ch == ')') {
-                // Evaluate the expression to the left
-                // with result, sign and operand
-                result += sign * operand;       // -1+1*9=8
-
-                // ')' marks end of expression within a set of parenthesis
-                // Its result is multiplied with sign on top of stack
-                // as stack.pop() is the sign before the parenthesis
-                result *= stack.pop();          // 8*1=8
-
-                // Then add to the next operand on the top.
-                // as stack.pop() is the result calculated before this parenthesis
-                // (operand on stack) + (sign on stack * (result from parenthesis))
-                result += stack.pop();          // 8+0=8
-
-                // Reset the operand
-                operand = 0;
-            }
-        }
-        return result + (sign * operand);       // 8+(1*0)=8
  */

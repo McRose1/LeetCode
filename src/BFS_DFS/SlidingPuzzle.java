@@ -49,75 +49,50 @@ import java.util.*;
     为了将节点表示成可以哈希的数据结构，在 Java 中，可以将棋盘转化成一个整数或者直接用 Arrays.deepToString
  */
 public class SlidingPuzzle {
-    public class Node {
-        int[][] board;
-        String boardstring;
-        int zero_r;
-        int zero_c;
-        int depth;
-
-        Node(int[][] B, int r, int c, int d) {
-            board = B;
-            boardstring = Arrays.deepToString(board);
-            zero_r = r;
-            zero_c = c;
-            depth = d;
-        }
-    }
-
     public int slidingPuzzle(int[][] board) {
-        int R = board.length, C = board[0].length;
-        int sr = 0, sc = 0;
-        // Search for the tile
-        for (sr = 0; sr < R; sr++) {
-            for (sc = 0; sc < C; sc++) {
-                if (board[sr][sc] == 0) {
-                    break;
-                }
+        String target = "123450";
+        StringBuilder start = new StringBuilder();
+        for (int[] ints : board) {
+            for (int j = 0; j < board[0].length; j++) {
+                start.append(ints[j]);           // "412503"
             }
         }
-        int[][] dirs = new int[][] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-        Queue<Node> queue = new ArrayDeque<>();
-        Node start = new Node(board, sr, sc, 0);
-        queue.offer(start);
-
-        Set<String> seen = new HashSet<>();
-        seen.add(start.boardstring);
-
-        String target = Arrays.deepToString(new int[][] {{1, 2, 3}, {4, 5, 0}});
-
+        Set<String> visited = new HashSet<>();
+        // all the positions 0 can be swapped to
+        int[][] dirs = new int[][] {{1, 3}, {0, 2, 4}, {1, 5}, {0, 4}, {1, 3, 5}, {2, 4}};
+        Queue<String> queue = new LinkedList<>();
+        queue.offer(start.toString());
+        visited.add(start.toString());
+        int res = 0;
         while (!queue.isEmpty()) {
-            Node node = queue.poll();
-            if (node.boardstring.equals(target)) {
-                return node.depth;
+            // 很关键的一步，需要先把 size 定死
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                String cur = queue.poll();
+                if (cur.equals(target)) {
+                    return res;
+                }
+                int zero = cur.indexOf('0');
+                // swap if possible
+                for (int dir : dirs[zero]) {
+                    String next = swap(cur, zero, dir);
+                    if (visited.contains(next)) {
+                        continue;
+                    }
+                    visited.add(next);
+                    queue.offer(next);
+                }
             }
-
-            for (int[] di : dirs) {
-                int nei_r = di[0] + node.zero_r;
-                int nei_c = di[1] + node.zero_c;
-
-                if (nei_r < 0 || nei_c < 0 || nei_r >= R || nei_c >= C ||
-                        (Math.abs(nei_r - node.zero_r) + Math.abs(nei_c - node.zero_c) != 1)) {
-                    continue;
-                }
-
-                int[][] newboard = new int[R][C];
-                int t = 0;
-                for (int[] row : node.board) {
-                    newboard[t++] = row.clone();
-                }
-                newboard[node.zero_r][node.zero_c] = newboard[nei_r][nei_c];
-                newboard[nei_r][nei_c] = 0;
-
-                Node nei = new Node(newboard, nei_r, nei_c, node.depth + 1);
-                if (seen.contains(nei.boardstring)) {
-                    continue;
-                }
-                queue.offer(nei);
-                seen.add(nei.boardstring);
-            }
+            res++;
         }
         return -1;
+    }
+
+    private String swap(String s, int i, int j) {
+        StringBuilder sb = new StringBuilder(s);
+        sb.setCharAt(i, s.charAt(j));
+        sb.setCharAt(j, s.charAt(i));
+        return sb.toString();
     }
 }
 
