@@ -1,0 +1,11 @@
+和 missing ranges 那题非常像
+
+给定的是 sorted array 并且没有 duplicate
+
+暴力解做出来了
+
+这题好像也没考什么算法，array 的题经常就是纯粹操作，考察边界条件
+
+这题两个要点，第一是如何添加最后一段区间，第二是 integer to String，我一直很麻烦的用 String.valueOf()，其实输入里有一段是字符串就行：
+nums[i] + "" -> 自动转换成 String 
+
