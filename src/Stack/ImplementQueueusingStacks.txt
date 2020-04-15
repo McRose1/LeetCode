@@ -1,0 +1,5 @@
+做过用 queue 实现 stack，现在要用 stack 实现 queue
+
+用两个 stack 做出来了，一个 stack 专门装 queue，一个 stack 专门工具人
+
+原来 LC 官方也没有只用一个 stack 做出来
