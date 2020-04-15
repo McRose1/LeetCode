@@ -42,10 +42,12 @@ public class ImplementStackusingQueues {
     }
 
     // Invert the order of queue elements when pushing a new element.
+    // 每次 push 的时候维护 queue 变成 stack
     public void push(int x) {
-        queue.add(x);
+        queue.offer(x);
+        // poll 出除了新 offer 进来的元素以外的所有旧元素
         for (int i = 0; i < queue.size() - 1; i++) {
-            queue.add(queue.poll());
+            queue.offer(queue.poll());
         }
     }
 
@@ -61,42 +63,6 @@ public class ImplementStackusingQueues {
         return queue.isEmpty();
     }
 }
-
-/*  Two Queues: push - O(1), pop - O(n)
-
-    private Queue<Integer> q1 = new LinkedList<>();
-    private Queue<Integer> q2 = new LinkedList<>();
-
-    public void push(int x) {
-        q1.add(x);
-    }
-    public int pop() {              // 1,2,3
-        while (q1.size() > 1) {
-            q2.add(q1.poll());      // q2 = 1,2
-        }
-        int pop =q1.poll();                   // 3
-        // 还原
-        Queue<Integer> temp = q1;
-        q1 = q2;                    // q1 = 1,2
-        q2 = temp;                  // q2 = null
-        return pop;
-    }
-    public int top() {              // 1,2
-        while (q1.size() > 1) {
-            q2.add(q1.poll());      // q2 = 1
-        }
-        int top = q1.poll();           // 2, q1 = null
-        q2.add(top);                    // q2 = 1,2
-        // 还原
-        Queue<Integer> temp = q1;
-        q1 = q2;                    // q1 = 1,2
-        q2 = temp;                  // q2 = null
-        return top;
-    }
-    public boolean empty() {
-        return q1.isEmpty();
-    }
- */
 
 /*  Two Queues: push - O(n), pop - O(1)
 
@@ -115,6 +81,42 @@ public class ImplementStackusingQueues {
     }
     public int top() {              // 2,1
         return q1.peek();           // 2
+    }
+    public boolean empty() {
+        return q1.isEmpty();
+    }
+ */
+
+/*  Two Queues: push - O(1), pop - O(n)
+
+    private Queue<Integer> q1 = new LinkedList<>();
+    private Queue<Integer> q2 = new LinkedList<>();
+
+    public void push(int x) {
+        q1.offer(x);
+    }
+    public int pop() {              // 1,2,3
+        while (q1.size() > 1) {
+            q2.offer(q1.poll());      // q2 = 1,2
+        }
+        int pop = q1.poll();                   // 3
+        // 还原
+        Queue<Integer> temp = q1;
+        q1 = q2;                    // q1 = 1,2
+        q2 = temp;                  // q2 = null
+        return pop;
+    }
+    public int top() {              // 1,2
+        while (q1.size() > 1) {
+            q2.add(q1.poll());      // q2 = 1
+        }
+        int top = q1.poll();           // 2, q1 = null
+        q2.add(top);                    // q2 = 1,2
+        // 还原
+        Queue<Integer> temp = q1;
+        q1 = q2;                    // q1 = 1,2
+        q2 = temp;                  // q2 = null
+        return top;
     }
     public boolean empty() {
         return q1.isEmpty();

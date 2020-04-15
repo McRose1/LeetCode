@@ -42,6 +42,7 @@ public class ShortestDistancefromAllBuildings {
                 if (grid[i][j] == 1) {
                     buildingNumber++;
                     Queue<int[]> queue = new LinkedList<>();
+                    // 从每个 1 开始 BFS
                     queue.offer(new int[] {i, j});
                     int step = 1;
                     boolean[][] visited = new boolean[rows][cols];
@@ -54,8 +55,9 @@ public class ShortestDistancefromAllBuildings {
                             for (int[] d : dirs) {
                                 int new_r = cur[0] + d[0];
                                 int new_c = cur[1] + d[1];
+                                // 检查新的 index 是否在边界以内，并且是否为空地以及没有被 visit 过
                                 if (new_r >= 0 && new_c >= 0 && new_r < rows && new_c < cols &&
-                                        grid[new_r][new_c] == 0 && visited[new_r][new_c]) {
+                                        grid[new_r][new_c] == 0 && !visited[new_r][new_c]) {
                                     distance[new_r][new_c] += step;
                                     reachable[new_r][new_c]++;
                                     visited[new_r][new_c] = true;
