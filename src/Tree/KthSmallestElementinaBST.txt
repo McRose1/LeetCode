@@ -1,0 +1,12 @@
+从 binary search tree 里找到第 k 小的元素
+
+inorder traversal 是左根右，在 BST 里也就是从小到大
+
+LC 官方:
+递归和迭代都可以
+
+递归逻辑看起来舒服一些,但是不管 k 是多少，都需要输出整一个 inorder traversal array
+
+迭代可以提早结束，在找到 kth smallest 的时候就可以停止迭代，需要用到 stack
+
+这道题非常基础也非常好，需要回来看！
