@@ -1,4 +1,4 @@
-package String;
+package DP;
 
 /*  5. Longest Palindromic String
     Given a string s, find the longest palindromic substring in s.
@@ -12,6 +12,7 @@ package String;
     Input: "cbbd"
     Output: "bb"
  */
+
 /* Expand Around Center (DP optimized): Time = O(n^2) Space = O(1)
 
  */

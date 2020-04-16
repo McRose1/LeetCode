@@ -1,4 +1,4 @@
-package Array;
+package TwoPointers;
 
 /*  15. 3Sum
     Given an array nums of n integers, are there elements a, b, c in nums
@@ -21,12 +21,16 @@ package Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-//  Two Pointers
+/*  Two Pointers: Time = O(n^2) Space = O(1)
+    每次 for 循环固定住一个指针的位置，剩余双指针进行 2Sum
+ */
 public class ThreeSum {
     public List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
         // 通过排序可以在第一个循环中避免 duplicate 的情况，还是后面双指针移动的前提
-        Arrays.sort(nums);      // 这一步非常关键
+        // 这一步非常关键
+        Arrays.sort(nums);
+
         for (int i = 0; i < nums.length - 2; i++) {
             // avoid duplicate for first element
             if (i > 0 && nums[i] == nums[i - 1]) continue;
@@ -44,6 +48,7 @@ public class ThreeSum {
                     while (low < high && nums[high] == nums[high - 1]) {
                         high--;
                     }
+                    // 开始新的元素匹配
                     low++;
                     high--;
                 } else if (nums[low] + nums[high] < target) {

@@ -3,10 +3,6 @@ public class Main {
     public static void main(String[] args) {
 	// write your code here
         /*
-        String str = "[5,3,6,2,4,null,null,1]";
-        TreeNode root = TreeNode.mkTree(str);
-        KthSmallestElementinaBST test = new KthSmallestElementinaBST();
-        test.kthSmallest(root, 3);
 
         String input = "2-1-1";
         DifferentWaystoAddParentheses test = new DifferentWaystoAddParentheses();

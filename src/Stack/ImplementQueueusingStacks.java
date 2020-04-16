@@ -27,8 +27,38 @@ package Stack;
  */
 
 import java.util.Stack;
-//  Two Stacks (1 for push, 1 for pop): Push - O(1), Amortized Pop - O(1) Space = O(1)
+//  Two Stacks (1 for push&pop, 1 for temp use): Push - O(n), Pop - O(1)
 public class ImplementQueueusingStacks {
+    Stack<Integer> s1;
+    Stack<Integer> s2;
+    public ImplementQueueusingStacks() {
+        s1 = new Stack<>();
+        s2 = new Stack<>();
+    }
+
+    public void push(int x) {
+        while (!s1.isEmpty()) {
+            s2.push(s1.pop());
+        }
+        s2.push(x);
+        while (!s2.isEmpty()) {
+            s1.push(s2.pop());
+        }
+    }
+    public int pop() {
+        return s1.pop();
+    }
+    public int peek() {
+        return s1.peek();
+    }
+    public boolean empty() {
+        return s1.isEmpty();
+    }
+
+}
+
+/*  Two Stacks (1 for push, 1 for pop): Push - O(1), Amortized Pop - O(1) Space = O(1)
+
     Stack<Integer> s1;
     Stack<Integer> s2;
     public ImplementQueueusingStacks() {
@@ -59,34 +89,5 @@ public class ImplementQueueusingStacks {
     }
     public boolean empty() {
         return s1.isEmpty() && s2.isEmpty();
-    }
-}
-
-/*  Two Stacks (1 for push&pop, 1 for temp use): Push - O(n), Pop - O(1)
-
-    Stack<Integer> s1;
-    Stack<Integer> s2;
-    public ImplementQueueusingStacks() {
-        s1 = new Stack<>();
-        s2 = new Stack<>();
-    }
-
-    public void push(int x) {
-        while (!s1.isEmpty()) {
-            s2.push(s1.pop());
-        }
-        s2.push(x);
-        while (!s2.isEmpty()) {
-            s1.push(s2.pop());
-        }
-    }
-    public int pop() {
-        return s1.pop();
-    }
-    public int peek() {
-        return s1.peek();
-    }
-    public boolean empty() {
-        return s1.isEmpty();
     }
  */

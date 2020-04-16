@@ -76,8 +76,7 @@ public class ImplementStackusingQueues {
         q2 = temp;                  // q2 = null; q2 = null
     }
     public int pop(int x) {         // 3,2,1
-        int pop = q1.poll();        // 3
-        return pop;
+        return q1.poll();        // 3
     }
     public int top() {              // 2,1
         return q1.peek();           // 2
@@ -108,10 +107,10 @@ public class ImplementStackusingQueues {
     }
     public int top() {              // 1,2
         while (q1.size() > 1) {
-            q2.add(q1.poll());      // q2 = 1
+            q2.offer(q1.poll());      // q2 = 1
         }
         int top = q1.poll();           // 2, q1 = null
-        q2.add(top);                    // q2 = 1,2
+        q2.offer(top);                    // q2 = 1,2
         // 还原
         Queue<Integer> temp = q1;
         q1 = q2;                    // q1 = 1,2
