@@ -1,0 +1,15 @@
+回文子串 DP 经典题
+
+山景城一姐：
+二维 DP：boolean[] dp = new boolean[sLen][sLen]
+先初始化：
+for (int i = 0; i < s.length(); i++) {
+  for (int j = 0; j < s.length(); j++) {
+    if (i == j) {
+      dp[i][j] = true;
+    }
+  }
+}
+
+b  x x x x x x  b     dp[i][j] = s.charAt(i) == s.charAt(j) && dp[i + 1][j - 1]
+i i+1       j-1 j
