@@ -20,9 +20,36 @@ package DP;
     If we use brute-force and check whether for every start and end position a substring is a palindrome we have O(n^2) start - end pairs and O(n) palindromic checks.
     Can we reduce the time for palindromic checks to O(1) by reusing some previous computation?
  */
-
+//  二维 DP
 public class PalindromicSubstrings {
     public int countSubstrings(String s) {
+        int n = s.length();
+        boolean[][] dp = new boolean[n][n];
 
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == j) {
+                    dp[i][j] = true;
+                }
+            }
+        }
+
+        for (int j = 1; j < n; j++) {
+            for (int i = 0; i < j; i++) {
+                if (s.charAt(i) == s.charAt(j) && (j - i < 2 || dp[i + 1][j - 1])) {
+                    dp[i][j] = true;
+                }
+            }
+        }
+
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (dp[i][j]) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 }
