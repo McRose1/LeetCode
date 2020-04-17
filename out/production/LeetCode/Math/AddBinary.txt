@@ -1,0 +1,16 @@
+应该是简单进位从右到左运算，给 两个 String（不为空） 输出 它们的加和 String
+
+"11" + "1"  =   "100"
+
+感觉直接用 String 来做有点别扭
+试试看转换为 char[]
+[1, 1]  +  [1]
+
+但后来还是觉得直接用 String 比较好， 因为 s.charAt 可以转换为 char, char - '0' 就可以转换为 int
+
+想的太复杂了。。。看答案吧
+
+答案用到是 StringBuilder
+一开始想不出来的遍历终止条件，其实 while(a.length() >= 0 || b.length() >= 0)就行了 1
+先把每次的 carry 加入 sum，然后每次加 a 和 b 中的元素前先判断遍历的 index 是否在界内，每次加的同时 index--
+这题就是印象中把从右往左把 digit 先 append 起来，然后最后再 reverse

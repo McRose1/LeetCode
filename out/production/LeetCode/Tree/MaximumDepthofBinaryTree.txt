@@ -1,0 +1,9 @@
+tree 的 DFS 题
+
+做出来了，但是看到答案只有一句话。。。还是崩溃了
+
+return Math.max(maxDepth(root.left), maxDepth(root.right) + 1);
+
+完全可以自己调用自己的呀
+
+

@@ -1,0 +1,64 @@
+看到这题自己给它的标签居然是 Math，看蒙了
+
+不过 LeetCode 的 tag 上面有 backtracking
+
+先试着回溯一下呗
+
+200/200 但是 TLE。。。
+记录一下自己写的 TLE 的代码：
+public String getPermutation(int n, int k) {
+        
+    List<List<Integer>> res = new ArrayList<>();
+    backtrack(n, new ArrayList<>(), res, new boolean[n]);
+
+    List<Integer> list = res.get(k - 1);
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < list.size(); i++) {
+        sb.append(list.get(i));
+    }
+    return sb.toString();
+}
+
+private void backtrack(int n, List<Integer> list, List<List<Integer>> res, boolean[] visited) {
+    if (list.size() == n) {
+        res.add(new ArrayList<>(list));
+        return;
+    }
+
+    for (int i = 0; i < n; i++) {
+        if (!visited[i]) {
+            list.add(i + 1);
+            visited[i] = true;
+            backtrack(n, list, res, visited);
+            list.remove(list.size() - 1);
+            visited[i] = false;
+        }
+    }
+}
+
+之所以会超时，是因为没有在找到第k个的时候就停止递归
+但实际上这题用回溯就是非常慢，就算进行了剪枝在 permute 到第 k 个 string 就停下来
+
+这题实际用到的方法叫康拓展开
+以 n=4 为例，因为是从小到大排列，那么最高位一定是从 1 到 4
+可以看作是分为 n -> (4) 组，每组的个数为 (n - 1)! 即为 6
+
+123
+132
+----
+213       13   
+    ->  -------
+231       31 
+----
+312
+321
+
+
+
+
+
+
+
+
+
+

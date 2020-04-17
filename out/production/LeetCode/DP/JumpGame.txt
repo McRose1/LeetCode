@@ -1,0 +1,51 @@
+是 JumpGame 2的基础版，那一题要求输出所需最小步数，而这一题只问我们能不能达到最后一个元素
+
+虽然 tag 上写到是 greedy 
+先试试看能不能用 DP 来做
+
+[2, 3, 1, 1, 4]
+dp[i] 表示目前位置所能达到的最远距离
+dp[0] = 0 + nums[0] = 2;
+dp[1] = 1 + nums[3] = 4;
+dp[2] = 2 + nums[1] = 3
+好像没有看出有和上一步结果有什么联系。。。 dp[i] = i + nums[i] 这不是 DP
+
+记得上一题是用两个指针
+int curEnd 记录此时位置的边界
+int furthest 记录该边界范围内所能到达的最远距离
+。。。想不出来
+
+看官方答案。。。艹 greedy 的方法好简洁！
+但是是 4 个方法里面的最后一个
+
+还是从最基础的想法开始捋吧
+
+This is a DP question. Usually, solving and fully understanding a dp problem is a 4 step process:
+1. Start with the recursive backtracking solution
+2. Optimize by using a memoization table (top-down dp)
+3. Remove the need for recursion (bottom-up dp)
+4. Apply final tricks to reduce time / memory complexity 
+
+第一种方法是回溯，时间复杂度 O(2^n) 太高了
+
+第二种方法是自顶而下的 DP，感觉实际上还是回溯，只不过多了一个 memo[] 来记录位置的可达性，省略了不必要的重复计算
+
+第三种方法是自底向上的 DP，避免了递归的调用，从右往左开始标记可达性，最后判断 memo[0]的可达性
+这题的 DP 不是很常规，想起来还是有点晕，以后还得反复看这道题
+
+第四种方法是 greedy，构造非常巧妙，连数组都可以不用到，直接 maintain 变量 lastPos，从右往左，如果前一个位置能达到 lastPos，就更新，直到 index = 0
+
+
+LeetCode solution 关于这题的建议：
+The (recursive) backtracking is the easiest to figure out, 
+so it is worth mentioning it verbally while warming up for the tougher challenge. 
+It might be that your interviewer actually wants to see that solution, 
+but if not, mention that there might be a dynamic programming solution and try to think how could you use a memoization table. 
+If you figure it out and the interviewer wants you to go for the top-down approach, 
+it will not generally be time to think of the bottom-up version, 
+but I would always mention the advantages of this technique as a final thought in the interview.
+
+
+
+
+

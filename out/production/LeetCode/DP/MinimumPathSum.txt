@@ -1,0 +1,6 @@
+做了上面拿到 unique path 这道题应该能秒
+
+边界条件：
+第一行都是 dp[0][j] = dp[0][j - 1] + grid[0][j]
+第一列都是 dp[i][0] = dp[i - 1][0] + grid[i][0]
+dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j]

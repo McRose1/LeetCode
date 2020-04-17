@@ -1,0 +1,57 @@
+从 unsorted array 里面找到最长的连续序列
+
+最 naive 的想法就是先 sort 再遍历一遍，这样 Time Complexity = O(nlogn + n) = O(nlogn)
+但是题目要求用 O(n) 的时间复杂度 -> 提示用 HashTable
+
+[100, 4, 200, 1, 3, 2]
+
+花花酱：
+online:
+Hashtable: (key, len)
+Case 1: no neighbor       
+        h[key] = 1
+Case 2: has a single neighbor, extend 
+        l = h[key +- 1]
+        h[key +- 1] = h[key] = l + 1
+Case 3: has two neighbors, a bridge 
+        l = h[key - 1]
+        r = h[key + 1]
+        t = l + r + 1
+        h[key - 1] = h[key + r] = t
+对于完整的序列，只用考虑 boundary 的值
+[1,2,3,6,5,4]
+1|1
+1|1 2|1 -> 1|2 2|2
+1|2 2|2 3|1 -> 1|3 2|2 3|3
+1|3 2|2 3|3           6|1
+1|3 2|2 3|3       5|1 6|1 -> 5|2 6|2
+1|3 2|2 3|3  4|1  5|2 6|2
+1|6 2|2 3|3 4|1 5|2 6|6
+
+offline:
+HashSet h: key
+Check whether h contains key - 1 or not
+if not, key is a lower bound, check key + 1, key + 2, until key + l + 1 is not in h,
+key ~ key + 1 in h, length is l + 1.
+Find the max of ls
+
+input: [1,2,3,6,5,4]
+0 not in h, check(1), check(2) ... check(6), check(7) failed -> l = 6
+
+input: [1,2,6,5,4]
+0 not in h, check(1), check(2), check(3) failed, l = 2
+3 not in h, check(4), check(5), check(6), check(7) failed, l = 3
+
+这题太巧妙了，我很喜欢，以后要多做做
+
+
+
+
+
+
+
+
+
+
+
+

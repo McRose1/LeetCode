@@ -28,13 +28,37 @@ package BinarySearch;
  */
 
 /*  Binary Search: Time = O(logmn) Space = O(1)
-    先对列做二分法处理，找到 target 所处的行，再对这一行进行二分法处理
+    将输入的 m x n 矩阵看作长度为 m x n 的有序数组
+    row = idx / n; col = idx % n
  */
 public class Searcha2DMatrix {
     public boolean searchMatrix(int[][] matrix, int target) {
         int m = matrix.length;
+        if (matrix == null || m == 0 || matrix[0].length == 0) return false;
         int n = matrix[0].length;
-        if (matrix == null || m == 0 || n == 0) return false;
+
+        int left = 0;
+        int right = m * n - 1;
+        while (left + 1 < right) {
+            int mid = left + (right - left) / 2;
+            int midElement = matrix[mid / n][mid % n];
+            if (midElement == target) return true;
+            else if (midElement < target) {
+                left = mid;
+            } else {
+                right = mid;
+            }
+        }
+        return matrix[left / n][left % n] == target || matrix[right / n][right % n] == target;
+    }
+}
+
+/*  Binary Search: Time = O(logmn) Space = O(1)
+    先对列做二分法处理，找到 target 所处的行，再对这一行进行二分法处理
+
+        int m = matrix.length;
+        if (matrix == null || m == 0 || n == matrix[0].length) return false;
+        int n = matrix[0].length;
         int startRow = 0;
         int endRow = m - 1;
         int endCol = n - 1;
@@ -60,5 +84,4 @@ public class Searcha2DMatrix {
         }
         if (matrix[row][start] == target || matrix[row][end] == target) return true;
         else return false;
-    }
-}
+ */

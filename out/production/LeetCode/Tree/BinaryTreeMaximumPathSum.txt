@@ -1,0 +1,42 @@
+tree 的 hard 题（其实算 medium）
+
+给定一个全满的二叉树，找到总和最大的 node sequence
+
+题目里说并不需要经过 root
+
+
+Laioffer：
+用 root 来分解所有的 path，左边的 path 和右边的 path，（每段的 root 一定选）
+
+所有满足条件的 path 中和最大的一条 path
+=> max (以任意一个点为顶点的所有 path 中和最大是多少)
+
+以任意一个点为顶点的 path：
+a_max sum (左边直上直下的 path)
+b_max sum (右边直上直下的 path)
+C_ 当前点自己
+
+那肯定是递归啦~~~
+
+安卓大宝贝：
+注意点：
+【为什么用int[] max而不是int max呢？】
+“int is one of the 8 basic variables, and int[] is reference variable.
+In a Java, method arguments(MA) are passed by by value.
+if basic variables are in MA, the value is copied, and the initial variable remain unchanged.
+if reference variable is in MA, the address is copied (and passed as value), and the initial variable will be changed.”
+
+花花酱：
+MS(root) := max path sum
+1. root must be used 
+2. at most one child can be used 
+
+if root is null:
+  MS(root) = INT_MIN
+else:
+  MS(root) = root.val
+           + max((MS(root.left), MS(root.right), 0)
+           
+ans = max {root.val}
+        + max(0, MS(root.left))
+        + max(0, MS(root.right))  # Can use both 

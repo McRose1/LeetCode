@@ -1,0 +1,38 @@
+克隆一个 graph，这题看着有点懵逼
+
+graph 里的每个 node 有两个属性：
+1. 值
+2. neighbors，存在 list of Node 里
+
+在这题中，adList 的 index 就代表 Node 的 value，在 index 上的 array 代表该 node 的 neighbors
+
+LC 官方：
+借助 HashMap 避免陷入死循环
+
+DFS：
+使用一个 HashMap 存储所有已被访问和复制的 node：
+key: original node
+value：克隆图中的对应 node
+如果已经 visited，就返回克隆图中的对应 node
+
+递归调用每个 node 的 neighbors，每一次调用返回其对应 neighbors 的克隆 node，最终返回这些克隆 neighbors 的列表，将其放入对应克隆 node 的 adList 中
+
+先建立好 original node 和 clone node 之间的映射，不需要去管它的 adList 
+再通过 DFS 去遍历当前 node 的 neighbors，递归调用：cloneNode.neighbors.add(cloneGraph(nei));
+
+BFS：
+考虑到调用栈的深度，使用 BFS 进行图的遍历比 DFS 更好
+
+把起点 node 加到 queue 中
+循环遍历 queue
+每次从 queue 首部取出一个 node
+遍历该 node 的所有 neighbors
+如果没有 visited，就更新hashmap，并且将该 neighbor node 加到 queue 中，以便后面遍历
+
+
+
+
+
+
+
+

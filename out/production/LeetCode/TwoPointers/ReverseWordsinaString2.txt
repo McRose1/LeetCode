@@ -1,0 +1,18 @@
+在字符串中将单词倒置
+
+Input:  ["t","h","e"," ","s","k","y"," ","i","s"," ","b","l","u","e"]
+Output: ["b","l","u","e"," ","i","s"," ","s","k","y"," ","t","h","e"]
+
+
+先整体 reverse 一遍
+"e" "u" "l" "b" " " "s" "i" " " "y" "k" "s" " " "e" "h" "t"
+
+在对单词逐个一一 reverse
+"b" "l" "u" "e" ...
+
+这题在输入输出可以做非常多的变形
+比如 LC 上输入是 char[]，输出是 void
+LintCode 上输入是 char[]，输出是 char[]
+LaiCode 上输入是 String，输出是 String
+
+以后要都写一遍，才算真正掌握这题

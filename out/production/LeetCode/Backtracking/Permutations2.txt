@@ -1,0 +1,43 @@
+Permutations 的变形题
+和之前不同的是，此时 element 存在 duplicate，而且要求最后结果不能 duplicate
+
+[1, 1, 2]
+
+
+                Root
+             /    |    \   
+            1    1(x)   2 
+          /   | \       |
+         1(x) 1  2      1
+       / | \     |      |
+   1(x)1(x) 2    1      1
+第一个分支叶节点删去的 1 都是由 if(visited[i]) continue; 来实现
+第二个分支整个删去，靠的是 if (i >= 1 && nums[i] == nums[i - 1] && !visited[i - 1]) continue;         
+         
+我的错误想法：
+for (int i = 1; i < nums.length; i++) {
+  if (nums[i] == nums[i - 1] && !visited[i]) continue;
+}
+---> StackOverflowError
+死循环了，因为第一次 i = 1: nums[1] == nums[2], visited[i] == false -> [1]
+第二次的时候，i 还是从 1 开始，相当于重新判断 nums[1]的一系列条件，但是此时 visited[i] 已经设为 true，所以为 continue
+i = 2 list.add(2) -> [1, 2] 相当于连第一种 [1,1,2] 也一并删去了
+
+正确版本：
+for (int i = 0; i < nums.length; i++) {
+    if (visited[i]) continue;
+    // skip same number for current position
+    if (i >= 1 && nums[i] == nums[i - 1] && !visited[i - 1]) continue;  // 重复数字只取第一个，删去 [1(index=1),1(index=0),2] 这个组合
+
+这道变形题改起来明显 SWAP 的方法更容易
+
+  HashSet<Integer> set = new HashSet<>();     // 保存当前要交换的位置已经有过哪些数字了
+  for (int i = start; i < nums.length; i++) {
+      if (set.contains(nums[i])) {    // 如果存在了就跳过，不用去交换
+          continue;
+      }
+      set.add(nums[i]);
+      swap(nums, i, start);
+      backtrack(res, nums, start + 1);
+      swap(nums, i, start);
+  }

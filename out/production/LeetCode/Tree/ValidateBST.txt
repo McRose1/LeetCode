@@ -1,0 +1,18 @@
+Tree 的 DFS 题
+
+思路：
+先一直往左子树找，判断是否小于 root
+再往右子树找，判断是否大于 root
+
+看答案吧。。。
+
+安卓大宝贝：
+同时 dfs(root.left) && dfs(root.right)
+限制子树节点的范围
+
+
+这道题要注意 tree 里 node 的最大最小超过了 Integer.MAX(MIN)_VALUES，需要用到 long 或者 nullable integer 
+
+也可以用 inOrder traversal 的方法来做
+
+

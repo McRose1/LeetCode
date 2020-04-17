@@ -1,0 +1,12 @@
+该系列第 2 题，感觉和第 1 题完全不一样，第 1 题只是问数组是否存在 duplicate
+这一题除了要求判断是否存在 duplicate，还得满足这两个 duplicate 之间的坐标差最多为 k（不超过 k）
+
+应该可以用 HashMap
+做出来了
+主要难想的逻辑就在于，找到两个 duplicate，如果 index 之差已经大于 k，不应该着急的 return false，
+而是把这个 key 的 value 更新为当前的 index，继续找，如果有找到一对满足条件的，就是 return true
+看了下答案，发现根本不需要 replace！只要先判断是否存在这个 key，再判断坐标差是否小于等于 k，满足的话直接返回 true 就行
+
+这题还能用 sliding window 来做
+size 为 k，可以用 HashSet 来实现，就不需要 HashMap 了
+这个构造非常巧妙

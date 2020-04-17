@@ -1,0 +1,22 @@
+判断两个字符串是否为同构字符串
+
+tag 是 hashtable
+
+知道用map
+题目上说：no two characters may map to the same character but a character may map to itself
+
+egg     add
+{'e', 'a';
+ 'g', 'd'
+}
+
+碰到了瓶颈，也就是下面这个情况
+普通的 map 判断只能通过 key 来确定 value，但是如果出现新的 key，还能保证它不会映射到已有的 value 上
+ab      aa
+{'a', 'a'}
+
+看了答案发现一个没怎么见过的function，叫 map.containsValue()
+原来 map 是可以反向查找的
+
+也可以用 size = 256 的数组代替 map，每一位代表一个字符
+我一开始想到了，但是只用了 26 位，以为只有小数，但是这题的字符串里还存在数字以及其他，所以需要 ASCII 大小

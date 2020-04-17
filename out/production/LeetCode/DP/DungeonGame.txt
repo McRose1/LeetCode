@@ -1,0 +1,34 @@
+二维 DP 题
+
+限制条件：每次只能往右走或者往下走
+很容易想到初始化，第一行第一列都是纯粹的加和
+但这题并不是纯粹的 path sum 问题，所以才会上升为 hard 难度
+
+快乐女孩：
+这个 DP 是自底向上的
+不是基于以前的值
+因为已经确定能够到达终点
+
+at each position the life value >= 1
+dp[i][j] represents the minimum health points needed at position (i,j)
+For simplicity and generality：
+use dp[m + 1][n + 1]
+dp[i][j] = Math.min(dp[i + 1][j], dp[i][j + 1]) - dungeon[i][j]
+Once it < 1, dp[i][j] = 1       
+when dungeon[i][j] is large positve, the health point needed to reach there may be below 0, so use 1 instead
+Otherwise, keep the value
+
+-2(K)       -3          3
+ -5         -10         1
+ 10         30        -5(P)
+
+
+ 7          5           2   max
+ 6          11          5   max
+ 1          1           6   1
+max         max         1 
+
+这题的难点就在于遇到血值加 30 这种地方，因为我们要得到的是 min，所以应该让它为 1
+
+很有意思的题目
+

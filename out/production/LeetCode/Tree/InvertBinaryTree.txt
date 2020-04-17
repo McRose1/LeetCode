@@ -1,0 +1,14 @@
+将二叉树左右交换
+
+树的题基本上就是 recursion
+
+看看能不能调用自身
+
+第二层：root.left.val 和 root.right.val 互换
+第三层：root.left.left.val 和 root.right.right.val 互换 root.left.right.val 和 root.right.left.val 互换
+错错错！！！
+
+事实证明。。。想错了，不应该交换 value，而是直接把 TreeNode 交换
+
+可以用recursion来做
+也可以用iteration来做，分别是 BFS+Queue 和 DFS+Stack

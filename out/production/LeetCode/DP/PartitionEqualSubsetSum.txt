@@ -1,0 +1,37 @@
+乐元素 OA 里碰到的，一脸懵逼
+
+居然是用 DP 写的。。。
+
+笔试已经想到了先求 sum，如果 sum 是奇数，肯定不可能，返回 false
+然后如果我们能找到一个子集的和为 sum / 2 就证明是 true
+
+用 recursion 会 TLE，但是这个思想值得学习
+
+花花酱：
+dp[i][j]: whether we can sum to j using first i numbers 
+dp[i][j] = true if dp[i - 1][j - numi]     (可以用滚动数组降维)
+
+check dp[n - 1][sum / 2]
+
+init dp[-1][0] = true
+
+j: (0 - sum)
+Space = O(n * sum) 
+
+Bottom up 
+因为我们的 target 是找数组中的子集相加为 sum / 2
+那我们不如构建一个关于 sum 的动态数组，代表子集能够加和为 sum 的可能性
+[1, 5, 11, 5]，找到加和为 11 的子集
+dp[11] = dp[11] || dp[11 - num]
+
+dp[sum + 1]: 加和为 0 -> sum 的 boolean
+
+dp[j] = dp[j] || dp[j - num]
+
+然而这题 backtracking 要比 DP 快，典型的背包问题
+
+
+
+
+
+

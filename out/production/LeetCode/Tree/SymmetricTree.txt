@@ -1,0 +1,14 @@
+对称树
+
+迭代和递归
+
+      1
+     / \
+    2   2 
+   / \  / \ 
+  3  4  4  3 
+  
+root.left.left, root.right.right
+root.left.right, root.right.left
+
+迭代用 Queue 或者 Stack 来做

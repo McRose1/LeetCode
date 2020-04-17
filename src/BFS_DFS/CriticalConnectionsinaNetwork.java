@@ -21,6 +21,7 @@ package BFS_DFS;
     Hint: Use Tarjan's algorithm
  */
 
+import java.util.ArrayList;
 import java.util.List;
 /*  DFS: Time = O(n) Space = O(n)
     1. 找 cycle，一个 cycle 上面的任何一条边都不是 critical connections
@@ -30,6 +31,7 @@ import java.util.List;
  */
 public class CriticalConnectionsinaNetwork {
     public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
-
+        List<List<Integer>> res = new ArrayList<>();
+        return res;
     }
 }

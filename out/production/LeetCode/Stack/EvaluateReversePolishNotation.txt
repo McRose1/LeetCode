@@ -1,0 +1,14 @@
+逆波兰式
+
+Valid operators are +, -, *, /
+也就是加减乘除
+
+只要碰到 operator，就 pop 出两个数字和这个 operator 进行计算
+注意减法和除法，被减数和被除数都是第二个 pop 出来的元素
+
+逆波兰式就是典型的栈特性
+用 Stack 就秒了
+
+因为题目已经说了 The given RPN expression is always valid.
+所有我们不需要担心遍历到 operator 的时候 stack 里面没有两个元素
+也保证了我们遍历完整个式子最后从 stack 里 pop 出来的就是我们要的答案

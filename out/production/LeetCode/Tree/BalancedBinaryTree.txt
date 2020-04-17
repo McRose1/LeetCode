@@ -1,0 +1,22 @@
+Balanced Binary Tree:
+the left and right subtrees of every node differ in height by no more than 1
+
+一般数的题目，都是用 recursion
+
+easy 题也想不出来。。。
+
+B2B：
+在每一个 root，都看一下左子树和右子树的 height，并且判断是否为 BBT，如果左右子树都是，并且左右子树的深度相差不大于 1，那么才能证明整数为 BBT
+
+root = null is BBT
+
+篮子王：
+-1 -> not a BBT 
+Math.abs(hLeft - hRight)
+hLeft 
+hRight
+return Math.max(hLeft, hRight) + 1
+
+递归出口：
+root == null -> return 0;
+
