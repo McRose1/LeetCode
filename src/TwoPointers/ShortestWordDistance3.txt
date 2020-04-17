@@ -1,0 +1,4 @@
+和第一题相比多了两个 input 可以是相同的单词这个条件：
+["practice", "makes", "perfect", "coding", "makes"]，两个 input 都是 makes，最后答案是 3（不是 0）
+
+还是大同小异的双指针，就是在两个 input 相等的情况下，永远保证指针a在指针b的前面
