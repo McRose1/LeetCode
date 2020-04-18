@@ -1,4 +1,4 @@
-package String;
+package HashTable;
 
 /*  242. Valid Anagram（同字母异序词）
     Given two strings s and t, write a function to determine if t is an anagram of s.
@@ -32,12 +32,12 @@ public class ValidAnagram {
             return false;
         }
         int[] table = new int[26];
-        for (int i = 0; i < s.length(); i++) {
-            table[s.charAt(i) - 'a']++;
+        for (char c : s.toCharArray()) {
+            table[c - 'a']++;
         }
-        for (int i = 0; i < t.length(); i++) {
-            table[t.charAt(i) - 'a']--;
-            if (table[t.charAt(i) - 'a'] < 0) {
+        for (char c : t.toCharArray()) {
+            table[c - 'a']--;
+            if (table[c - 'a'] < 0) {
                 return false;
             }
         }

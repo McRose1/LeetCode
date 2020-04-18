@@ -4,10 +4,6 @@ public class Main {
 	// write your code here
         /*
 
-        String input = "2-1-1";
-        DifferentWaystoAddParentheses test = new DifferentWaystoAddParentheses();
-        System.out.println(test.diffWaysToCompute(input));
-
         int[] nums = new int[] {1,2,3,3,3};
         RandomPickIndex test = new RandomPickIndex(nums);
         System.out.println(test.pick(3));

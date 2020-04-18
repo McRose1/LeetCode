@@ -1,7 +1,6 @@
-package Array;
+package TwoPointers;
 
-/*
-    243. Shortest Word Distance
+/*  243. Shortest Word Distance
 
     Given a list of words and two words word1 and word2,
     return the shortest distance between these two words in the list.
@@ -17,9 +16,6 @@ package Array;
  */
 
 //  Optimized 2: Tow pointers -> Time = O(n)
-
-import java.util.List;
-
 public class ShortestWordDistance {
     public int shortestDistance(String[] words, String word1, String word2) {
         int res = words.length;
@@ -39,8 +35,7 @@ public class ShortestWordDistance {
     }
 }
 
-/*
-    Naive Solution: Time = O(n^2)
+/*  Naive Solution: Time = O(n^2)
     1. Iterate array to get to sorted list.
     2. Calculate distance of all valid (a, b) pairs, get the min one.
 
@@ -57,8 +52,7 @@ public class ShortestWordDistance {
         return res;
  */
 
-/*
-    Optimized 1: O(mlogn)
+/*  Optimized 1: O(mlogn)
     a, b are both sorted
     Binary Search
  */

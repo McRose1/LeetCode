@@ -1,7 +1,6 @@
-package Array;
+package TwoPointers;
 
 /*  245. Shortest Word Distance 3
-
     Given a list of words and two words word1 and word2,
     return the shortest distance between these two words in the list.
     word1 and word2 may be the same and they represent two individual words in the list.
@@ -15,7 +14,7 @@ package Array;
 
     Note: You may assume word1 and word2 are both in the list.
  */
-
+//  Two Pointers: Time = O(n) Space = O(1)
 public class ShortestWordDistance3 {
     public int shortestWordDistance(String[] words, String word1, String word2) {
         int res = words.length;
@@ -25,10 +24,12 @@ public class ShortestWordDistance3 {
                 a = i;
             }
             if (words[i].equals(word2)) {
+                // 这题的关键步骤
                 if (word1.equals(word2)) {
-                    a = b;
+                    // 永远让 a 在 b 的前面
+                    a = b;          // a = -1; 1
                 }
-                b = i;
+                b = i;              // b = 1; 4
             }
             if (a != -1 && b != -1) {
                 res = Math.min(res, Math.abs(a - b));

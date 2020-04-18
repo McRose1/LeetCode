@@ -43,6 +43,7 @@ public class NumberofIslands {
     }
 
     private void dfs(char[][] grid, int x, int y) {
+        // 这一步注意 grid[x][y] == '0' 的位置，必须先判断坐标是否越界，grid[x][y] 才不会 out of bound
         if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length || grid[x][y] == '0') return;
 
         // 这一步是这题的关键，相当于起到 visited 数组的作用，保证 DFS 不会回退
