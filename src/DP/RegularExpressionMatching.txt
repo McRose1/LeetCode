@@ -17,10 +17,14 @@ wildcard 题里：aab 和 c*a*b 是 false，因为一开始 a 就不能匹配 c
 
 *有两种可能：
 1. 匹配前一个字符的 0 个 -> dp[p][s] = dp[p - 2][s]
-2. 匹配前一个字符的一个或多个 -> 
+2. 匹配前一个字符的一个或多个 -> if p.charAt(p - 2) == s.charAt(s - 1) || p.charAt(p - 1) == '.':
+                                dp[p][s] = dp[p - 2][s] || dp[p][s - 1]
 
-c
-*
-a
-*
-b
+     0  1  2  2
+     #  a  a  b
+0 #  F  F  F  F
+1 c  F  F  F  F 
+2 *  T  F  F  F 
+3 a  F  T  F  F 
+4 *  T (T)(T) F
+5 b  F  F  F  T
