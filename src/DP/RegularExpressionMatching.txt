@@ -26,5 +26,13 @@ wildcard 题里：aab 和 c*a*b 是 false，因为一开始 a 就不能匹配 c
 1 c  F  F  F  F 
 2 *  T  F  F  F 
 3 a  F  T  F  F 
-4 *  T (T)(T) F
-5 b  F  F  F  T
+4 a  F  F  T  F  
+5 *  F (T)(T) F
+6 b  F  F  F  T
+
+尤其需要关注第二种 case，因为它还可以分两种情况
+一种是第一个括号的位置：a - c*aa* -> 这里的 * 匹配 0 次，也就是 dp[p][s] = dp[p - 2][s]
+另一种是第二个括号的位置：aa - c*aa* -> 这里的 * 匹配 1 次（多次也是一样），也就是 dp[p][s] = dp[p][s - 1]
+
+
+
