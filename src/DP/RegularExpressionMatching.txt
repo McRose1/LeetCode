@@ -1,0 +1,26 @@
+看起来和 wildcard matching 几乎一样的题
+把'?' 改成了 '.'
+
+但是仔细看会发现，这两题关于 '*' 的功能是完全不一样的：
+wildcard: '*' Matches any sequence of characters (including the empty sequence).(相当于是作用于后面的字符)
+regular expression: '*' Matches zero or more of the preceding element.
+
+注意这里的 '*' 是作用于它先前的一个字符，表示先前那个字符出现 0 - 多次
+举个例子：
+wildcard 题里：aab 和 c*a*b 是 false，因为一开始 a 就不能匹配 c
+而在这题里，他们是匹配的，返回 true，因为 * 可以让c出现0 次，让a出现 2 次，让b出现 1 次
+
+所以这两题的题意从本质上是不同的，虽说方法是相同的
+这题其实是正则表达式的实现
+
+这题比 wildcard 那题要难。。。
+
+*有两种可能：
+1. 匹配前一个字符的 0 个 -> dp[p][s] = dp[p - 2][s]
+2. 匹配前一个字符的一个或多个 -> 
+
+c
+*
+a
+*
+b
