@@ -45,35 +45,40 @@ package DP;
     p = "mis*is*p*."
     Output: false
  */
-//  DP (Top-Down): Time = O(n^2) Space = O(n^2)
+//  DP: Time = O(n^2) Space = O(n^2)
 public class RegularExpressionMatching {
-    enum Result {
-        TRUE, FALSE
-    }
-    Result[][] memo;
     public boolean isMatch(String s, String p) {
-        memo = new Result[s.length() + 1][p.length() + 1];
-        return dp(0, 0, s, p);
-    }
+        if (s == null || p == null) return false;
+        int sLen = s.length();
+        int pLen = p.length();
 
-    public boolean dp(int i, int j, String s, String p) {
-        if (memo[i][j] != null) {
-            return memo[i][j] == Result.TRUE;
-        }
-        boolean ans;
-        if (j == p.length()) {
-            ans = i == s.length();
-        } else {
-            boolean first_match = (i < s.length() && p.charAt(j) == s.charAt(i) || p.charAt(j) == '.');
+        boolean[][] dp = new boolean[pLen + 1][sLen + 1];
+        dp[0][0] = true;
 
-            if (j + 1 < p.length() && p.charAt(j + 1) == '*') {
-                ans = (dp(i, j + 2, s, p) || first_match && dp(i + 1, j, s, p));
-            } else {
-                ans = first_match && dp(i + 1, j + 1, s, p);
+        // 初始化第一列
+        for (int pIdx =  1; pIdx <= pLen; pIdx++) {
+            if (p.charAt(pIdx - 1) == '*') {
+                // ab* - #
+                dp[pIdx][0] = dp[pIdx - 2][0];
             }
         }
-        memo[i][j] = ans ? Result.TRUE : Result.FALSE;
-        return ans;
+
+        for (int pIdx = 1; pIdx <= pLen; pIdx++) {
+            for (int sIdx = 1; sIdx <= sLen; sIdx++) {
+                if (p.charAt(pIdx - 1) == '.' || p.charAt(pIdx - 1) == s.charAt(sIdx - 1)) {
+                    dp[pIdx][sIdx] = dp[pIdx - 1][sIdx - 1];
+                } else if (p.charAt(pIdx - 1) == '*') {
+                    // * 匹配前一个字符的 1 次或多次：aaa - aa*
+                    if (p.charAt(pIdx - 2) == s.charAt(sIdx - 1) || p.charAt(pIdx - 2) == '.') {
+                        dp[pIdx][sIdx] = dp[pIdx][sIdx - 1] || dp[pIdx - 2][sIdx];
+                    // * 匹配前一个字符 0 次：a - c*a
+                    } else {
+                        dp[pIdx][sIdx] = dp[pIdx - 2][sIdx];
+                    }
+                }
+            }
+        }
+        return dp[pLen][sLen];
     }
 }
 
