@@ -68,11 +68,14 @@ public class RegularExpressionMatching {
                 if (p.charAt(pIdx - 1) == '.' || p.charAt(pIdx - 1) == s.charAt(sIdx - 1)) {
                     dp[pIdx][sIdx] = dp[pIdx - 1][sIdx - 1];
                 } else if (p.charAt(pIdx - 1) == '*') {
-                    // * 匹配前一个字符的 1 次或多次：aaa - aa*
+                    // 如果 * 前面一个字符等于当前需要匹配的 s 的字符，那么会有两种情况：
                     if (p.charAt(pIdx - 2) == s.charAt(sIdx - 1) || p.charAt(pIdx - 2) == '.') {
-                        dp[pIdx][sIdx] = dp[pIdx][sIdx - 1] || dp[pIdx - 2][sIdx];
-                    // * 匹配前一个字符 0 次：a - c*a
+                        // 1. * 匹配 0 次，如：a - aa* -> dp[pIdx - 2][sIdx]
+                        // 2. * 匹配 1 次或多次：aaa - aa* -> dp[pIdx][sIdx - 1]
+                        dp[pIdx][sIdx] = dp[pIdx - 2][sIdx] || dp[pIdx][sIdx - 1];
+                    // 如果 * 前面一个字符不等于当前需要匹配的 s 的字符，那么 * 的功能一定是让前面这个字符出现 0 次
                     } else {
+                        // * 匹配前一个字符 0 次：a - ac*
                         dp[pIdx][sIdx] = dp[pIdx - 2][sIdx];
                     }
                 }

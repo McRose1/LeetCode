@@ -1,0 +1,10 @@
+判断两个字符串是否由同样的字母组成（同一个字母出现的次数也需要一样）
+其实这题是 Group Anagrams 的简单版本，那题就是用了 HashTable 和 sort 
+
+HashMap 做出来了
+因为题目说只包含小写字母，那么就可以用大小为 26 的数组代替 map
+
+follow up 说如果 input 只包含 Unicode character 该怎么办？
+那就只能用 HashMap 了
+
+这题也可以 sort，最后直接 Arrays.equals()

@@ -39,11 +39,38 @@ package Backtracking;
       [4, 8]
     ]
  */
-//  Backtracking
 import java.util.ArrayList;
 import java.util.List;
-
+//  Backtracking (my version)
 public class FactorCombinations {
+    public List<List<Integer>> getFactors(int n) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (n < 4) {
+            return res;
+        }
+        int max = n / 2;
+        backtrack(n, max, res, new ArrayList<>(), 2);
+        return res;
+    }
+
+    private void backtrack(int target, int max, List<List<Integer>> res, List<Integer> list, int start) {
+        if (target == 1) {
+            res.add(new ArrayList<>(list));
+            return;
+        }
+
+        for (int i = start; i <= max; i++) {
+            if (target % i == 0) {
+                list.add(i);
+                backtrack(target / i, max, res, list, i);
+                list.remove(list.size() - 1);
+            }
+        }
+    }
+}
+
+/*  Another Version
+
     public List<List<Integer>> getFactors(int n) {
         List<List<Integer>> res = new ArrayList<>();
         if (n < 4) return res;
@@ -74,4 +101,4 @@ public class FactorCombinations {
         backtrack(1, n, res, list);
         list.remove(list.size() - 1);
     }
-}
+ */

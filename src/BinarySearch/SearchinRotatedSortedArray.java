@@ -16,7 +16,7 @@ package BinarySearch;
     Output: -1
  */
 
-/*  Binary Search
+/*  Binary Search: Time = O(logn) Space = O(1)
     4 5 6 7 | 0 1 2
     l             r
  */
@@ -31,14 +31,14 @@ public class SearchinRotatedSortedArray {
             // 先确定 mid 在左边
             if (nums[mid] > nums[left]) {
                 // 再确定 target 在左边的 mid 左边
-                if (target <= nums[mid] && target >= nums[left]) {
+                if (target < nums[mid] && target >= nums[left]) {
                     right = mid;
                 // 再确定 target 在左边的 mid 右边
                 } else left = mid;
             // 先确定 mid 在右边
             } else {
                 // 再确定 target 在右边的 mid 右边
-                if (target >= nums[mid] && target <= nums[right]) {
+                if (target > nums[mid] && target <= nums[right]) {
                     left = mid;
                 // 再确定 target 在右边的 mid 左边
                 } else right = mid;
