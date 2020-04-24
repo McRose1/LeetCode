@@ -1,4 +1,4 @@
-package String;
+package KMP;
 
 /*  28. Implement strStr()
     Implement strStr().
@@ -23,7 +23,7 @@ package String;
     Java indexOf() 就是用 KMP 实现的
     前缀后缀，可以省去前面已经匹配的重复匹配
     a a a a a a a b
-    a a a b             pi = [-1, 0, 1, 2]
+    a a a b             next = [-1, 0, 1, 2]
 
     a a a a a a a b
       a a a b
