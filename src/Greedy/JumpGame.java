@@ -1,4 +1,4 @@
-package DP;
+package Greedy;
 
 /*  55. Jump Game
     Given an array of non-negative integers, you are initially positioned at first index of the array.
