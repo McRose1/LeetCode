@@ -19,6 +19,45 @@ package String;
     Output: "PINALSIGYAHRPI"
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
+/*  Sort by Row: Time = O(n) Space = O(n)
+    By iterating through the string from left to right, we can easily determine which row in the Zig-Zag
+    pattern that a character belongs to
+    一行一行遍历，从第一行一直到最后一行，再从最后一行上去到第一行，如此反复，每一行都初始化一个 StringBuilder 存字符
+ */
+public class ZigZagConversion {
+    public String convert(String s, int numRows) {
+
+        if (numRows == 1) return s;
+
+        List<StringBuilder> rows = new ArrayList<>();
+        for (int i = 0; i < Math.min(numRows, s.length()); i++) {
+            rows.add(new StringBuilder());
+        }
+
+        int curRow = 0;
+        boolean goingDown = false;
+
+        for (char c : s.toCharArray()) {
+            // 顺着 Z 字形遍历，并且一行一行添加
+            rows.get(curRow).append(c);
+            // 遍历到两端，遍历行的方向需要改变
+            if (curRow == 0 || curRow == numRows - 1) {
+                goingDown = !goingDown;
+            }
+            curRow += goingDown ? 1 : -1;
+        }
+
+        StringBuilder ret = new StringBuilder();
+        for (StringBuilder row : rows) {
+            ret.append(row);
+        }
+        return ret.toString();
+    }
+}
+
 /*  Visit by Row: Time = O(n) Space = O(n)
     Visit the characters in the same order as reading the Zig-Zag pattern line by line
     Visit all characters in row 0 first, then row 1, then row 2, and so on...
@@ -26,9 +65,6 @@ package String;
     Characters in row 0 are located at indexes k(2*numRows - 2)
     Characters in row numRows - 1 are located at indexes k(2*numRows - 2) + numRows - 1
     Characters in inner row i are located at indexes k(2*numRows - 2) + i and (k + 1)(2*numRows - 2) - i
- */
-public class ZigZagConversion {
-    public String convert(String s, int numRows) {
 
         if (numRows == 1) return s;
 
@@ -45,35 +81,4 @@ public class ZigZagConversion {
             }
         }
         return sb.toString();
-    }
-}
-
-/*  Sort by Row: Time = O(n) Space = O(n)
-    By iterating through the string from left to right, we can easily determine which row in the Zig-Zag
-    pattern that a character belongs to
-
-        if (numRows == 1) return s;
-
-        List<stringBuilder> rows = new ArrayList<>();
-        for (int i = 0; i < Math.min(numRows, s.length()); i++) {
-            rows.add(new StringBuilder());
-        }
-
-        int curRow = 0;
-        boolean goingDown = false;
-
-        for (char c : s.toCharArray()) {
-            rows.get(curRow).append(c);
-            // 遍历到两端
-            if (curRow == 0 || curRow == numRow - 1) {
-                goingDown = !goingDown;
-            }
-            curRow += goingDown ? 1 : -1;
-        }
-
-        StringBuilder ret = new StringBuilder();
-        for (StringBuilder row : rows) {
-            ret.append(row);
-        }
-        return ret.toString();
  */
