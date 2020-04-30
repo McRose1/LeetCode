@@ -4,7 +4,6 @@ tree 的 hard 题（其实算 medium）
 
 题目里说并不需要经过 root
 
-
 Laioffer：
 用 root 来分解所有的 path，左边的 path 和右边的 path，（每段的 root 一定选）
 
