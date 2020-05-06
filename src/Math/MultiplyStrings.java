@@ -24,31 +24,34 @@ package Math;
  */
 public class MultiplyStrings {
     public String multiply(String num1, String num2) {              // num1 = "123", num2 = "456"
+        if (num1 == null || num2 == null || num1.length() == 0 || num2.length() == 0) {
+            return "";
+        }
+
         if (num1.equals("0") || num2.equals("0")) {
             return "0";
         }
-        int n1 = num1.length();                                     // 3
-        int n2 = num2.length();                                     // 3
-        // 保存最后的结果
-        int[] pos = new int[n1 + n2];                               // [0, 0, 0, 0, 0, 0]
-        for (int i = n1 - 1; i >= 0; i--) {                         // 2;       1;        0
-            for (int j = n2 - 1; j >= 0; j--) {                     // 2; 1; 0
-                // 相乘的结果
-                int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');  // 18; 15; 12/ 12; 10; 8/ 6; 5; 4
-                // 加上 pos[i+j+1] 之前已经累加的结果
-                int sum = mul + pos[i + j + 1];      // 18; 15+p[4]=16; 12+p[3]=13/ 12+p[4]=18; 10+p[3]=14; 8+p[2]=10/ 6+p[3]=10; 5+p[2]=6; 4+p[1]=5
-                // 更新 pos[i + j] -> carry
-                pos[i + j] += sum / 10;              // p[4]=1; p[3]=1; p[2]=1/     p[3]=4; p[2]=2; p[1]=1/           p[2]=1; p[1]=1; p[0]=0
-                // 更新 pos[i + j + 1]
-                pos[i + j + 1] = sum % 10;           // p[5]=(8); p[4]=6; p[3]=3/   p[4]=(8); p[3]=4; p[2]=0/      p[3]=(0); p[2]=(6); p[1]=(5)
+
+        int n1 = num1.length();
+        int n2 = num2.length();
+        // 两数相乘结果的位数最小为两数位数之和减 1，最大为两数位数之和
+        int[] pos = new int[n1 + n2];
+
+        for (int i = n1 - 1; i >= 0; i--) {
+            for (int j = n2 - 1; j >= 0; j--) {
+                int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
+                // 加上 pos[i+j+1] 之前轮次中已经累加的结果
+                int sum = mul + pos[i + j + 1];
+                // 确定该位的值，以后不会再遍历到，所以直接赋值
+                pos[i + j + 1] = sum % 10;
+                // 更新这一轮的进位，加入前一位的数字供下一轮使用
+                pos[i + j] += sum / 10;
             }
         }
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < pos.length; i++) {          // [0, 5, 6, 0, 8, 8]
+        for (int i = 0; i < pos.length; i++) {
             // 判断最高位是不是 0
-            if (i == 0 && pos[i] == 0) {
-                continue;
-            }
+            if (i == 0 && pos[i] == 0) continue;
             sb.append(pos[i]);
         }
         return sb.toString();
