@@ -1,4 +1,4 @@
-package Array;
+package TwoPointers;
 
 /*  26. Remove Duplicates from Sorted Array
     Given an sorted array nums,
