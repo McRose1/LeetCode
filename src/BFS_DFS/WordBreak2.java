@@ -46,27 +46,32 @@ import java.util.List;
 
 //  Recursion with Memoization: Time = O(n^3) Space = O(n)
 public class WordBreak2 {
+    private HashSet<String> set;
+
     public List<String> wordBreak(String s, List<String> wordDict) {
-        return dfs(s, wordDict, 0);
+        set = new HashSet<>(wordDict); // ["cat", "cats", "and", "sand", "dog"]
+        return dfs(s, 0);
     }
     HashMap<Integer, List<String>> mem = new HashMap<>();
 
-    private List<String> dfs(String s, List<String> wordDict, int start) {  // s = "catsanddog"
-        HashSet<String> set = new HashSet<>(wordDict); // ["cat", "cats", "and", "sand", "dog"]
+    private List<String> dfs(String s, int start) {  // s = "catsanddog"
         // 记忆化递归的核心
         if (mem.containsKey(start)) {
             return mem.get(start);
         }
         List<String> res= new ArrayList<>();
+        // 处理遍历到字符串结尾的情况
         if (start == s.length()) {
+            // 这一步非常重要！如果不加""，那么res里就没有任何数据，也就进不去for(String temp : list)的遍历，res也就没法更新，永远为空
             res.add("");
         }
 
         for (int end = start + 1; end <= s.length(); end++) {   // 1; 2; 3 -> 4; 5; 6; 7 -> 8; 9; 10
             if (set.contains(s.substring(start, end))) {        // "c"; "ca"; "cat" -> "s"; "sa"; "san"; "sand" -> "d"; "do"; "dog"
-                List<String> list = dfs(s, wordDict, end);  // list = dfs(3); dfs(7); dfs(10)
+                // 开始 DFS 遍历，end 作为新的一轮的起点
+                List<String> list = dfs(s, end);  // list = dfs(3); dfs(7); dfs(10)
                 for (String temp : list) {
-                    // 把结果连起来
+                    // 把结果从后往前拼接起来，如果是最后一个单词就不用加空格
                     res.add(s.substring(start, end) + (temp.equals("") ? "" : " ") + temp);
                 }
             }
