@@ -64,3 +64,42 @@ public class NextPermutation {
         nums[j] = temp;
     }
 }
+
+/*  my version:
+
+    public void nextPermutation(int[] nums) {
+        int target = -1;
+        for (int i = nums.length - 1; i >= 1; i--) {
+            if (nums[i - 1] < nums[i]) {
+                target = i - 1;
+                break;
+            }
+        }
+        // 如果从右往左能找到左边比右边大的数，进入循环；否则直接 reverse 整个数组
+        if (target != -1) {
+            for (int i = nums.length - 1; i > target; i--) {
+                if (nums[i] > nums[target]) {
+                    int temp = nums[target];
+                    nums[target] = nums[i];
+                    nums[i] = temp;
+                    break;
+                }
+            }
+        }
+        reverse(nums, target + 1);
+        return;
+    }
+
+    private void reverse(int[] nums, int start) {
+        int left = start;
+        int right = nums.length - 1;
+        while (left < right) {
+            int temp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = temp;
+            left++;
+            right--;
+        }
+    }
+
+ */

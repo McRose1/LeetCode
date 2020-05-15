@@ -25,6 +25,22 @@ public class TwoSum {
         throw new IllegalArgumentException("No two sum solution");
     }
 }
+
+/*  my version
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int[] res = new int[2];
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(target - nums[i])) {
+                res = new int[] {i, map.get(target - nums[i])};
+            } else {
+                map.put(nums[i], i);
+            }
+        }
+        return res;
+ */
+
+
 /*  Two-pass Hash Table: Time = O(n) Space = O(n)
 
         // {value, index}
