@@ -27,6 +27,9 @@ import java.util.List;
 public class ThreeSum {
     public List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
+        if (nums == null || nums.length < 3) {
+            return res;
+        }
         // 通过排序可以在第一个循环中避免 duplicate 的情况，还是后面双指针移动的前提
         // 这一步非常关键
         Arrays.sort(nums);

@@ -41,15 +41,18 @@ public class FindMinimuminRotatedSortedArray {
 /*  my version
     这题最关键的地方就是想清楚中值小于右值的时候，最小值是在左半边
     [5, 6, 7, 0, 1, 2, 3] -> [5, 6, 7, 0]
-    [5, 6, 0, 1, 2, 3, 4] -> [5, 6, 0, 1]
+    [5, 6, 7, 8, 1, 2, 3] -> [8, 1, 2, 3]
 
         int left = 0;
         int right = nums.length - 1;
         while (left + 1 < right) {
             int mid = left + (right - left) / 2;
+            // 中值大于最右值，说明中值此时在左半部分，左半部分最小也比右半部分最大来得大，所以最小值在右边
             if (nums[mid] > nums[right]) {
                 left = mid;
-            } else {
+            }
+            // 中值小于等于最右值，说明中值此时在右半部分，右半部分单调递增，所以最小值在左边
+            else {
                 right = mid;
             }
         }

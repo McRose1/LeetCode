@@ -22,10 +22,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/*  Two Pointers: Time = O(n^3) Space = O(1)
+    Same as 3Sum
+ */
+
 public class FourSum {
     List<List<Integer>> fourSum(int[] nums, int target) {
         List<List<Integer>> res = new ArrayList<>();
-        if (nums.length < 4) return res;
+        if (nums == null || nums.length < 4) {
+            return res;
+        }
         Arrays.sort(nums);
         for (int i = 0; i < nums.length - 3; i++) {
             if (i > 0 && nums[i] == nums[i - 1]) continue;
@@ -52,6 +58,3 @@ public class FourSum {
         return res;
     }
 }
-/*
-    Same as 3Sum
- */
