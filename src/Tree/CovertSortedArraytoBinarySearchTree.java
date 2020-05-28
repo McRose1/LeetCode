@@ -13,8 +13,12 @@ package Tree;
          /    /
        -10   5
  */
-//  Recursion: Time = O(n) Space = O(n)->O(logn)
-public class CovertedSortedArraytoBinarySearchTree {
+/*  Recursion: Time = O(n) Space = O(n)->O(logn)
+    BST 的 Inorder 是一个升序序列
+    所以题目转换成了：根据中序遍历序列创建 BST
+    其实用到的是二分法的分而治之的思想
+ */
+public class CovertSortedArraytoBinarySearchTree {
     public TreeNode sortedArrayToBST(int[] nums) {
         if (nums == null || nums.length == 0) return null;
         return constructBST(nums, 0, nums.length - 1);

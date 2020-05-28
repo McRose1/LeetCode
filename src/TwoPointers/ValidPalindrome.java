@@ -12,7 +12,7 @@ package TwoPointers;
     Input: "race a car"
     Output: false
  */
-//  Two Pointers
+//  Two Pointers: Time = O(n) Space = O(1)
 public class ValidPalindrome {
     public boolean isPalindrome(String s) {
         if (s.length() == 0) return true;
@@ -32,3 +32,27 @@ public class ValidPalindrome {
         return true;
     }
 }
+
+/*  my version
+
+        if (s == null || s.length() == 0) {
+            return true;
+        }
+        int left = 0;
+        int right = s.length() - 1;
+        while (left < right) {
+            while (left < right && !Character.isLetterOrDigit(s.charAt(left))) {
+                left++;
+            }
+            while (left < right && !Character.isLetterOrDigit(s.charAt(right))) {
+                right--;
+            }
+            if (left < right && Character.toLowerCase(s.charAt(left)) == Character.toLowerCase(s.charAt(right))) {
+                left++;
+                right--;
+            } else {
+                break;
+            }
+        }
+        return (left >= right);
+ */

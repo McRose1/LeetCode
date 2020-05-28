@@ -1,4 +1,4 @@
-package SlidingWindow;
+package HashTable;
 
 /*  3. Longest Substring Without Repeating Characters
     Given a string, find the length of the longest substring without repeating characters.
@@ -31,10 +31,11 @@ public class LongestSubstringWithoutRepeatingCharacters {
         // try to extend the range [slow, fast]
         for (int slow = 0, fast = 0; fast < n; fast++) {
             if (map.containsKey(s.charAt(fast))) {
+                // 调整滑动窗口的左边界使其 valid（不存在重复字符）
                 slow = Math.max(map.get(s.charAt(fast)), slow); // slow=max(2,0)=2
             }
             ans = Math.max(ans, fast - slow + 1); // ans=0-0+1=1;2
-            // already fast' + 1
+            // already fast' + 1：代表左边界的 index，即不包含该字符的子串起点 index
             map.put(s.charAt(fast), fast + 1);  // {p,1}; {w,2}
         }
         return ans;
@@ -79,30 +80,6 @@ public class LongestSubstringWithoutRepeatingCharacters {
             }
         }
         return ans;
- */
-
-/*  my version(HashSet)
-
-        if (s == null || s.length() == 0) return 0;
-        int max = 1;
-        int left = 0;
-        int right = 1;
-        if (s.length() == 1) {
-            return 1;
-        }
-        HashSet<Character> set = new HashSet<>();
-        set.add(s.charAt(0));
-        while (right < s.length()) {
-            if (!set.contains(s.charAt(right))) {
-                set.add(s.charAt(right));
-                right++;
-                max = Math.max(max, right - left);
-            } else {
-                set.remove(s.charAt(left));
-                left++;
-            }
-        }
-        return max;
  */
 
 /*  my version(optimized brute force): Time = O(n^2) -> O(n*128) Space = O(128)

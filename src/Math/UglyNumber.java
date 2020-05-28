@@ -1,4 +1,6 @@
-/*
+package Math;
+
+/*  263. Ugly Number
     Write a program to check whether a given number is an ugly number.
 
     Ugly numbers are positive numbers whose prime factors only include 2, 3, 5.
@@ -16,10 +18,13 @@
     Output: false
 
     Note:
-        1 is typically treated as an ugly number.
-        Input is within the 32-bit signed integer range: [−2^31,  2^31 − 1].
+    1 is typically treated as an ugly number.
+    Input is within the 32-bit signed integer range: [−2^31,  2^31 − 1].
  */
-// num = 2^i * 3^j * 5^k
+
+/*  Math
+    num = 2^i * 3^j * 5^k
+ */
 public class UglyNumber {
     public boolean isUgly(int num) {
         if (num == 0) return false;

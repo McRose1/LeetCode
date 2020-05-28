@@ -33,12 +33,19 @@ public class SortColors {
         }
         int i = 0, j = 0, k = nums.length - 1;
 
+        // 注意不要忘记等于
         while (j <= k) {
+            // j 所在位置是红色
             if (nums[j] == 0) {
                 swap(nums, i++, j++);
-            } else if (nums[j] == 1) {
+            }
+            // j 所在位置是白色
+            else if (nums[j] == 1) {
                 j++;
-            } else {
+            }
+            // j 所在位置是蓝色
+            else {
+                // 只能保证 k 所在位置现在为蓝色，但是 j 所在位置不能确定，所以还得再判断一次
                 swap(nums, j, k--);
             }
         }
@@ -50,3 +57,30 @@ public class SortColors {
         nums[right] = temp;
     }
 }
+
+/*  two-pass algorithm using counting sort: Time = O(n) Space = O(1)
+
+        int redCnt = 0;
+        int whiteCnt = 0;
+        int blueCnt = 0;
+        for (int num : nums) {
+            if (num == 0) {
+                redCnt++;
+            } else if (num == 1) {
+                whiteCnt++;
+            } else if (num == 2) {
+                blueCnt++;
+            }
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (redCnt-- > 0) {
+                nums[i] = 0;
+            }
+            else if (whiteCnt-- > 0) {
+                nums[i] = 1;
+            }
+            else if (blueCnt-- > 0) {
+                nums[i] = 2;
+            }
+        }
+ */

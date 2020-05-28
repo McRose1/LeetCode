@@ -1,3 +1,5 @@
+学而思笔试碰到了这题，当时用的是 HashSet + Two Pointers
+
 滑动窗口 一般适用于 substring 的题
 
 暴力解法是从左到右以每一个 index 为起点，遍历整个 String，设置一个 seen 的数组，如果重复了就算一次这个 substring 的长度
@@ -15,3 +17,5 @@ pw | wekw
 
 可以用 HashSet, HashMap 和 size = 128（ASCII 码的数量）的数组
 performance HashSet < HashMap < Int[128]
+
+slow pointer 一步一步移，比 HashMap 直接将 slow pointer 移动到 valid index 要慢很多

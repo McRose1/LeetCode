@@ -1,4 +1,4 @@
-package Graph;
+package UnionFind;
 
 /*  261. Graph Valid Tree
     Given n nodes labeled from 0 to n-1 and a list of undirected edges (each edge is a pair of nodes),
@@ -18,7 +18,8 @@ package Graph;
 
 import java.util.*;
 
-/*  Union Find
+/*  Union Find: Time = O(edges * nodes) Space = O(n)
+    其实就是检查是否存在环，因为树就是不存在 cycle 的 graph
     遍历节点，如果两个节点相连，我们将其 roots 值连上，初始化 roots 数组为 -1
     对一个 pair 的两个节点分别调用 find 函数，得到的值如果相同的话，则说明环存在，不同的话，将其 root 值 union 上
  */

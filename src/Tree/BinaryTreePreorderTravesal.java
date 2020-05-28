@@ -17,8 +17,31 @@ package Tree;
 
 import java.util.ArrayList;
 import java.util.List;
-//  Recursion: Time = O(n) Space = O(n)
+import java.util.Stack;
+
+//  Iteration: Time = O(n) Space = O(n)
 public class BinaryTreePreorderTravesal {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                stack.push(root);
+                // 先遍历根节点
+                res.add(root.val);
+                // 继续考虑左子树
+                root = root.left;
+            }
+            // 节点为空，就出栈
+            root = stack.pop();
+            // 考虑右子树
+            root = root.right;
+        }
+        return res;
+    }
+}
+/*  Recursion: Time = O(n) Space = O(n)
+
     public List<Integer> preorderTraversal(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         helper(root, res);
@@ -30,28 +53,10 @@ public class BinaryTreePreorderTravesal {
         helper(root.left, res);
         helper(root.right, res);
     }
-}
-/*  Iteration: Time = O(n) Space = O(n)
 
-        List<Integer> res = new ArrayList<>();
-        Stack<TreeNode> stack = new Stack<>();
-        TreeNode curr = root;
-        while (curr != null || !stack.isEmpty()) {
-            if (curr != null) {
-                stack.push(curr);
-                res.add(curr.val);
-                curr = curr.left;   // 考虑左子树
-            } else {
-            // 节点为空，就出栈
-            curr = stack.pop();
-            // 考虑右子树
-            curr = curr.right;
-            }
-        }
-        return res;
+/* version 2: 将左右子树分别压栈，然后每次从栈里取元素。因为栈是先进后出，所有我们先压右子树。
+   首先存入当前节点值，然后先将右儿子压入栈中，再将左儿子压入栈中。对栈中元素遍历访问。
 
-    // version 2: 将左右子树分别压栈，然后每次从栈里取元素。因为栈是先进后出，所有我们先压右子树。
-    // 首先存入当前节点值，然后先将右儿子压入栈中，再将左儿子压入栈中。对栈中元素遍历访问。
         if (root == null) return res;
         stack.push(root);
         while (!stack.isEmpty()) {

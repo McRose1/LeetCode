@@ -13,14 +13,39 @@ package Tree;
     Output: [1,3,2]
     Follow up: Recursive solution is trivial, could you do it iteratively?
  */
-/* Recursion:
-    Time = O(n): recursive function is T(n)=2*T(n/2)+1
-    Space = O(n): the worst case space required is O(n), and in the average case it's O(logn)树的高度
- */
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
+/*  Iterating method using Stack: Time = O(n) Space = O(n)
+    按照左->根->右的次序遍历二叉树，搜索左子树，存入当前点，搜索右子树
+ */
 public class BinaryTreeInorderTraversal {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) return res;
+        Stack<TreeNode> stack = new Stack<>();
+        // 节点不为空或者栈中还有节点，说明遍历还未完成
+        while (root != null || !stack.isEmpty()) {
+            // 节点不为空一直压栈
+            while (root != null) {
+                stack.push(root);
+                root = root.left;   // 考虑左子树
+            }
+            // 节点为空，就出栈
+            root = stack.pop();
+            // 当前值加入
+            res.add(root.val);
+            // 考虑右子树
+            root = root.right;
+        }
+        return res;
+    }
+}
+/*  Recursion:
+    Time = O(n): recursive function is T(n)=2*T(n/2)+1
+    Space = O(n): the worst case space required is O(n), and in the average case it's O(logn)树的高度
+
     public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         if (root == null) return res;
@@ -33,28 +58,8 @@ public class BinaryTreeInorderTraversal {
         res.add(root.val);
         helper(res, root.right);
     }
-}
-/*  Iterating method using Stack: Time = O(n) Space = O(n)
-    按照左->根->右的次序遍历二叉树，搜索左子树，存入当前点，搜索右子树
-        List<Integer> res = new ArrayList<>();
-        Stack<TreeNode> stack = new Stack<>();
-        TreeNode curr = root;
-        while (curr != null || !stack.isEmpty()) {
-            // 节点不为空一直压栈
-            while (curr != null) {
-                stack.push(curr);
-                curr = curr.left;   // 考虑左子树
-            }
-            // 节点为空，就出栈
-            curr = stack.pop();
-            // 当前值加入
-            res.add(curr.val);
-            // 考虑右子树
-            curr = curr.right;
-        }
-        return res;
-
-//  Iteration Version 2:
+ */
+/*  Iteration Version 2:
 
         while (root != null) {
             stack.push(root);

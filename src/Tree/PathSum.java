@@ -17,23 +17,16 @@ package Tree;
     return true, as there exits a root-to-leaf path 5->4->11->2 which sum is 22
  */
 
+//  Recursion: Time = O(n) space = O(n)
 public class PathSum {
     public boolean hasPathSum(TreeNode root, int sum) {
         if (root == null) return false;
+
         // 说明此时的 node 已经是 leaf，可以进行结算
-        if (root.left == null & root.right == null ) {
+        if (root.left == null && root.right == null ) {
             return root.val == sum;
         }
-        int new_sum = sum - root.val;
-        return hasPathSum(root.left, new_sum) || hasPathSum(root.right, new_sum);
+
+        return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
     }
 }
-
-/*  my version
-
-        if (root == null) return false
-        if (root.val == sum && root.left == null && root.right == null) {
-            return true;
-        }
-        return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
- */

@@ -1,9 +1,0 @@
-shopee 笔试里碰到了，居然看成了 permutation 用 backtracking。。。
-
-晕死了。。。应该是双指针啊啊啊啊
-其实是三指针
-
-山景城一姐：
-1. Sort the array 
-2. Lock one pointer and do two sum with the other two
-
