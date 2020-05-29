@@ -9,7 +9,7 @@ package DP;
     For example, costs[0][0] is the cost of painting house 0 with color red; costs[1][2] is the cost of painting house 1 with color green, and so on...
     Find the minimum cost to paint all houses.
 
-    Note: All costs are positive intergers.
+    Note: All costs are positive integers.
 
     Example:
     Input: [[17,2,17],[16,16,5],[14,3,19]]
@@ -17,6 +17,7 @@ package DP;
     Explanation: Paint house 0 into blue, paint house 1 into green, paint house 2 into blue.
                  Minimum cost: 2 + 5 + 3 = 10.
  */
+
 //  DP: Time = O(3*n) Space = O(3*n)
 public class PaintHouse {
     public int minCost(int[][] costs) {
@@ -40,7 +41,7 @@ public class PaintHouse {
 
         int min = Integer.MAX_VALUE;
         for (int j = 0; j < 3; j++) {
-            min = Math.min(min, dp[n-1][j]);
+            min = Math.min(min, dp[n - 1][j]);
         }
         return min;
     }

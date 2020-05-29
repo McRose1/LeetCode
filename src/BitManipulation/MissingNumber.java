@@ -19,9 +19,10 @@ package BitManipulation;
 // XOR: Time = O(n) Space = O(1)
 public class MissingNumber {
     public int missingNumber(int[] nums) {
+        // 先初始化为可能存在的最大值
         int missing = nums.length;
         for (int i = 0; i < nums.length; i++) {
-            missing ^= i ^ nums[i];
+            missing ^= (i ^ nums[i]);
         }
         return missing;
     }
@@ -33,6 +34,19 @@ public class MissingNumber {
         int actualSum = 0;
         for (int num : nums) actualSum += num;
         return expectedSum - actualSum;
+ */
+
+/*  my version (XOR)
+
+        int numXOR = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            numXOR ^= nums[i];
+        }
+        int originalXOR = 0;
+        for (int i = 1; i <= nums.length; i++) {
+            originalXOR ^= i;
+        }
+        return numXOR ^ originalXOR;
  */
 
 /*  Sorting: Time = O(nlogn) Space = O(1)

@@ -35,15 +35,18 @@ public class PathSum2 {
         // 出口 1
         if (root == null) return;
         // 出口 2：leaf node
-        if (root.left == null && root.right == null && root.val == sum) {
-            // 添加 leaf node
-            list.add(root.val);
-            res.add(new ArrayList<>(list));
-            // backtrack
-            list.remove(list.size() - 1);
+        if (root.left == null && root.right == null) {
+            if (root.val == sum) {
+                // 添加 leaf node
+                list.add(root.val);
+                // 添加该分支到 res
+                res.add(new ArrayList<>(list));
+                // backtrack
+                list.remove(list.size() - 1);
+            }
             return;
         }
-        // 添加非leaf node
+        // 添加非 leaf node
         list.add(root.val);
         dfs(res, list, root.left, sum - root.val);
         dfs(res, list, root.right, sum - root.val);
