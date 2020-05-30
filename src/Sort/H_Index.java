@@ -1,4 +1,4 @@
-package Array;
+package Sort;
 
 /*  274. H-Index
     Given an array of citations (each citation is a non-negative integer) of a researcher,
@@ -18,26 +18,32 @@ package Array;
     Note: If there are several possible values for h, the maximum one is taken as the h-index.
  */
 
-// Time = O(nlogn) Space = O(1)
+/*  Sort: Time = O(nlogn) Space = O(1)
+    相当于一个直方图，横坐标代表 i，纵坐标代表 citations[i]，y = x 即 citations[i] = i
+    将数组降序排序 -> [6,5,3,1,0]
+    如果 citations[i] > i，说明第 0 到第 i 篇论文都有至少 i+1 次引用
+    因此我们只要找到最大的 i 满足 citations[i] > i，那么 h-index 即为 i+1
+ */
 
 import java.util.Arrays;
 
 public class H_Index {
     public int hIndex(int[] citations) {
         Arrays.sort(citations);
-        int res = 0;
-        while (res < citations.length && citations[citations.length - 1 - res] > res) {
-            res++;
+        int i = 0;
+        // 倒序扫描找出最大的 i
+        while (i < citations.length && citations[citations.length - 1 - i] > i) {
+            i++;
         }
-        return res;
+        return i;
     }
 }
 
-/*
-    Bucket Sort: Time = O(n) Space = O(n)
+/*  Bucket Sort（计数）: Time = O(n) Space = O(n)
 
         int n = citations.length;
         int[] buckets = new int[n + 1];
+        // 计数
         for (int c : citations) {
             if (c >= n) {
                 buckets[n]++;
@@ -45,6 +51,7 @@ public class H_Index {
                 buckets[c]++;
             }
         }
+        // 找出最大的 count
         int count = 0;
         for (int i = n; i >= 0; i--) {
             count += buckets[i];

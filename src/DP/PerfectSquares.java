@@ -14,16 +14,19 @@ package DP;
  */
 
 import java.util.Arrays;
-/*  DP
-    dp[i] = min(i, f[i - j * j] + 1) (j * j <= i)
+/*  DP: Time = O(n) Space = O(1)
+    dp[i] = min(dp[i], dp[i - j * j] + 1) (j * j <= i)
  */
 public class PerfectSquares {
     public int numSquares(int n) {
         int[] dp = new int[n + 1];
+        // 初始化
         Arrays.fill(dp, Integer.MAX_VALUE);
         dp[0] = 0;
         dp[1] = 1;
-        for (int i = 1; i <= n; i++) {
+        // 1 -> n
+        for (int i = 2; i <= n; i++) {
+            // 1、4、9、16...
             for (int j = 1; j * j <= i; j++) {
                 dp[i] = Math.min(dp[i], dp[i - j * j] + 1);
             }

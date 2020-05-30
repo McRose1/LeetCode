@@ -30,14 +30,13 @@ package String;
     Do not rely on any library method such as eval or serialize methods. You should implement your own encode/decode algorithm.
  */
 
-/*
+import java.util.ArrayList;
+import java.util.List;
+/*  字符串长度 + '\'
     维护一个 StringBuilder，读出每个input string的长度，append 一个特殊字符例如'/'，再 append string
     这样再 decode 的时候我们就可以利用 String.indexOf(char, startIndex) 来算出自 startIndex 其第一个'/'的位置，
     同时计算出接下来读取的 string 长度，用 String.substring() 读出字符串以后我们更新 index，来进行下一次读取。
  */
-import java.util.ArrayList;
-import java.util.List;
-
 public class EncodeandDecodeStrings {
 
     public String encode(List<String> strs) {
@@ -52,10 +51,10 @@ public class EncodeandDecodeStrings {
         List<String> res = new ArrayList<>();
         int i = 0;
         while (i < s.length()) {
-            int slash = s.indexOf('/', i);
-            int size = Integer.valueOf(s.substring(i, slash));
-            res.add(s.substring(slash + 1, slash + size + 1));
-            i = slash + size + 1;
+            int slashIdx = s.indexOf('/', i);
+            int size = Integer.parseInt(s.substring(i, slashIdx));
+            res.add(s.substring(slashIdx + 1, slashIdx + size + 1));
+            i = slashIdx + size + 1;
         }
         return res;
     }

@@ -19,12 +19,10 @@ package BinarySearch;
     Then 4 is the first bad version.
  */
 
-/*  Binary Search: Time = O(logn) Space = O(1)
-
- */
+//  Binary Search: Time = O(logn) Space = O(1)
 public class FirstBadVersion extends VersionControl {
     public int firstBadVersion(int n) {
-        int left = 0;
+        int left = 1;
         int right = n;
         while (left < right) {
             int mid = left + (right - left) / 2;

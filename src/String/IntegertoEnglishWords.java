@@ -20,7 +20,7 @@ package String;
     Input: 1234567891
     Output: "One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety One"
  */
-/*  Recursion
+/*  Recursion: Time = O(n) Space = O(1)
     1. 先把数字以 3 个为一组分成若干小组（从右往左）
     123, 456, 789, 012, 345...
     2. 在每个小组里单独处理三位数
@@ -30,30 +30,40 @@ package String;
  */
 public class IntegertoEnglishWords {
     String[] less20 = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
-    String[] tens = {"", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+    String[] tens = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
     String[] thousands = {"", "Thousand", "Million", "Billion"};
     public String numberToWords(int num) {
         if (num == 0) {
             return "Zero";
         }
-        String res = "";
+        // 先将数字从低位开始拆分成 3 个一组
+        StringBuilder sb = new StringBuilder();
         int i = 0;
         while (num > 0) {
+            // 处理 000 这种情况
             if (num % 1000 != 0) {
-                res = helper(num % 1000) + thousands[i] + " " + res;
+                // 从低位到高位，每次加到 sb 的头部
+                sb.insert(0, helper(num % 1000) + thousands[i] + " ");
             }
             num /= 1000;
+            // i 代表拆成 3 个一组的组数，帮助我们处理千位上的情况
             i++;
         }
-        return res.trim();
+        return sb.toString().trim();
     }
+    // 递归处理每一组中的 3 个数字
     public String helper(int num) {
         if (num == 0) return "";
-        if (num < 20) {     // 1-19
-            return less20[num % 20] + " ";
-        } else if (num < 100) {     // 20-99
+        // 1-19
+        if (num < 20) {
+            return less20[num] + " ";
+        }
+        // 20-99
+        else if (num < 100) {
             return tens[num / 10] + " " + helper(num % 10);
-        } else {    // 100-999
+        }
+        // 100-999
+        else {
             return less20[num / 100] + " Hundred " + helper(num % 100);
         }
     }

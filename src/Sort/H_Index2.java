@@ -1,4 +1,4 @@
-package Array;
+package Sort;
 
 /*  275. H-Index 2
     Given an array of citations sorted in ascending order (each citation is a non-negative integer) of a researcher,
@@ -24,10 +24,20 @@ package Array;
     Hint: Expected runtime complexity is in O(logn) and the input is sorted.
  */
 
-// Binary Search: Time = O(logn)
+// 比 H-Index 省去了 sort 的步骤: Time = O(n) Space = O(1)
 
 public class H_Index2 {
     public int hIndex(int[] citations) {
+        int res = 0;
+        while (res < citations.length && citations[citations.length - 1 - res] > res) {
+            res++;
+        }
+        return res;
+    }
+}
+
+/*  Binary Search: Time = O(logn) Space = O(1)
+
         int len = citations.length;
         int start = 0, end = len - 1;
         while (start <= end) {
@@ -41,13 +51,4 @@ public class H_Index2 {
             }
         }
         return len - start;
-    }
-}
-
-/*  Time = O(n) > O(logn)
-    int res = 0;
-    while (res < citations.length && citations[citations.length - 1 - res] > res) {
-        res++;
-    }
-    return res;
  */
