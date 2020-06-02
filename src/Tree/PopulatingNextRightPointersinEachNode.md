@@ -10,9 +10,9 @@ Preorder
 
 Local view 
 
-**cur.left.next = cur.right
+**cur.left.next = cur.right**
 
-**cur.right.next = cur.next.left（难点）
+**cur.right.next = cur.next.left（难点）**
 
 ![116](https://github.com/McRose1/LeetCode/blob/master/src/images/%23116.png)
     
