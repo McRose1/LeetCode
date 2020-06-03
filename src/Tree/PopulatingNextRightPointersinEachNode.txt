@@ -1,7 +1,7 @@
 花花酱：
 Tree 90% -> Recursion 
 
-Inorder or Preorder or Postorder 
+Inorder or Preorder or Postorder
 
 Preorder 
 

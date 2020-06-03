@@ -29,9 +29,43 @@ package Tree;
     The number of nodes in the given tree is less than 4096.
     -1000 <= node.val <= 1000
  */
-//  DFS(Preorder): Time = O(n) Space = O(logn)
+
+/*  BFS: Time = O(n) Space = O(1)
+    Layer by layer using next pointer
+ */
 public class PopulatingNextRightPointersinEachNode {
     public Node connect(Node root) {
+        if (root == null) return null;
+
+        // Start with the root node. There are no next pointers that need to be set up on the first level
+        Node firstLevelNode = root;
+
+        // Once we reach the final level, we are done
+        while (firstLevelNode.left != null) {
+            // Iterate the "linked list" starting from the head node and using the next pointers,
+            // establish the corresponding links for the next level
+            Node curLevelNode = firstLevelNode;
+
+            while (curLevelNode != null) {
+                curLevelNode.left.next = curLevelNode.right;
+
+                if (curLevelNode.next != null) {
+                    curLevelNode.right.next = curLevelNode.next.left;
+                }
+
+                // Progress along the list (nodes on the current level)
+                curLevelNode = curLevelNode.next;
+            }
+            // Move onto the next level
+            firstLevelNode = firstLevelNode.left;
+        }
+        return root;
+    }
+}
+
+/*  DFS: Time = O(n) Space = O(logn)
+    Preorder：root -> left -> right
+
         if (root == null) return null;
 
         if (root.left != null) {
@@ -44,24 +78,40 @@ public class PopulatingNextRightPointersinEachNode {
         connect(root.left);
         connect(root.right);
         return root;
-    }
-}
+ */
 
-/*  BFS（layer by layer）: Time = O(n) Space = O(1)
+/*  BFS（Using queue）: Time = O(n) Space = O(1)
 
-        Node start = root;
-        while (start != null) {
-            Node cur = start;
-            while (cur != null) {
+        if (root == null) return root;
+
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(root);
+
+        // Outer while loop which iterates over each level
+        while (queue.size() > 0) {
+            // Note the size of the queue
+            int size = queue.size();
+
+            // Iterate over all the nodes on the current level
+            for (int i = 0; i < size; i++) {
+                // Pop a node from the front of the queue
+                Node cur = queue.poll();
+
+                // This check is important. We don't want to establish any wrong connections.
+                // The queue will contain nodes from 2 levels at most at any point in time.
+                // This check ensures we only don't establish next pointer beyond the end of a level
+                if (i < size - 1) {
+                    cur.next = queue.peek();
+                }
+
+                // Add the children, if any, to the back of the queue
                 if (cur.left != null) {
-                    cur.left.next = cur.right;
+                    queue.offer(cur.left);
                 }
-                if (cur.right != null && cur.next != null) {
-                    cur.right.next = cur.next.left;
+                if (cur.right != null) {
+                    queue.offer(cur.right);
                 }
-                cur = cur.next;
             }
-            start = start.left;
         }
         return root;
  */
