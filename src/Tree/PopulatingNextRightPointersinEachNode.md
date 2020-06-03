@@ -10,9 +10,15 @@ Preorder
 
 Local view 
 
-**cur.left.next = cur.right**
-
-**cur.right.next = cur.next.left（难点）**
+存在 2 种类型的 next 指针：
+1. 连接同一父节点的 2 个子节点，它们可以通过同一个节点直接访问到：
+```java
+cur.left.next = cur.right
+```
+2. 不同父亲的子节点之间建立连接：
+```java
+cur.right.next = cur.next.left（难点）
+```
 
 ![116](https://github.com/McRose1/LeetCode/blob/master/src/images/%23116.png)
     
