@@ -42,67 +42,69 @@ public class NumberofIslands {
         return count;
     }
 
-    private void dfs(char[][] grid, int x, int y) {
+    private void dfs(char[][] grid, int i, int j) {
         // 这一步注意 grid[x][y] == '0' 的位置，必须先判断坐标是否越界，grid[x][y] 才不会 out of bound
-        if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length || grid[x][y] == '0') return;
+        if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] == '0') return;
 
         // 这一步是这题的关键，相当于起到 visited 数组的作用，保证 DFS 不会回退
-        grid[x][y] = '0';
+        grid[i][j] = '0';
 
-        dfs(grid, x + 1, y);
-        dfs(grid, x - 1, y);
-        dfs(grid, x, y + 1);
-        dfs(grid, x, y - 1);
+        dfs(grid, i + 1, j);
+        dfs(grid, i - 1, j);
+        dfs(grid, i, j + 1);
+        dfs(grid, i, j - 1);
     }
 }
 
 /*  BFS: Time = O(m*n) Space = O(min(m,n))
 
-        public int numIslands(char[][] grid) {
-            if (grid == null || grid.length == 0) return 0;
+        if (grid == null || grid.length == 0) return 0;
 
-            int row = grid.length;
-            int col = grid[0].length;
-            int count = 0;
+        int row = grid.length;
+        int col = grid[0].length;
+        int count = 0;
 
-            for (int r = 0; r < row; r++) {
-                for (int c = 0; c < col; c++) {
-                    if (grid[r][c] == '1') {
-                        count++;
-                        // mark as visited
-                        grid[r][c] = '0';
-                        Queue<Integer> nei = new LinkedList<>();
-                        // 相当于是矩阵的遍历器：0 -> m*n-1
-                        nei.add(r * col + c);
+        for (int r = 0; r < row; r++) {
+            for (int c = 0; c < col; c++) {
+                if (grid[r][c] == '1') {
+                    count++;
+                    // mark as visited
+                    grid[r][c] = '0';
+                    Queue<Integer> nei = new LinkedList<>();
+                    // 相当于是矩阵的遍历器：0 -> m*n-1
+                    nei.offer(r * col + c);
 
-                        while (!nei.isEmpty()) {
-                            int id = nei.remove();
-                            // 这里我们可以保证新的坐标在矩阵的边界内
-                            int new_r = id / col;
-                            int new_c = id % col;
-                            // 往四个方向 BFS
-                            if (new_r - 1 >= 0 && grid[new_r - 1][new_c] == '1') {
-                                nei.add((new_r - 1) * col + new_c);
-                                grid[new_r - 1][new_c] = '0';
-                            }
-                            if (new_r + 1 < row && grid[new_r + 1][new_c] == '1') {
-                                nei.add((new_r + 1) * col + new_c);
-                                grid[new_r + 1][new_c] = '0';
-                            }
-                            if (new_c - 1 >= 0 && grid[new_r][new_c - 1] == '1') {
-                                nei.add((new_r) * col + new_c - 1);
-                                grid[new_r][new_c - 1] = '0';
-                            }
-                            if (new_c + 1 < col && grid[new_r][new_c + 1] == '1') {
-                                nei.add((new_r) * col + new_c + 1);
-                                grid[new_r][new_c + 1] = '0';
-                            }
+                    while (!nei.isEmpty()) {
+                        int idx = nei.poll();
+                        // 这里我们可以保证新的坐标在矩阵的边界内
+                        int new_r = idx / col;
+                        int new_c = idx % col;
+                        // 往四个方向 BFS
+                        // 往上遍历，只需检查上边界
+                        if (new_r - 1 >= 0 && grid[new_r - 1][new_c] == '1') {
+                            nei.offer((new_r - 1) * col + new_c);
+                            grid[new_r - 1][new_c] = '0';
+                        }
+                        // 往下遍历，只需检查下边界
+                        if (new_r + 1 < row && grid[new_r + 1][new_c] == '1') {
+                            nei.offer((new_r + 1) * col + new_c);
+                            grid[new_r + 1][new_c] = '0';
+                        }
+                        // 往左遍历，只需检查左边界
+                        if (new_c - 1 >= 0 && grid[new_r][new_c - 1] == '1') {
+                            nei.offer((new_r) * col + new_c - 1);
+                            grid[new_r][new_c - 1] = '0';
+                        }
+                        // 往右遍历，只需检查右边界
+                        if (new_c + 1 < col && grid[new_r][new_c + 1] == '1') {
+                            nei.offer((new_r) * col + new_c + 1);
+                            grid[new_r][new_c + 1] = '0';
                         }
                     }
                 }
             }
-            return count;
         }
+        return count;
  */
 
 /*  Union Find: Time = O(m*n) Space = O(m*n)

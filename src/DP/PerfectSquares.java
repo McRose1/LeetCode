@@ -14,7 +14,7 @@ package DP;
  */
 
 import java.util.Arrays;
-/*  DP: Time = O(n) Space = O(1)
+/*  DP: Time = O(n * sqrt(n)) Space = O(n)
     dp[i] = min(dp[i], dp[i - j * j] + 1) (j * j <= i)
  */
 public class PerfectSquares {
@@ -34,3 +34,32 @@ public class PerfectSquares {
         return dp[n];
     }
 }
+
+/*  BFS (level by level)
+
+        Queue<Integer> queue = new LinkedList<>();
+        HashSet<Integer> visited = new HashSet<>();
+        int level = 0;
+        queue.offer(n);
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            level++;
+            for (int i = 0; i < size; i++) {
+                int cur = queue.poll();
+                // 依次减 1，4，9... 生成下一层的节点
+                for (int j = 1; j * j <= cur; j++) {
+                    int next = cur - j * j;
+                    if (next == 0) {
+                        return level;
+                    }
+                    // 记录每一层可能生成的节点
+                    if (!visited.contains(next)) {
+                        queue.offer(next);
+                        visited.add(next);
+                    }
+                }
+            }
+        }
+        return -1;
+ */

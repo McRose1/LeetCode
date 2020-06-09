@@ -32,13 +32,103 @@ package TopologicalSort;
     If a cycle exists, no topological ordering exists and therefore it will be impossible to take all courses.
  */
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-//  DFS: Time = O(n) Space = O(n)
+/*  My version (BFS): Time = O(n) Space = O(n)
+    没用 HashMap 构建 graph，相当于用时间换空间
+ */
 public class CourseSchedule2 {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int[] inDegree = new int[numCourses];
+        for (int[] pair : prerequisites) {
+            inDegree[pair[0]]++;
+        }
+
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (inDegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+
+        int[] res = new int[numCourses];
+        int count = 0;
+
+        while (!queue.isEmpty()) {
+            int pre = queue.poll();
+            res[count++] = pre;
+
+            for (int[] pair : prerequisites) {
+                if (pair[1] == pre) {
+                    inDegree[pair[0]]--;
+                    if (inDegree[pair[0]] == 0) {
+                        queue.offer(pair[0]);
+                    }
+                }
+            }
+        }
+        if (count == numCourses) {
+            return res;
+        } else {
+            return new int[0];
+        }
+    }
+}
+
+/*  LC (BFS): Time = O(n) Space = O(n)
+
+        boolean isPossible = true;
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        int[] inDegree = new int[numCourses];
+        int[] topologicalOrder = new int[numCourses];
+
+        // Create the adjacency graph representation of the graph
+        for (int i = 0; i < prerequisites.length; i++) {
+            int dest = prerequisites[i][0];
+            int src = prerequisites[i][1];
+            List<Integer> temp = graph.getOrDefault(src, new ArrayList<>());
+            temp.add(dest);
+            graph.put(src, temp);
+
+            // Record in-degree of each vertex
+            inDegree[dest] += 1;
+        }
+
+        // Add all vertices with 0 in-degree to the queue
+        Queue<Integer> q = new LinkedList<Integer>();
+        for (int i = 0; i < numCourses; i++) {
+            if (inDegree[i] == 0) {
+                q.add(i);
+            }
+        }
+
+        int i = 0;
+        // Process until the Q becomes empty
+        while (!q.isEmpty()) {
+            int node = q.remove();
+            topologicalOrder[i++] = node;
+
+            // Reduce the in-degree of each neighbor by 1
+            if (graph.containsKey(node)) {
+                for (Integer nei : graph.get(node)) {
+                    inDegree[nei]--;
+
+                    // If in-degree of a neighbor becomes 0, add it to the Q
+                    if (inDegree[nei] == 0) {
+                        q.add(nei);
+                    }
+                }
+            }
+        }
+        // Check to see if topological sort is possible or not.
+        if (i == numCourses) {
+            return topologicalOrder;
+        }
+        return new int[0];
+ */
+
+/*  DFS: Time = O(n) Space = O(n)
+
     // 未被 visit 过
     int WHITE = 1;
     // 这本轮 DFS 中被 visit 过，标为 visiting
@@ -120,94 +210,4 @@ public class CourseSchedule2 {
         color.put(node, BLACK);
         topoReverseOrder.add(node);
     }
-}
-
-/*  BFS (Using Node InDegree): Time = O(n) Space = O(n)
-
-        boolean isPossible = true;
-        Map<Integer, List<Integer>> graph = new HashMap<>();
-        int[] inDegree = new int[numCourses];
-        int[] topologicalOrder = new int[numCourses];
-
-        // Create the adjacency graph representation of the graph
-        for (int i = 0; i < prerequisites.length; i++) {
-            int dest = prerequisites[i][0];
-            int src = prerequisites[i][1];
-            List<Integer> temp = graph.getOrDefault(src, new ArrayList<>());
-            list.add(dest);
-            graph.put(src, temp);
-
-            // Record in-degree of each vertex
-            inDegree[dest] += 1;
-        }
-
-        // Add all vertices with 0 in-degree to the queue
-        Queue<Integer> q = new LinkedList<Integer>();
-        for (int i = 0; i < numCourses; i++) {
-            if (inDegree[i] == 0) {
-                q.add(i);
-            }
-        }
-
-        int i = 0;
-        // Process until the Q becomes empty
-        while (!q.isEmpty()) {
-            int node = q.remove();
-            topologicalOrder[i++] = node;
-
-            // Reduce the in-degree of each neighbor by 1
-            if (graph.containsKey(node)) {
-                for (Integer nei : graph.get(node)) {
-                    inDegree[nei]--;
-
-                    // If in-degree of a neighbor becomes 0, add it to the Q
-                    if (inDegree[nei] == 0) {
-                        q.add(nei);
-                    }
-                }
-            }
-        }
-        // Check to see if topological sort is possible or not.
-        if (i == numCourses) {
-            return topologicalOrder;
-        }
-        return new int[0];
- */
-
-/*  my version (BFS)
-    没用 HashMap 构建 graph，相当于用时间换空间
-
-        int[] inDegree = new int[numCourses];
-        for (int[] pre : prerequisites) {
-            inDegree[pre[0]]++;
-        }
-
-        Queue<Integer> queue = new LinkedList<>();
-        for (int i = 0; i < inDegree.length; i++) {
-            if (inDegree[i] == 0) {
-                queue.offer(i);
-            }
-        }
-
-        int[] res = new int[numCourses];
-        int count = 0;
-
-        while (!queue.isEmpty()) {
-            int cur = queue.poll();
-            res[count++] = cur;
-
-            for (int[] pre : prerequisites) {
-                if (pre[1] == cur) {
-                    inDegree[pre[0]]--;
-                    if (inDegree[pre[0]] == 0) {
-                        queue.offer(pre[0]);
-                    }
-                }
-            }
-        }
-        if (count == numCourses) {
-            return res;
-        } else {
-            return new int[0];
-        }
  */

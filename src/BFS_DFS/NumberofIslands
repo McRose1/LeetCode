@@ -23,7 +23,7 @@ BFS/DFS 的题每次拿到都没啥思路
 每次算新坐标的时候就把这个 index 从 queue 里拿出来，通过 index / col 和 index % col 来得到新坐标
 这一点太巧妙了
 
-最后一种方法是 Union Find ，下次再仔细研究
+最后一种方法是 Union Find ，但是这题用并查集做其实是做复杂起来了
 这两种方法在这题都比 DFS 慢很多
 
 

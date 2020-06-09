@@ -42,15 +42,76 @@ package Stack;
     We can't really process this from the inside out because we don't have an idea about the overall structure.
     But, the stack can help us process this recursively i.e. from outside to inwards.
  */
-
+import java.util.Stack;
 /*  Stack: Time = O(n) Space = O(n)
     Maintain a count doesn't fit here (only in one type of parenthesis)
  */
-
-import java.util.HashMap;
-import java.util.Stack;
-
 public class ValidParentheses {
+    public boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+        for (char c : s.toCharArray()) {
+            if (c == '(') {
+                stack.push(')');
+            } else if (c == '[') {
+                stack.push(']');
+            } else if (c == '{') {
+                stack.push('}');
+            } else if (stack.isEmpty() || stack.pop() != c) {
+                return false;
+            }
+        }
+        return stack.isEmpty();
+    }
+}
+
+/*  my version
+
+        if (s == null || s.length() == 0) {
+            return true;
+        }
+        Stack<Character> stack = new Stack<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            char cur = s.charAt(i);
+            if (cur == '(' || cur == '[' || cur == '{') {
+                stack.push(cur);
+            } else {
+                if (stack.isEmpty()) {
+                    return false;
+                } else {
+                    if (cur == ')' && stack.pop() != '(') {
+                        return false;
+                    } else if (cur == ']' && stack.pop() != '[') {
+                        return false;
+                    } else if (cur == '}' && stack.pop() != '{') {
+                        return false;
+                    }
+                }
+            }
+        }
+        return stack.isEmpty();
+ */
+
+/*
+        Stack<Character> stack = new Stack<>();
+        for (char c : s.toCharArray()) {
+            if (c == '(' || c == '[' || c == '{') {
+                stack.push(c);
+            } else if (c == ')' && !stack.isEmpty() && stack.peek() == '(') {
+                stack.pop();
+            } else if (c == ']' && !stack.isEmpty() && stack.peek() == '[') {
+                stack.pop();
+            } else if (c == '}' && !stack.isEmpty() && stack.peek() == '{') {
+                stack.pop();
+            } else {
+                return false;
+            }
+        }
+        return stack.isEmpty();
+ */
+
+/*  LC
+
 
     // Hash table that takes care of the mappings.
     private HashMap<Character, Character> mappings;
@@ -89,38 +150,4 @@ public class ValidParentheses {
         // If the stack still contains elements, then it is an invalid expression.
         return stack.isEmpty();
     }
-}
-
-/*
-        Stack<Character> stack = new Stack<>();
-        for (char c : s.toCharArray()) {
-            if (c == '(') {
-                stack.push(')');
-            } else if (c == '[') {
-                stack.push(']');
-            } else if (c == '{') {
-                stack.push('}');
-            } else if (stack.isEmpty() || stack.pop() != c) {
-                return false;
-            }
-        }
-        return stack.isEmpty();
- */
-
-/*
-        Stack<Character> stack = new Stack<>();
-        for (char c : s.toCharArray()) {
-            if (c == '(' || c == '[' || c == '{') {
-                stack.push(c);
-            } else if (c == ')' && !stack.isEmpty() && stack.peek() == '(') {
-                stack.pop();
-            } else if (c == ']' && !stack.isEmpty() && stack.peek() == '[') {
-                stack.pop();
-            } else if (c == '}' && !stack.isEmpty() && stack.peek() == '{') {
-                stack.pop();
-            } else {
-                return false;
-            }
-        }
-        return stack.isEmpty();
  */

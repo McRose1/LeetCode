@@ -1,4 +1,4 @@
-package Array;
+package TwoPointers;
 
 /*  287. Find the Duplicate Number
     Given an array nums containing n + 1 integers where each integer is between 1 and n (inclusive),
@@ -19,8 +19,6 @@ package Array;
     Your runtime complexity should be less than O(n^2).
     There is only one duplicate number in the array, but it could be repeated more than once.
  */
-
-import java.util.Arrays;
 
 /*  Two Pointer + Cycle Detection: Time = O(n) Space = O(1)
     Interpret nums such that for each pair of index i and value vi, the "next" value vj is at index vi,
