@@ -25,7 +25,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-//  行列的最佳点分开求，组合起来就是最佳点：二维->一维
+/*  行列的最佳点分开求，组合起来就是最佳点：二维->一维
+    由于曼哈顿距离((x1, y1), (x2, y2)) = |x1 - x2| + |y1 - y2|，所以只要分别最小化x, y坐标上的距离，就一定能得到总的最小曼哈顿距离
+    先考虑一维的情况，如果所有人都住在一条直线上，想要找到使总行走距离最小的一个见面点，这个见面点应当为所有人居住位置的中位数
+    因此我们在x轴方向上找一个中位数，再y轴方向上找一个中位数，即可得到最佳见面点
+    最后计算每个人到最佳见面点的距离，求和结果就是我们想要的答案
+ */
 public class BestMeetingPoint {
     public int minTotalDistance(int[][] grid) {
         List<Integer> x = new ArrayList<>();
@@ -41,13 +46,13 @@ public class BestMeetingPoint {
         }
         return getMin(x) + getMin(y);
     }
-
-    private int getMin(List<Integer> z) {
-        Collections.sort(z);
-        int i = 0, j = z.size() - 1;
+    // 计算一维的最小曼哈顿距离
+    private int getMin(List<Integer> list) {
+        Collections.sort(list);
+        int i = 0, j = list.size() - 1;
         int sum = 0;
         while (i < j) {
-            sum += z.get(j--) - z.get(i++);
+            sum += list.get(j--) - list.get(i++);
         }
         return sum;
     }

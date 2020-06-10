@@ -27,18 +27,24 @@ import java.util.Arrays;
     dp: [0, 4]
     dp: [0, 4, 12]
     dp: [0, 2, 12]
+    观察可知，只有当新元素插入到原数组的末尾时，LIS 的长度才会更新，插入到头部和中间长度都是没有改变的
  */
 public class LongestIncreasingSubsequence {
     public int lengthOfLIS(int[] nums) {
         int[] dp = new int[nums.length];
         int len = 0;
         for (int num : nums) {
-            int i = Arrays.binarySearch(dp, 0, len, num);
-            if (i < 0) {
-                i = -(i + 1);   // not found, return -((-insertion)-1), then we got the insertion index
+            // 通过二分搜索找到当前元素插入数组时应该放置的位置
+            int index = Arrays.binarySearch(dp, 0, len, num);
+            // not found, index = (-(insertion point) - 1)
+            if (index < 0) {
+                // 通过返回的值来得到插入的 index
+                index = -(index + 1);
             }
-            dp[i] = num;
-            if (i == len) {     // 如果能插入最后一个元素后面，说明新元素比前面的都要大
+            // 往数组插入当前元素
+            dp[index] = num;
+            // 如果能插入最后一个元素后面，说明新元素比前面的都要大
+            if (index == len) {
                 len++;
             }
         }
@@ -46,32 +52,28 @@ public class LongestIncreasingSubsequence {
     }
 }
 
-/*  Brute Force: Time = O(2^n) Space = O(n) TLE
-    1. The current element is larger than the previous element included in the LIS.
-    In this case, we can include the current element in the LIS.
-    Thus, we find out the length of the LIS obtained by including it.
-    Further, we also find out the length of LIS possible by not including the current element in the LIS.
-    The value returned by the current function is, thus, the maximum out of the two lengths.
-    2. The current element is smaller than the previous element included in the LIS.
-    In this case, we can't include the current element in the LIS.
-    Thus, we find out only the length of the LIS possible by not including the current element in the LIS,
-    which is returned by the current function.
+/*  DP: Time = O(n^2) Space = O(n)
+    dp[i] represents the length of the longest increasing subsequence possible considering the array elements upto the ith index only,
+    by necessarily including the ith element.
+    dp[i] = max(dp[j]) + 1, ∀0 ≤ j < i
 
-    public int lengthOfLIS(int[] nums) {
-        return lengthofLIS(nums, Integer.MIN_VALUE, 0);
-    }
-
-    public int lengthofLIS(int[] nums, int prev, int curpos) {
-        if (curpos == nums.length) {
+        if (nums.length == 0) {
             return 0;
         }
-        int taken = 0;
-        if (nums[curpos] > prev) {
-            taken = 1 + lengthofLIS(nums, nums[curpos], curpos + 1);
+        int[] dp = new int[nums.length];
+        dp[0] = 1;
+        int maxLen = 1;
+        for (int i = 1; i < dp.length; i++) {
+            int len = 1;
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    len = Math.max(len, dp[j] + 1);
+                }
+            }
+            dp[i] = len;
+            maxLen = Math.max(maxLen, dp[i]);
         }
-        int nottaken = lengthofLIS(nums, prev, curpos + 1);
-        return Math.max(taken, nottaken);
-    }
+        return maxLen;
  */
 
 /*  Recursion with Memoization: Time = O(n^2) Space = O(n^2)
@@ -105,26 +107,30 @@ public class LongestIncreasingSubsequence {
     }
  */
 
-/*  DP: Time = O(n^2) Space = O(n)
-    dp[i] represents the length of the longest increasing subsequence possible considering the array elements upto the ith index only,
-    by necessarily including the ith element.
-    dp[i] = max(dp[j]) + 1, ∀0 ≤ j < i
+/*  Brute Force: Time = O(2^n) Space = O(n) TLE
+    1. The current element is larger than the previous element included in the LIS.
+    In this case, we can include the current element in the LIS.
+    Thus, we find out the length of the LIS obtained by including it.
+    Further, we also find out the length of LIS possible by not including the current element in the LIS.
+    The value returned by the current function is, thus, the maximum out of the two lengths.
+    2. The current element is smaller than the previous element included in the LIS.
+    In this case, we can't include the current element in the LIS.
+    Thus, we find out only the length of the LIS possible by not including the current element in the LIS,
+    which is returned by the current function.
 
-        if (nums.length == 0) {
+    public int lengthOfLIS(int[] nums) {
+        return lengthofLIS(nums, Integer.MIN_VALUE, 0);
+    }
+
+    public int lengthofLIS(int[] nums, int prev, int curpos) {
+        if (curpos == nums.length) {
             return 0;
         }
-        int[] dp = new int[nums.length];
-        dp[0] = 1;
-        int maxans = 1;
-        for (int i = 1; i < dp.length; i++) {
-            int maxval = 0;
-            for (int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    maxval = Math.max(maxval, dp[j]);
-                }
-            }
-            dp[i] = maxval + 1;
-            maxans = Math.max(maxans, dp[i]);
+        int taken = 0;
+        if (nums[curpos] > prev) {
+            taken = 1 + lengthofLIS(nums, nums[curpos], curpos + 1);
         }
-        return maxans;
+        int nottaken = lengthofLIS(nums, prev, curpos + 1);
+        return Math.max(taken, nottaken);
+    }
  */

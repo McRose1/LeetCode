@@ -1,4 +1,4 @@
-package String;
+package HashTable;
 
 /*  290. Word Pattern
     Given a pattern and a string str, find if str follows the same pattern.
@@ -27,33 +27,54 @@ package String;
  */
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-/*  HashMap: Time = O(n) Space = O(n)
+/*  HashMap: Time = O(n) Space = O(1)
     用 HashMap 联立 str 中的单词和 pattern 中的字母，如果后面出现 str 中的单词与 pattern 中的字母对不上，则输出 false，否则 true
  */
 public class WordPattern {
     public boolean wordPattern(String pattern, String str) {
-        String[] arr = str.split(" ");
-        if (arr.length != pattern.length()) {
+        String[] s = str.split(" ");
+        if (s.length != pattern.length()) {
             return false;
         }
         HashMap<Character, String> map = new HashMap<>();
-        Set<String> set = new HashSet<>();
-        for (int i = 0; i < arr.length; i++) {
+        for (int i = 0; i < s.length; i++) {
             char c = pattern.charAt(i);
             if (map.containsKey(c)) {
-                if (!map.get(c).equals(arr[i])) {
+                if (!map.get(c).equals(s[i])) {
                     return false;
                 }
             } else {
-                if (!set.add(arr[i])) {
-              //if (map.containsValue(arr[i])) { containsValue: Time = O(N) huge time overhead
+                if (map.containsValue(s[i])) {  // containsValue: Time = O(N) huge time overhead
                     return false;
                 }
-                map.put(c, arr[i]);
+                map.put(c, s[i]);
             }
         }
         return true;
     }
 }
+
+/*  HashMap + HashSet: Time = O(n) Space = O(n)
+    用 HashSet 存储唯一 value，如果碰到了 HashMap 不存在该 key 却能在 HashSet 中找到该 value，就 return false
+
+        String[] s = str.split(" ");
+        if (s.length != pattern.length()) {
+            return false;
+        }
+        HashMap<Character, String> map = new HashMap<>();
+        Set<String> set = new HashSet<>();
+        for (int i = 0; i < s.length; i++) {
+            char c = pattern.charAt(i);
+            if (map.containsKey(c)) {
+                if (!map.get(c).equals(s[i])) {
+                    return false;
+                }
+            } else {
+                if (!set.add(s[i])) {
+                    return false;
+                }
+                map.put(c, s[i]);
+            }
+        }
+        return true;
+ */
