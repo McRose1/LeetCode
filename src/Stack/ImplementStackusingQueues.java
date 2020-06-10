@@ -26,13 +26,12 @@ package Stack;
     You may assume that all operations are valid (for example, no pop or top operations will be called on an empty stack.)
  */
 
-/*
+import java.util.LinkedList;
+import java.util.Queue;
+/*  One Queue: push - O(n), pop - O(1)
     如果 push 设计得复杂，那么 pop 和 peek 的设计就会变得简单
     如果 push 设计得简单，那么 pop 和 peek 的设计就会变得复杂
  */
-import java.util.LinkedList;
-import java.util.Queue;
-//  One Queue: push - O(n), pop - O(1)
 public class ImplementStackusingQueues {
 
     Queue<Integer> queue;
@@ -66,17 +65,20 @@ public class ImplementStackusingQueues {
 
 /*  Two Queues: push - O(n), pop - O(1)
 
+    // q1 作为主要的 queue 来实现栈
+    // q2 作为辅助的 queue 去帮助 q1 实现栈
+    // 但是别忘了这个过程还需要一个 temp 来将 q1 和 q2 交换
     public void push(int x) {       // 1,2,3
-        q2.add(x);                  // q2 = 1; q2 = 2
+        q2.offer(x);                  // q2 = 1; q2 = 2
         while (!q1.isEmpty()) {     //         q1 = 1
-            q2.add(q1.poll());      //         q2 = 2,1 q1 = null
+            q2.offer(q1.poll());      //         q2 = 2,1 q1 = null
         }
         Queue<Integer> temp = q1;   // temp = null
         q1 = q2;                    // q1 = 1; q1 = 2,1
         q2 = temp;                  // q2 = null; q2 = null
     }
     public int pop(int x) {         // 3,2,1
-        return q1.poll();        // 3
+        return q1.poll();           // 3
     }
     public int top() {              // 2,1
         return q1.peek();           // 2

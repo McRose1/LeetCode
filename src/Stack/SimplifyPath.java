@@ -40,16 +40,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-/*  Stack
+/*  Stack: Time = O(n) Space = O(n)
     1) . -> 忽略
     2) .. -> level up -> stack
     3) "" -> 忽略
+    先将斜杠去掉，取出路径名和'.'以及'..'，形成一个 string 数组
+    遍历这个 string 数组；遇到'.'忽略，遇到'..'如果 stack 不为空，就 pop；遇到路径名，就 push
+    stack 里最后剩下的路径就是合法路径，pop 出来的时候顺序是相反的，所以可以用 sb.insert 不断从头部插入栈顶元素
  */
 public class SimplifyPath {
     public String simplifyPath(String path) {
         Stack<String> stack = new Stack<>();
-        String[] paths = path.split("/");
-        for (String s : paths) {
+        String[] strs = path.split("/");
+        for (String s : strs) {
             if (s.equals("..")) {
                 if (!stack.isEmpty()) {
                     stack.pop();
@@ -58,33 +61,18 @@ public class SimplifyPath {
                 stack.push(s);
             }
         }
-        String res = "";
-        while (!stack.isEmpty()) {
-            res = "/" + stack.pop() + res;  // 从右往左
-        }
         // 防止出现：/../
-        if (res.length() == 0) {
+        if (stack.isEmpty()) {
             return "/";
         }
-        return res;
-    }
-}
-
-/*
-        if (path == null || path.length() == 0) return "";      // "/a//b////c/d//././/.."
-        Stack<String> stack = new Stack<>();
-        String[] strArray = path.split("/");    // a,b,"","",c,d,"",.,.,"",..
-
-        for (int i = 0; i < strArray.length; i++) {
-            // .. -> 把 stack 顶部的元素 pop 掉
-            if (strArray[i].equals("..") && !stack.isEmpty()) {
-                stack.pop();                                         // d 出栈
-            // . , .. , "" 以外 -> 字母表示的路径名
-            } else if (!strArray[i].equals(".") && !strArray[i].equals("..") && !strArray[i].equals("")) {
-                stack.push(strArray[i]);        // a,b,c,d -> a,b,c
-            }
+        StringBuilder sb = new StringBuilder();
+        while (!stack.isEmpty()) {
+            sb.insert(0, "/" + stack.pop());  // 从右往左
         }
-        // 组装
+        return sb.toString();
+        /*  也可以用 List 来存
         List<String> list = new ArrayList<>(stack);     // bottom to top: a,b,c
         return "/" + String.join("/", list);    // /a/b/c
- */
+         */
+    }
+}

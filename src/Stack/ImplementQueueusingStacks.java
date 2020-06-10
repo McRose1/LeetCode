@@ -29,30 +29,30 @@ package Stack;
 import java.util.Stack;
 //  Two Stacks (1 for push&pop, 1 for temp use): Push - O(n), Pop - O(1)
 public class ImplementQueueusingStacks {
-    Stack<Integer> s1;
-    Stack<Integer> s2;
+    Stack<Integer> stack1;
+    Stack<Integer> stack2;
     public ImplementQueueusingStacks() {
-        s1 = new Stack<>();
-        s2 = new Stack<>();
+        stack1 = new Stack<>();
+        stack2 = new Stack<>();
     }
 
     public void push(int x) {
-        while (!s1.isEmpty()) {
-            s2.push(s1.pop());
+        while (!stack1.isEmpty()) {
+            stack2.push(stack1.pop());
         }
-        s2.push(x);
-        while (!s2.isEmpty()) {
-            s1.push(s2.pop());
+        stack2.push(x);
+        while (!stack2.isEmpty()) {
+            stack1.push(stack2.pop());
         }
     }
     public int pop() {
-        return s1.pop();
+        return stack1.pop();
     }
     public int peek() {
-        return s1.peek();
+        return stack1.peek();
     }
     public boolean empty() {
-        return s1.isEmpty();
+        return stack1.isEmpty();
     }
 
 }

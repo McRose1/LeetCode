@@ -23,10 +23,12 @@ public class MergekSortedLists {
         if (lists == null || lists.length == 0) return null;
 
         PriorityQueue<Integer> minHeap = new PriorityQueue<>();
-        for (ListNode listHead : lists) {
-            while (listHead != null) {
-                minHeap.add(listHead.val);
-                listHead = listHead.next;
+        // 将每个链表节点的值都 offer 进 minHeap 里
+        for (ListNode node : lists) {
+            while (node != null) {
+                minHeap.offer(node.val);
+                // 指向下一个节点
+                node = node.next;
             }
         }
         // Dummy node
@@ -40,31 +42,38 @@ public class MergekSortedLists {
     }
 }
 
-/*  PQ2
+/*  PQ2 (PQ 中存的是 ListNode)
 
     public ListNode mergeKLists(ListNode[] lists) {
         if (lists == null || lists.length == 0) return null;
 
-        // Dummy node
-        ListNode dummy = new ListNode(0);
-        ListNode cur = dummy;
+        // lambda
+        PriorityQueue<ListNode> minHeap = new PriorityQueue<>((o1, o2) -> o1.val - o2.val);
+
+        // 重写 Comparator 接口的 compare 函数
         PriorityQueue<ListNode> minHeap = new PriorityQueue<>(lists.length, new Comparator<ListNode>() {
             @Override
             public int compare(ListNode o1, ListNode o2) {
                 return o1.val - o2.val;
             }
         });
+
+        //  把每个链表的头节点 offer 进 minHeap 中
         for (ListNode listHead : lists) {
             if (listHead != null) {
-                minHeap.add(listHead);
+                minHeap.offer(listHead);
             }
         }
+        // Dummy node
+        ListNode dummy = new ListNode(0);
+        ListNode cur = dummy;
         while (!minHeap.isEmpty()) {
             ListNode popNode = minHeap.poll();
             cur.next = popNode;
             cur = cur.next;
+            // 将当前 node 的下一个节点也 offer 进 minHeap
             if (popNode.next != null) {
-                minHeap.add(popNode.next);
+                minHeap.offer(popNode.next);
             }
         }
         return dummy.next;

@@ -17,14 +17,16 @@ import java.util.PriorityQueue;
     Note:
     You may assume k is always valid, 1 ≤ k ≤ array's length.
  */
-//  minHeap(largest): Time = O(nlogk) Time = O(k)
+/*  PriorityQueue: Time = O(nlogk) Time = O(k)
+    用 PQ 实现 minHeap，维护一个 size 为 k 的 minHeap，那么堆顶就是 kth largest element
+ */
 public class KthLargestElementinanArray {
     public int findKthLargest(int[] nums, int k) {
         PriorityQueue<Integer> minHeap = new PriorityQueue<>();  // pq 可以实现 minHeap, nature order 从小到大，小的先 poll
         for (int num : nums) {
             minHeap.offer(num);
             // Control the size of pq = k
-            if (minHeap.size() >  k) {
+            if (minHeap.size() > k) {
                 minHeap.poll();
             }
         }
