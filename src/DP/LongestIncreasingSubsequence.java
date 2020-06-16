@@ -1,4 +1,4 @@
-package BinarySearch;
+package DP;
 
 /*  300. Longest Increasing Subsequence
     Given an unsorted array of integers, find the length of longest increasing subsequence.

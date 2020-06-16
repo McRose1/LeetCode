@@ -13,33 +13,39 @@ package DP;
     Output: "bb"
  */
 
-/* Expand Around Center (DP optimized): Time = O(n^2) Space = O(1)
-
+/*  Expand Around Center (DP optimized): Time = O(n^2) Space = O(1)
+    1. if s[i~j] is a palindrome, s[i+1~j-1] us also a one
+    2. if s[i~j] is not a palindrome, then s[i-1~j+1] can not be a palindrome
+    e.g. abcea, bce is not a palindrome, abcea can't be one
+    Instead of starting from two sides, we can start from the center.
+    For each index i, or pair (i, i+1) we take it as the middle elements and expand toward two ends to find the longest palindrome
+    if dp[l + 1][r - 1] and s[l] == s[r]: dp[l][r] = True
  */
 public class LongestPalindromicSubstring {
     public String longestPalindrome(String s) {
-        if (s == null || s.length() < 1) return "";
-        // 记录 substring 的头和尾
-        int start = 0, end = 0;
-        // 中心扩散，奇数有 n 个中心，偶数有 2*n -1 个中心
+        if (s == null || s.length() == 0) return "";
+        int start = 0;
+        int len = 0;
+        // 每次循环选择一个中心，进行左右扩展，判断左右字符是否相等
         for (int i = 0; i < s.length(); i++) {
-            // 奇数的中心
-            int len1 = helper(s, i, i);               // "bab"
-            // 偶数的中心
-            int len2 = helper(s, i, i + 1);     // "bb"
+            // 字符串长度为奇数，中心元素只有 1 个："eab c bad"
+            int len1 = getLen(s, i, i);
+            // 字符串长度为偶数，中心元素有 2 个："eab cc bad"
+            int len2 = getLen(s, i, i + 1);
             // palindrome 最大长度
             int cur = Math.max(len1, len2);
-            // 更新
-            if (cur > end - start) {
+            // 更新最大长度
+            if (cur > len) {
                 // 中心扩散，算出头和尾
+                len = cur;
                 start = i - (cur - 1) / 2;
-                end = i + cur / 2;
             }
         }
-        return s.substring(start, end + 1);
+        return s.substring(start, start + len);
     }
 
-    public int helper(String s, int left, int right) {
+    private int getLen(String s, int left, int right) {
+        // left 和 right 指针均在界内并且所指的字符相等，便可以继续向两边扩散
         while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
             left--;
             right++;
@@ -56,10 +62,11 @@ public class LongestPalindromicSubstring {
 
         boolean[][] dp = new boolean[n][n];
 
-        for (int i = n - 1; i >= 0; i--) {
-            for (int j = i; j < n; j++) {
+        for (int i = n - 1; i >= 0; i--) {      for (int j = 0; i < n; i++)
+            for (int j = i; j < n; j++) {           for (int i = 0; i <= j; i++)
                 // j - i <= 2: aba, aa, a
                 dp[i][j] = s.charAt(i) == s.charAt(j) && (j - i <= 2 || dp[i + 1][j - 1]);
+                // 以 i 为 start，j 为 end 的字符串是回文字符串并且长度大于 res，就更新 res
                 if (dp[i][j] && j - i + 1 > res.length()) {
                     res = s.substring(i, j + 1);
                 }
@@ -67,6 +74,11 @@ public class LongestPalindromicSubstring {
         }
         return res;
  */
+
+/*  Manacher's Algorithm（马拉车算法）
+
+ */
+
 
 /*  Brute Force: Time = O(n^3) Space = O(1)
     判断是否是 palindrome
@@ -113,9 +125,5 @@ public class LongestPalindromicSubstring {
         }
         return true;
     }
-
- */
-
-/*  Manacher's Algorithm
 
  */

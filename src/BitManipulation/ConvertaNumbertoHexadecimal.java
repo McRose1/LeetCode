@@ -1,4 +1,4 @@
-/*
+package BitManipulation;/*
     Given an integer, write an algorithm to convert it to hexadecimal.
     For negative integer, two's compliment method is used.
     Note:
@@ -23,17 +23,34 @@
     Output:
     "ffffffff"
  */
-
+/*  Bit Manipulation
+    将原来的 bit representation 分隔成为 4 个为一个大格，这个大格由和 1111 进行与运算得到
+ */
 public class ConvertaNumbertoHexadecimal {
     public String toHex(int num) {
         char[] map = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
         if (num == 0) return "0";
-        StringBuilder st = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         while (num != 0) {
-            st.append(map[num & 15]);
-            num = num >>> 4;
+            // 相当于对 16 取余，考虑到负数的情况用与运算
+            sb.append(map[num & 15]);   // 26 & 15 = 10 -> a
+            // 除以 16，考虑到负数的情况用移位计算
+            num = num >>> 4;        // 26 >>> 4 = 1
         }
-        return st.reverse().toString();
+        return sb.reverse().toString();
     }
 }
 
+/*  附赠一个十进制到八进制的转换
+
+    public String toOctal(int num) {
+        char[] map = {'0', '1', '2', '3', '4', '5', '6', '7'};
+        if (num == 0) return "0";
+        StringBuilder sb = new StringBuilder();
+        while (num != 0) {
+            sb.append(map[num & 7]);
+            num = num >>> 3;
+        }
+        return sb.reverse().toString();
+    }
+ */
