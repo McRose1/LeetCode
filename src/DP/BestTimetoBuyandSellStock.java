@@ -1,4 +1,4 @@
-package Array;
+package DP;
 
 /*  121. Best Time to Buy and Sell Stock
     Say you have an array for which the ith elements is the price of a given stock on day i.
@@ -30,16 +30,33 @@ public class BestTimetoBuyandSellStock {
         if (prices == null || prices.length < 2) return 0;
         int min = Integer.MAX_VALUE;
         int max = 0;
-        for (int i = 0; i < prices.length; i++) {
-            if (prices[i] < min) {
-                min = prices[i];
-            } else if (prices[i] - min > max){
-                max = prices[i] - min;
+        for (int price : prices) {
+            if (price < min) {
+                min = price;
+            } else if (price - min > max) {
+                max = price - min;
             }
         }
         return max;
     }
 }
+
+/*  DP (my version): Time = O(n) Space = O(n)
+
+        if (prices == null || prices.length < 2) return 0;
+        int min = Integer.MAX_VALUE;
+        int[] dp = new int[prices.length];
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < prices.length; i++) {
+            min = Math.min(min, prices[i]);
+            dp[i] = prices[i] - min;
+        }
+        int res = 0;
+        for (int num : dp) {
+            res = Math.max(res, num);
+        }
+        return res;
+ */
 
 /*  Brute Force: Time = O(n^2) Space = O(1)
 
@@ -53,27 +70,4 @@ public class BestTimetoBuyandSellStock {
             }
         }
         return maxprofit;
- */
-
-/*  DP: 这题 DP 反而慢
-    L[i]: lowest price up to i-th day
-    P[i]: max profit up to ith day
-    P[i] = max(P[i - 1], price{i} - L[i - 1])
-    max_profit = P[n - 1]
-
-        if (prices == null || prices.length < 2) return 0;
-        int MIN = Integer.MAX_VALUE;
-        int[] min = new int[prices.length];
-        for (int i = 0; i < prices.length; i++) {
-            MIN = Math.min(MIN, prices[i]);
-            min[i] = MIN;
-        }
-
-        int[] max = new int[prices.length];
-        max[0] = 0;
-        for (int i = 1; i < prices.length; i++) {
-            max[i] = Math.max(max[i - 1], prices[i] - min[i - 1]);
-        }
-
-        return max[prices.length - 1];
  */

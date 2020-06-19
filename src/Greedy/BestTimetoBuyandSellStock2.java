@@ -1,4 +1,4 @@
-package Array;
+package Greedy;
 
 /*  122. Best Time to Buy and Sell Stock 2
     Say you have an array for which the ith elements is the price of a given stock on day i.
@@ -27,7 +27,7 @@ package Array;
  */
 public class BestTimetoBuyandSellStock2 {
     public int maxProfit(int[] prices) {
-        if (prices == null || prices.length < 1) return 0;
+        if (prices == null || prices.length < 2) return 0;
         int maxprofit = 0;
         for (int i = 1; i < prices.length; i++) {
             if (prices[i] > prices[i - 1]) {

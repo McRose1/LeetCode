@@ -14,7 +14,7 @@ tag 里有 greedy
 looking for every peak following a valley 
 
 更为简单的逻辑：
-不用管峰值和谷值，keep on adding the profit obtaineed from every consecutive transaction 
+不用管峰值和谷值，keep on adding the profit obtained from every consecutive transaction
 
 不要把思维限定在实际生活中的买卖操作
 
