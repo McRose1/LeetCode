@@ -1,4 +1,4 @@
-package Graph;
+package BFS_DFS;
 
 /*  310. Minimum Height Trees
     For an undirected graph with tree characteristics, we can choose any node as the root.
@@ -38,10 +38,11 @@ package Graph;
     The height of a rooted tree is the number of edges on the longest downward path between the root and a leaf.
  */
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
+import java.util.*;
+/*  BFS
+    将从无向图中找 root 的问题转换为从图中找出 degree 最大的 node 们
+    计算每个 node 的 degree（关联该点的边数），先遍历 degree 为 1 的 node，遍历过程中将相连的其他 node 的 degree 减 1
+ */
 public class MinimumHeightTrees {
     public List<Integer> findMinHeightTrees(int n, int[][] edges) {
         List<Integer> res = new ArrayList<>();
@@ -49,31 +50,42 @@ public class MinimumHeightTrees {
             res.add(0);
             return res;
         }
-        List<HashSet<Integer>> adj = new ArrayList<>();
+
+        int[] degree = new int[n];
+        Map<Integer, List<Integer>> map = new HashMap<>();
         for (int i = 0; i < n; i++) {
-            adj.add(new HashSet<>());       // [{}, {}, {}, {}]
+            map.put(i, new ArrayList<>());
         }
-        for (int[] edge : edges) {      // [1, 0]; [1, 2], [1, 3]
-            adj.get(edge[0]).add(edge[1]);  // [{}, {0}]; [{1}, {0, 2}]; [{1}, {0, 2, 3}, {1}]
-            adj.get(edge[1]).add(edge[0]);  // [{1}, {0}]; [{1}, {0, 2}, {1}]; [{1}, {0, 2, 3}, {1}, {1}]
-        }                               // adj = [{1}, {0, 2, 3}, {1}, {1}]
+
+        for (int[] pair : edges) {
+            map.get(pair[0]).add(pair[1]);
+            map.get(pair[1]).add(pair[0]);
+            degree[pair[0]]++;
+            degree[pair[1]]++;
+        }
+
+        Queue<Integer> queue = new LinkedList<>();
         for (int i = 0; i < n; i++) {
-            if (adj.get(i).size() == 1) {
-                res.add(i);             // res = [0, 2, 3]
+            if (degree[i] == 1) {
+                queue.offer(i);
             }
         }
-        while (n > 2) {
-            n -= res.size();            // n = 4 - 3 = 1
-            List<Integer> leaves = new ArrayList<>();   // leaves = []
-            for (int i : res) {             // i = 0; 2
-                for (int j : adj.get(i)) {  // j = 1; j = 1
-                    adj.get(j).remove(i);   // {2, 3}; {3}
-                    if (adj.get(j).size() == 1) {   // size = 2; 1
-                        leaves.add(j);              // leaves = [1]
+
+        while (!queue.isEmpty()) {
+            List<Integer> list = new ArrayList<>();
+            int size = queue.size();
+            // 每一次 BFS 遍历的是 degree 相同的 node，BFS 越深说明该 node 的 degree 越大
+            for (int i = 0; i < size; i++) {
+                int cur = queue.poll();
+                list.add(cur);
+                for (int nei : map.get(cur)) {
+                    degree[nei]--;
+                    if (degree[nei] == 1) {
+                        queue.offer(nei);
                     }
                 }
             }
-            res = leaves;
+            res = list;
         }
         return res;
     }

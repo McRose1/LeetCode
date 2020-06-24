@@ -31,42 +31,78 @@ package Greedy;
 public class JumpGame {
     public boolean canJump(int[] nums) {                // [2,3,1,1,4]
         int lastPos = nums.length - 1;                  // 4
+        // 从后往前遍历
         for (int i = nums.length - 1; i >= 0; i--) {    // i = 4; 3; 2; 1; 0
             if (i + nums[i] >= lastPos) {               // 4+1 >= 4; 3+1 >= 4; 2+1>=3; 1+3>=2; 0+2>=1
+                // greedy 的体现
                 lastPos = i;                            // 4; 3; 2; 1; 0
             }
         }
+        // 如果能从终点回到起点说明可以从起点跳到终点，逆推
         return lastPos == 0;                            // true
     }
 }
 
-/*  Backtracking (recursive): Time = O(2^n) Space = O(n)
-    This is the inefficient solution where we try every single jump pattern that takes us from the first position to the last.
-    We start from the first position and jump to every index that is reachable.
-    We repeat the process until last index is reached. When stuck, backtrack.
+/*  DP (my version)
 
-    public boolean canJump(int[] nums) {
-        return canJumpFromPosition(0, nums);
-    }
-
-    public boolean canJumpFromPosition(int position, int[] nums) {
-        // 递归出口
-        if (position == nums.length - 1) {
-            return true;
-        }
-        // 先声明最大距离
-        int furthestJump = Math.min(position + nums[position], nums.length - 1);
-        // 遍历从当前位置跳一步可以到达的所有位置
-        for (int nexPosition = position + 1; nextPosition <= furthestJump; nextPosition++) {
-        // Optimized: check the nextPosition from right to left
-        // Intuitively, this means we always try to make biggest jump such that we each the end as soon as possible
-        // for (int nextPosition = furthestJump; nextPosition > position; nextPosition--)
-            if (canJumpFromPosition(nextPosition, nums)) {
-                return true;
+        boolean[] dp = new boolean[nums.length];
+        dp[0] = true;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = nums[i]; j >= 0; j--) {
+                if (i + j < nums.length && dp[i]) {
+                    dp[i + j] = true;
+                }
             }
         }
-        return false;
+        return dp[nums.length - 1];
+ */
+
+/*  DP Bottom-up: Time = O(n^2) Space = O(n)
+    Top-down to bottom-up conversion is done by eliminating recursion.
+    In practice, this achieves better performance as we no longer have the method stack overhead and might even benefit from some caching.
+    The recursion is usually eliminated by trying to reverse the order of the steps from the top-down approach.
+    If we start from the right, every time we will query a position to our right,
+    that position has already be determined as being GOOD or BAD.
+    This means we don't need to recurse anymore, as we will always hit the memo table.
+
+    enum Index {
+        GOOD, BAD, UNKNOWN;
     }
+    public class JumpGame {
+        public boolean canJump(int[] nums) {            // [2,3,1,1,4]
+            Index[] memo = new Index[nums.length];
+            for (int i = 0; i < memo.length; i++) {
+                memo[i]= Index.UNKNOWN;
+            }
+            memo[memo.length - 1] = Index.GOOD;
+
+            // 从终点的前一个位置开始
+            for (int i = nums.length - 2; i >= 0; i--) {     // i = 3; 2
+                int furthestJump = Math.min(i + nums[i], nums.length - 1);  // 3+nums[3]=4
+                for (int j = i + 1; j <= furthestJump; j++) { // j = 4<=4
+                    if (memo[j] == Index.GOOD) {              // memo[4] == GOOD
+                        memo[i] = Index.GOOD;                 // memo[3] = GOOD
+                        break;
+                    }
+                }
+            }
+            return memo[0] == Index.GOOD;
+        }
+    }
+ */
+
+/*  DP (my version)
+
+        boolean[] dp = new boolean[nums.length];
+        dp[0] = true;
+        for (int i = 1; i < nums.length; i++) {
+            for (int j = i; j >= 0; j--) {
+                if (dp[i - j] && nums[i - j] >= j) {
+                    dp[i] = true;
+                }
+            }
+        }
+        return dp[nums.length - 1];
  */
 
 /*  DP Top-down: Time = O(n^2) Space = O(2n) -> O(n) First n originates from recursion, second n comes from the usage of the memo table
@@ -92,7 +128,7 @@ public class JumpGame {
             return canJumpFromPosition(0, nums);
         }
 
-        public boolean canJumpFromPosition(int position, int[] nums) {
+        private boolean canJumpFromPosition(int position, int[] nums) {
             if (memo[position] != Index.UNKNOWN) {                      // 4
                 return memo[position] == Index.GOOD ? true : false;     // true
             }
@@ -109,36 +145,31 @@ public class JumpGame {
     }
  */
 
-/*  DP Bottom-up: Time = O(n^2) Space = O(n)
-    Top-down to bottom-up conversion is done by eliminating recursion.
-    In practice, this achieves better performance as we no longer have the method stack overhead and might even benefit from some caching.
-    The recursion is usually eliminated by trying to reverse the order of the steps from the top-down approach.
-    If we start from the right, every time we will query a position to our right,
-    that position has already be determined as being GOOD or BAD.
-    This means we don't need to recurse anymore, as we will always hit the memo table.
+/*  Backtracking (recursive) TLE: Time = O(2^n) Space = O(n)
+    This is the inefficient solution where we try every single jump pattern that takes us from the first position to the last.
+    We start from the first position and jump to every index that is reachable.
+    We repeat the process until last index is reached. When stuck, backtrack.
 
-    enum Index {
-        GOOD, BAD, UNKNOWN;
+    public boolean canJump(int[] nums) {
+        return canJumpFromPosition(0, nums);
     }
-    public class JumpGame {
-        public boolean canJump(int[] nums) {            // [2,3,1,1,4]
-            Index[] memo = new Index(nums.length);
-            for (int i = 0; i < memo.length; i++) {
-                memo[i]= Index.UNKNOWN;
-            }
-            memo[memo.length - 1] == Index.GOOD;
 
-            // 从终点的前一个位置开始
-            for (int i = num.length - 2; i >= 0; i--) {     // i = 3; 2
-                int furthestJump = Math.min(i + nums[i], nums.length - 1);  // 3+nums[3]=4
-                for (int j = i + 1; j <= furthestJump; j++) { // j = 4<=4
-                    if (memo[j] == Index.GOOD) {              // memo[4] == GOOD
-                        memo[i] = Index.GOOD;                 // memo[3] = GOOD
-                        break;
-                    }
-                }
-            }
-            return memo[0] == Index.GOOD;
+    private boolean canJumpFromPosition(int position, int[] nums) {
+        // 递归出口
+        if (position == nums.length - 1) {
+            return true;
         }
+        // 先声明最大距离
+        int furthestJump = Math.min(position + nums[position], nums.length - 1);
+        // 遍历从当前位置跳一步可以到达的所有位置
+        for (int nextPosition = position + 1; nextPosition <= furthestJump; nextPosition++) {
+        // Optimized: check the nextPosition from right to left
+        // Intuitively, this means we always try to make biggest jump such that we each the end as soon as possible
+        // for (int nextPosition = furthestJump; nextPosition > position; nextPosition--)
+            if (canJumpFromPosition(nextPosition, nums)) {
+                return true;
+            }
+        }
+        return false;
     }
  */

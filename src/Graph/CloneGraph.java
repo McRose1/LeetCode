@@ -1,10 +1,4 @@
 package Graph;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /*  133. Clone Graph
     Given a reference of a node in a connected undirected graph.
     Return a deep copy (clone) of the graph.
@@ -52,6 +46,11 @@ import java.util.Map;
     There is no repeated edges and no self-loops in the graph.
     The Graph is connected and all nodes can be visited starting from the given node.
  */
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /*  DFS: Time = O(n) Space = O(n): HashMap + O(H)，H 是 graph 的 depth
     用 HashMap 建立 original graph node 和 current graph node 之间的映射
     <Key: original graph node, Value: clone graph node>
@@ -88,27 +87,27 @@ public class CloneGraph {
 
         if (node == null) return null;
 
-        // Hash map to save the visited node and it's clone as key and value respectively.
+        // HashMap to save the visited node and it's clone as key and value respectively.
         // This helps to avoid cycles.
         Map<Node, Node> visited = new HashMap<>();
 
         // Put the first node in the queue
         Queue<Node> queue = new LinkedList<>();
-        queue.add(node);
+        queue.offer(node);
         // Clone the node and put it in the visited dictionary.
         visited.put(node, new Node(node.val, new ArrayList()));
 
         // Start BFS traversal
         while (!queue.isEmpty()) {
             // Pop a node from the top of the queue
-            Node cur = queue.remove();
+            Node cur = queue.poll();
             // Iterate through all the neighbors of the node
             for (Node nei : cur.neighbors) {
                 if (!visited.containsKey(nei)) {
                     // Clone the neighbors and put in the visited, if not present already
                     visited.put(nei, new Node(nei.val, new ArrayList()));
                     // Add the newly encountered node to the queue.
-                    queue.add(nei);
+                    queue.offer(nei);
                 }
                 // Add the clone of the neighbors to the neighbors of the clone node.
                 visited.get(cur).neighbors.add(visited.get(nei));
