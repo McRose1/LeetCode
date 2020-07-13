@@ -9,3 +9,9 @@
 - 在中序遍历中，根结点把中序遍历序列分成了 2 个部分，左边部分构成了二叉树的根结点的左子树，右边部分构成了二叉树的根结点的右子树
 
 ![#105](/src/images/%23105.png)
+
+### 递归
+
+
+### 迭代
+https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/solution/cong-qian-xu-yu-zhong-xu-bian-li-xu-lie-gou-zao-9/
