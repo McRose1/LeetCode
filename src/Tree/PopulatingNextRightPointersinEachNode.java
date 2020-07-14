@@ -31,33 +31,39 @@ package Tree;
  */
 
 /*  BFS: Time = O(n) Space = O(1)
-    Layer by layer using next pointer
+    Layer by layer using next pointer（充分利用题目给定的 next 指针）
  */
 public class PopulatingNextRightPointersinEachNode {
     public Node connect(Node root) {
         if (root == null) return null;
 
         // Start with the root node. There are no next pointers that need to be set up on the first level
-        Node firstLevelNode = root;
+        Node leftmost = root;
 
         // Once we reach the final level, we are done
-        while (firstLevelNode.left != null) {
+        while (leftmost.left != null) {
+
             // Iterate the "linked list" starting from the head node and using the next pointers,
             // establish the corresponding links for the next level
-            Node curLevelNode = firstLevelNode;
+            Node curNode = leftmost;
 
-            while (curLevelNode != null) {
-                curLevelNode.left.next = curLevelNode.right;
+            while (curNode != null) {
 
-                if (curLevelNode.next != null) {
-                    curLevelNode.right.next = curLevelNode.next.left;
+                // CONNECTION 1
+                curNode.left.next = curNode.right;
+
+                // CONNECTION 2
+                if (curNode.next != null) {
+                    curNode.right.next = curNode.next.left;
                 }
 
                 // Progress along the list (nodes on the current level)
-                curLevelNode = curLevelNode.next;
+                // 从左往右移动
+                curNode = curNode.next;
             }
             // Move onto the next level
-            firstLevelNode = firstLevelNode.left;
+            // 从上至下移动
+            leftmost = leftmost.left;
         }
         return root;
     }
@@ -70,25 +76,36 @@ public class PopulatingNextRightPointersinEachNode {
 
         if (root.left != null) {
             root.left.next = root.right;
+
+            // 充分利用题目给的 perfect binary tree 这一前提条件
+            if (root.next != null) {
+                root.right.next = root.next.left;
+            }
         }
 
+        *
         if (root.right != null && root.next != null) {
             root.right.next = root.next.left;
         }
+        *
+
         connect(root.left);
         connect(root.right);
+
         return root;
  */
 
-/*  BFS（Using queue）: Time = O(n) Space = O(1)
+/*  BFS（Using queue）: Time = O(n) Space = O(n)
 
         if (root == null) return root;
 
+        // Initialize a queue data structure which contains just the root of the tree
         Queue<Node> queue = new LinkedList<>();
         queue.offer(root);
 
         // Outer while loop which iterates over each level
         while (queue.size() > 0) {
+
             // Note the size of the queue
             int size = queue.size();
 

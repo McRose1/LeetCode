@@ -24,7 +24,7 @@ package Tree;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
-
+//  DFS + Pre-order + Recursion
 public class SerializeandDeserializeBinaryTree {
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
@@ -35,8 +35,10 @@ public class SerializeandDeserializeBinaryTree {
     // Pre-order Traversal
     private void buildString(TreeNode root, StringBuilder sb) {
         if (root == null) {
+            // null 节点用 # 标记
             sb.append("#").append(",");
         } else {
+            // pre-order
             sb.append(root.val).append(",");
             buildString(root.left, sb);
             buildString(root.right, sb);
@@ -48,6 +50,7 @@ public class SerializeandDeserializeBinaryTree {
         if (data == null) return null;
         String[] strArr = data.split(",");
         Queue<String> queue = new LinkedList<>();
+        // 把 string 里的 node 存入 queue
         Collections.addAll(queue, strArr);
         return buildTree(queue);
     }
@@ -63,3 +66,49 @@ public class SerializeandDeserializeBinaryTree {
         return root;
     }
 }
+
+/*  BFS + Iteration
+
+    public String serialize(TreeNode root) {
+        if (root == null) return "";
+        Queue<TreeNode> queue = new LinkedList<>();
+        StringBuilder sb = new StringBuilder();
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            TreeNode cur = queue.poll();
+            if (cur == null) {
+                sb.append("#");
+            } else {
+                sb.append(cur.val);
+                queue.offer(cur.left);
+                queue.offer(cur.right);
+            }
+            sb.append(",");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
+    }
+
+    public TreeNode deserialize(String data) {
+        if (data == "") return null;
+        String[] arr = data.split(",");
+        Queue<TreeNode> queue = new LinkedList<>();
+        TreeNode root = new TreeNode(Integer.parseInt(arr[0]));
+        queue.offer(root);
+        for (int i = 1; i < arr.length; i++) {
+            TreeNode parent = queue.poll();
+            if (!arr[i].equals("#")) {
+                TreeNode left = new TreeNode(Integer.parseInt(arr[i]));
+                parent.left = left;
+                queue.offer(left);
+            }
+            if (!arr[++i].equals("#")) {
+                TreeNode right = new TreeNode(Integer.parseInt(arr[i]));
+                parent.right = right;
+                queue.offer(right);
+            }
+        }
+        return root;
+    }
+ */
