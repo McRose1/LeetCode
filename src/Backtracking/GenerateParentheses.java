@@ -24,23 +24,53 @@ import java.util.List;
 public class GenerateParentheses {
     public List<String> generateParenthesis(int n) {
         List<String> ans = new ArrayList<>();
-        backtrack(ans, "", 0, 0, n);
+        // 从 0 -> n
+        backtrack(ans, new StringBuilder(), 0, 0, n);
         return ans;
     }
 
-    public void backtrack(List<String> ans, String cur, int open, int close, int max) {
-        if (cur.length() == max * 2) {
-            ans.add(cur);
+    public void backtrack(List<String> ans, StringBuilder sb, int open, int close, int target) {
+        if (sb.length() == target * 2) {
+            ans.add(sb.toString());
             return;
         }
-        if (open < max) {
-            backtrack(ans, cur + "(", open + 1, close, max);
+        if (open < target) {
+            sb.append("(");
+            backtrack(ans, sb, open + 1, close, target);
+            // backtrack
+            sb.deleteCharAt(sb.length() - 1);
         }
         if (close < open) {
-            backtrack(ans, cur + ")", open, close + 1, max);
+            sb.append(")");
+            backtrack(ans, sb, open, close + 1, target);
+            // backtrack
+            sb.deleteCharAt(sb.length() - 1);
         }
     }
 }
+
+/*  Backtracking
+
+    public List<String> generateParenthesis(int n) {
+        List<String> ans = new ArrayList<>();
+        // 从 n -> 0
+        backtrack(n, n, "", ans);
+        return ans;
+    }
+
+    public void backtrack(int left, int right, String s, List<String> ans) {
+        if (left == 0 && right == 0) {
+            ans.add(s);
+            return;
+        }
+        if (left > 0) {
+            backtrack(left - 1, right, s + "(", ans);
+        }
+        if (right > 0 && left < right) {
+            backtrack(left, right - 1, s + ")", ans);
+        }
+    }
+ */
 
 /*  Brute Force: Time = O(2^2n * n) Space = O(2^2n * n)
 
@@ -79,23 +109,3 @@ public class GenerateParentheses {
     }
  */
 
-/*
-    public List<String> generateParenthesis(int n) {
-        List<String> ans = new ArrayList<>();
-        backtrack(n, n, "", ans);
-        return ans;
-    }
-
-    public void backtrack(int left, int right, String s, List<String> ans) {
-        if (left == 0 && right == 0) {
-            ans.add(s);
-            return;
-        }
-        if (left > 0) {
-            backtrack(left - 1, right, s + "(", ans);
-        }
-        if (right > 0 && left < right) {
-            backtrack(left, right - 1, s + ")", ans);
-        }
-    }
- */

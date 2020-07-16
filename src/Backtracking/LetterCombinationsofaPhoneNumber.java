@@ -25,6 +25,17 @@ import java.util.Map;
     What does each level represent?     Each level represent the corresponding possible character of s[level]
  */
 public class LetterCombinationsofaPhoneNumber {
+    Map<Character, String> map = new HashMap<>() {{
+        put('2', "abc");
+        put('3', "def");
+        put('4', "ghi");
+        put('5', "jkl");
+        put('6', "mno");
+        put('7', "pqrs");
+        put('8', "tuv");
+        put('9', "wxyz");
+    }};
+
     public List<String> letterCombinations(String digits) {
         List<String> res = new ArrayList<>();
         // corner case
@@ -32,12 +43,11 @@ public class LetterCombinationsofaPhoneNumber {
             return res;
         }
         StringBuilder sb = new StringBuilder();
-        Map<Integer, String> dict = constructWordDict();
-        backtrack(digits, 0, dict, sb, res);
+        dfs(digits, 0, sb, res);
         return res;
     }
 
-    public void backtrack(String digits, int index, Map<Integer, String> dict, StringBuilder sb, List<String> res) {
+    public void dfs(String digits, int index, StringBuilder sb, List<String> res) {
         // base case
         // if there is no more digits to check
         if (index == digits.length()) {
@@ -47,33 +57,19 @@ public class LetterCombinationsofaPhoneNumber {
         }
         // recursive rule
         // if there are still digits to check, iterate over all letters which map the next available digit
-        char ch = digits.charAt(index);
-        String values = dict.get(ch - '0');
+        String values = map.get(digits.charAt(index));
         for (char c : values.toCharArray()) {
             sb.append(c);
-            backtrack(digits, index + 1, dict, sb, res);
-            // recover
+            dfs(digits, index + 1, sb, res);
+            // backtrack
             sb.deleteCharAt(sb.length() - 1);
         }
-    }
-
-    private Map<Integer, String> constructWordDict() {
-        Map<Integer, String> wordDict = new HashMap<>();
-        wordDict.put(2, "abc");
-        wordDict.put(3, "def");
-        wordDict.put(4, "ghi");
-        wordDict.put(5, "jkl");
-        wordDict.put(6, "mno");
-        wordDict.put(7, "pqrs");
-        wordDict.put(8, "tuv");
-        wordDict.put(9, "wxyz");
-        return wordDict;
     }
 }
 
 /*  DFS: Time = O(3^N x 4^M) Space = O(3^N x 4^M)
 
-    Map<String, String> phone = new HashMap<String, String>() {{
+    Map<String, String> phone = new HashMap<>() {{
         put("2", "abc");
         put("3", "def");
         put("4", "ghi");

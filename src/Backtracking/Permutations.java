@@ -15,31 +15,30 @@ package Backtracking;
       [3,2,1]
     ]
  */
-
-// Backtracking: Time = O(n!) Space = O(n)
 import java.util.ArrayList;
 import java.util.List;
-
+// Backtracking: Time = O(n!) Space = O(n)
 public class Permutations {
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
         if (nums == null || nums.length == 0) return res;
-        backtrack(res, new ArrayList<>(), nums, new boolean[nums.length]);
+        backtrack(nums, res, new ArrayList<>(), new boolean[nums.length]);
         return res;
     }
 
-    public void backtrack(List<List<Integer>> res, List<Integer> list, int[] nums, boolean[] visited) {
+    public void backtrack(int[] nums, List<List<Integer>> res, List<Integer> list, boolean[] visited) {
         if (list.size() == nums.length) {
             res.add(new ArrayList<>(list));
         }
         for (int i = 0; i < nums.length; i++) {
             //if (list.contains(nums[i])) continue;   // O(n) 也可以用 HashSet，用空间换时间
-            if (visited[i]) continue;
-            list.add(nums[i]);
-            visited[i] = true;
-            backtrack(res, list, nums, visited);
-            list.remove(list.size() - 1);
-            visited[i] = false;
+            if (!visited[i]) {
+                list.add(nums[i]);
+                visited[i] = true;
+                backtrack(nums, res, list, visited);
+                list.remove(list.size() - 1);
+                visited[i] = false;
+            }
         }
     }
 }
