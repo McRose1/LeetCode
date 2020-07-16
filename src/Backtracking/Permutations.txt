@@ -1,8 +1,10 @@
 Backtracking 经典模板例题
 Permutation 不需要考虑 order，这题还是 distinct 元素，所以不需要去重，但是需要限制每个元素只被用到一次
 
+其实就是用回溯的模板加一个 visited 数组去重
+
 先看返回类型：List<List<Integer>>，在主函数 initialize 一个 res, input 为 int[]
-想到 backtrack函数返回类型为 void，然后在里面构建一个 List<Integer> list，每次res.add(list的deep copy)
+想到 backtrack 函数返回类型为 void，然后在里面构建一个 List<Integer> list，每次 res.add(list 的 deep copy)
                 Root
           /       |         \
         1         2           3
@@ -12,19 +14,19 @@ Permutation 不需要考虑 order，这题还是 distinct 元素，所以不需�
       3   2     3   1       2   1  
      
 如何限制每个元素只用一次？
-一开始想到用boolean数组来记录元素是否被 used，结果报出了 stackOverflowError
+一开始想到用boolean数组来记录元素是否被 visited，结果报出了 stackOverflowError
 
 后来才发现原来把后面的执行语句写在 if 外面了,正确的应该是：
-if (!used[i]) {
+if (!visited[i]) {
     list.add(nums[i]);        
-    used[i] = true;
-    backtrack(res, nums, list, used);
+    visited[i] = true;
+    backtrack(res, nums, list, visited);
     list.remove(list.size() - 1);
-    used[i] = false;
+    visited[i] = false;
 }
 
 也可以用hashset来去重
-也可以简化过程 -> if (used[i]) continue;
+也可以简化过程 -> if (visited[i]) continue;
 
 网上流传的 list.contains(nums[i]) 检查一次需要 O(n) 我觉得并不好，还是用空间换时间吧
 
@@ -35,6 +37,5 @@ DFS(res, nums, start + 1);
 swap(nums, i, start);
 
 相当于每次通过传入不同组合 nums 来实现 permutation
-
 
 
