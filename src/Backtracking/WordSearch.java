@@ -31,19 +31,28 @@ public class WordSearch {
         return false;
     }
 
-    private boolean backtrack(char[][] board, int i, int j, int count, String word) {
-        if (count == word.length()) return true;
+    private boolean backtrack(char[][] board, int i, int j, int index, String word) {
+        // 能一直遍历完 word 说明找到了
+        if (index == word.length()) return true;
         // 越界或者不配对就返回 false
-        if (i < 0 || i >= board.length || j < 0 || j >= board[i].length || board[i][j] != word.charAt(count)) {
+        if (i < 0 || i >= board.length || j < 0 || j >= board[i].length || board[i][j] != word.charAt(index)) {
             return false;
         }
+
+        /* 也可以顺序颠倒：
+        if (i < 0 || i >= board.length || j < 0 || j >= board[i].length || board[i][j] != word.charAt(index)) {
+            return false;
+        }
+        if (index == word.length() - 1) return true;
+         */
+
         char temp = board[i][j];
         board[i][j] = ' ';      // 标记已经用过的 cell
         // 向四个方向遍历
-        boolean found = backtrack(board, i + 1, j, count + 1, word) ||
-                        backtrack(board, i - 1, j, count + 1, word) ||
-                        backtrack(board, i, j + 1, count + 1, word) ||
-                        backtrack(board, i, j - 1, count + 1, word);
+        boolean found = backtrack(board, i + 1, j, index + 1, word) ||
+                        backtrack(board, i - 1, j, index + 1, word) ||
+                        backtrack(board, i, j + 1, index + 1, word) ||
+                        backtrack(board, i, j - 1, index + 1, word);
         // backtrack
         board[i][j] = temp;
         return found;

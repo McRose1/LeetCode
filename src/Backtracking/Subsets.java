@@ -35,17 +35,17 @@ public class Subsets {
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
         for (int size = 0; size <= nums.length; size++) {
-            backtrack(nums , res, new ArrayList<Integer>(), size, 0);
+            backtrack(nums , res, new ArrayList<>(), size, 0);
         }
         return res;
     }
-    public void backtrack(int[] nums, List<List<Integer>> res, ArrayList<Integer> list, int size, int start) {
+    public void backtrack(int[] nums, List<List<Integer>> res, List<Integer> list, int size, int start) {
         // if the combination is done
         if (list.size() == size) {
             res.add(new ArrayList<>(list));
             return;
         }
-        for (int i = start; i < nums.length; ++i) {
+        for (int i = start; i < nums.length; i++) {
             // add i into the current combination
             list.add(nums[i]);
             // use next integers to complete the combination

@@ -16,11 +16,9 @@ package Backtracking;
     ]
 
  */
-
-//  Backtracking
 import java.util.ArrayList;
 import java.util.List;
-
+//  Backtracking
 public class Combinations {
     public List<List<Integer>> combine(int n, int k) {
         List<List<Integer>> res = new ArrayList<>();
