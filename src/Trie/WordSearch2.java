@@ -32,7 +32,9 @@ package Trie;
 
 import java.util.ArrayList;
 import java.util.List;
-//  Backtracking + Trie
+/*  Backtracking + Trie: Time = O(m*n*4^l) Space = O(sum(l))
+    Build a trie of the dictionary and use DFS to traverse the board, the path must also exist in trie.
+ */
 public class WordSearch2 {
     public List<String> findWords(char[][] board, String[] words) {
         List<String> res = new ArrayList<>();
@@ -53,45 +55,134 @@ public class WordSearch2 {
     public TrieNode buildTrie(String[] words) {
         TrieNode root = new TrieNode();
         for (String word : words) {
-            TrieNode node = root;
+            TrieNode cur = root;
             // 一层一层加
             for (char c : word.toCharArray()) {
-                int i = c - 'a';
-                if (node.children[i] == null) {
-                    node.children[i] = new TrieNode();
+                // 如果 Trie 里还没有这个字母，在 children 里创建
+                if (cur.children[c - 'a'] == null) {
+                    cur.children[c - 'a'] = new TrieNode();
                 }
-                // 进入下一层
-                node = node.children[i];
+                // 如果 Trie 里已经存在这个字母，顺着 children 这条链进入下一层
+                cur = cur.children[c - 'a'];
             }
-            // 最后一层的 TrieNode 保存额外信息，因为它是单词的结尾，所以保有整个单词的信息
-            node.word = word;
+            // 最后一层的 TrieNode 保存额外信息，标记该 word；因为它是单词的结尾，所以保有整个单词的信息
+            cur.word = word;
         }
         return root;
     }
 
-    public void backtrack(char[][] board, int i, int j, TrieNode node, List<String> res) {
+    public void backtrack(char[][] board, int i, int j, TrieNode cur, List<String> res) {
         // 考虑越界问题
         if (i < 0 || i >= board.length || j < 0 || j >= board[0].length) return;
 
-        char c = board[i][j];
+        // 存下当前位置的字母
+        char temp = board[i][j];
         // 如果已经访问过，或者在 Trie Tree 里当前 TrieNode 的下一层元素中没有当前字母
-        if (c == '#' || node.children[c - 'a'] == null) return;
+        if (temp == '#' || cur.children[temp - 'a'] == null) return;
 
         // 进入 Trie Tree 的下一层
-        node = node.children[c - 'a'];
-        if (node.word != null) {
-            res.add(node.word);
+        cur = cur.children[temp - 'a'];
+
+        // 如果 word 不为空，说明已经找到 1 个单词，且已遍历到该单词的结尾
+        if (cur.word != null) {
+            res.add(cur.word);
             // 用过了就清空，防止反复添加,比如：car, card，如果遍历过 car 以后不清空，遍历 card 的时候就会又加一次 car
-            node.word = null;
+            // 这一步非常重要！！！
+            cur.word = null;
         }
+
         // 标记已经 visited
         board[i][j] = '#';
         // 往四个方向递归
-        backtrack(board, i - 1, j, node, res);
-        backtrack(board, i + 1, j, node, res);
-        backtrack(board, i, j + 1, node, res);
-        backtrack(board, i, j - 1, node, res);
+        backtrack(board, i - 1, j, cur, res);
+        backtrack(board, i + 1, j, cur, res);
+        backtrack(board, i, j + 1, cur, res);
+        backtrack(board, i, j - 1, cur, res);
         // backtracking
-        board[i][j] = c;
+        board[i][j] = temp;
     }
 }
+
+/*  LC (TLE)
+
+    class TrieNode {
+        HashMap<Character, TrieNode> children = new HashMap<>();
+        String word = null;
+
+        public TrieNode() {
+        }
+    }
+
+    class Solution {
+        char[][] _board = null;
+        List<String> _res = new ArrayList<>();
+
+        public List<String> findWords(char[][] board, String[] words) {
+
+            // Step 1. Construct the Trie
+            TrieNode root = new TrieNode();
+            for (String word : words) {
+                TrieNode node = root;
+
+                for (Character letter : word.toCharArray()) {
+                    if (node.children.containsKey(letter)) {
+                        node = node.children.get(letter);
+                    } else {
+                        TrieNode newNode = new TrieNode();
+                        node.children.put(letter, newNode);
+                        node = newNode;
+                    }
+                }
+                node.word = word; // store words in Trie;
+
+                this._board = board;
+
+                // Step 2. Backtracking starting for each cell in the board
+                for (int row = 0; row < board.length; row++) {
+                    for (int col = 0; col < board[row].length; col++) {
+                        if (root.children.containsKey(board[row][col])) {
+                            backtrack(row, col, root);
+                        }
+                    }
+                }
+                return this._res;
+            }
+
+            private void backtrack(int row, int col, TrieNode parent) {
+                Character letter = this._board[row][col];
+                TrieNode currNode = parent.children.get(letter);
+
+                // check if there is any match
+                if (currNode.word != null) {
+                    this._res.add(currNode.word);
+                    currNode.word = null;
+                }
+
+                // mark the current letter before EXPLORATION
+                this._board[row][col] = '#';
+
+                // explore neighbor cells in around-clock directions: up, right, down, left
+                int[] rowOffset = {-1, 0, 1, 0};
+                int[] colOffset = {0, 1, 0, -1};
+                for (int i = 0; i < 4; i++) {
+                    int newRow = row + rowOffset[i];
+                    int newCol = col + colOffset[i];
+                    if (newRow < 0 || newRow >= this._board.length || newCol < 0 || newCol >= this._board[0].length) {
+                        continue;
+                    }
+                    if (currNode.children.containsKey(this._board[newRow][newCol])) {
+                        backtrack(newRow, newCol, currNode);
+                    }
+                }
+
+                // End of EXPLORATION, restore the original letter in the board.
+                this._board[row][col] = letter;
+
+                // Optimization: incrementally remove the leaf nodes
+                if (currNode.children.isEmpty()) {
+                    parent.children.remove(letter);
+                }
+            }
+        }
+    }
+ */

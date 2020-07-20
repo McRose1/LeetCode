@@ -2,7 +2,7 @@
 
 披着 matrix 皮的 backtracking 的狼
 
-**需要一个 visited 数组 --> 其实不需要，直接修改 matrix 里的值就可以（先用 temp 保存原始值，用空格代替），backtrack 的时候还原该值（把 temp 写回）**
+**需要一个 visited 数组 --> 其实不需要，直接修改 matrix 里的值就可以（先用 temp 保存原始值，用 '#' 代替），backtrack 的时候还原该值（把 temp 写回）**
 
 **需要一个 dirs 数组 --> 也不需要，递归传参数的时候引入横纵坐标就可以，i+1, i-1, j+1, j-1 就可以遍历四个方向**
 

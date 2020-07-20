@@ -4,6 +4,7 @@ public class TrieNode {
     // R links to node children
     TrieNode[] children;
 
+    // 标记该 Trie 中该路径表示单词，存在于单词结尾
     String word;
 
     private final int R = 26;

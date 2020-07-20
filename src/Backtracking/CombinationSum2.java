@@ -39,23 +39,23 @@ public class CombinationSum2 {
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
         List<List<Integer>> res = new ArrayList<>();
         Arrays.sort(candidates);
-        findCombinations(candidates, 0, target, new ArrayList<Integer>(), res);
+        backtrack(candidates, 0, target, new ArrayList<>(), res);
         return res;
     }
 
-    public void findCombinations(int[] candidates, int start, int target, List<Integer> current, List<List<Integer>> res) {
+    public void backtrack(int[] candidates, int start, int target, List<Integer> list, List<List<Integer>> res) {
         if (target == 0) {
-            res.add(new ArrayList<>(current));
-            return;
+            res.add(new ArrayList<>(list));
         }
-        if (target < 0) return;
-        for (int i = start; i < candidates.length; i++) {
-            // 跳过重复的数字
-            if (i != start && candidates[i] == candidates[i - 1]) continue;
-            current.add(candidates[i]);
-            // i -> i + 1 ，因为每个数字只能用一次，所以下次遍历的时候不从自己开始
-            findCombinations(candidates, i + 1, target - candidates[i], current, res);
-            current.remove(current.size() - 1);
+        else if (target > 0) {
+            for (int i = start; i < candidates.length; i++) {
+                // 跳过重复的数字
+                if (i != start && candidates[i] == candidates[i - 1]) continue;
+                list.add(candidates[i]);
+                // i -> i + 1 ，因为每个数字只能用一次，所以下次遍历的时候不从自己开始
+                backtrack(candidates, i + 1, target - candidates[i], list, res);
+                list.remove(list.size() - 1);
+            }
         }
     }
 }

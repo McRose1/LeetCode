@@ -40,24 +40,21 @@ public class CombinationSum {
         return res;
     }
 
-    public void backtrack(List<List<Integer>> res, List<Integer> tempList, int[] candidates, int target, int start) {
-        if (target < 0) return;
-        else if (target == 0) {
+    public void backtrack(List<List<Integer>> res, List<Integer> list, int[] candidates, int target, int start) {
+        if (target == 0) {
             // 不能写成 res.add(tempList) 因为这样就是 pass by reference，值会随着 tempList 的改变而改变
             // 应该 pass by value, make a deep copy of tempList
-            res.add(new ArrayList<>(tempList));
-            return;
-        } else {
+            res.add(new ArrayList<>(list));
+        } else if (target > 0) {
             // i = start 避免了结果出现 duplicate
             for (int i = start; i < candidates.length; i++) {
-                tempList.add(candidates[i]);
-                backtrack(res, tempList, candidates, target - candidates[i], i);
-                tempList.remove(tempList.size() - 1);
+                list.add(candidates[i]);
+                backtrack(res, list, candidates, target - candidates[i], i);
+                list.remove(list.size() - 1);
             }
         }
     }
 }
 
-/*
-    DP
+/*  DP
  */

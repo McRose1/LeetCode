@@ -47,7 +47,8 @@ public class WordSearch {
          */
 
         char temp = board[i][j];
-        board[i][j] = ' ';      // 标记已经用过的 cell
+        // 标记已经用过的 cell
+        board[i][j] = '#';
         // 向四个方向遍历
         boolean found = backtrack(board, i + 1, j, index + 1, word) ||
                         backtrack(board, i - 1, j, index + 1, word) ||
