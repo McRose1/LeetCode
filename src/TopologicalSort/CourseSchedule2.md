@@ -1,6 +1,9 @@
+# 210. Course Scheduler 2
+
 和第一题相比变成了输出修课顺序
 
 一步一步来呗
+
 先构建入度数组
 
 把入度为 0 的 node offer 进 queue

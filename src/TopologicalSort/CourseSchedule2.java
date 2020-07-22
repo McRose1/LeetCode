@@ -67,11 +67,7 @@ public class CourseSchedule2 {
                 }
             }
         }
-        if (count == numCourses) {
-            return res;
-        } else {
-            return new int[0];
-        }
+        return count == numCourses ? res : new int[0];
     }
 }
 

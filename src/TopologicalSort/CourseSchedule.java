@@ -40,7 +40,6 @@ public class CourseSchedule {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         // 统计每个 node 入度的数组
         int[] inDegree = new int[numCourses];
-        int count = 0;
         // 初始化入度数组，需要几个先修，入度就为几
         for (int[] pair : prerequisites) {
             inDegree[pair[0]]++;
@@ -54,6 +53,8 @@ public class CourseSchedule {
                 queue.offer(i);
             }
         }
+        int count = 0;
+
         // BFS
         while (!queue.isEmpty()) {
             // queue 里存的都是入度为 0 的课程
