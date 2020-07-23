@@ -31,8 +31,50 @@ package UnionFind;
     Every integer represented in the 2D-array will be between 1 and N, where N is the size of the input array.
  */
 
+import java.util.Arrays;
+
+/*  Union Find: Time = O(n) Space = O(n)
+    Case 1: No duplicate parents, return the first edge that creates the loop. -> Same to Redundant Connection 1
+    Case 2: A node v has 2 parents {u1, u2}
+        2.1: return the second edge that creates duplicate parents
+        2.2: return {u1, v} or {u2, v} that creates the loop
+ */
 public class RedundantConnection2 {
     public int[] findRedundantDirectedConnection(int[][] edges) {
+        int[] inDegree = new int[edges.length + 1];
+        int has2Indegrees = -1;
+        for (int[] edge : edges) {
+            inDegree[edge[1]]++;
+            if (inDegree[edge[1]] == 2) {
+                has2Indegrees = edge[1];
+                break;
+            }
+        }
+        // if all nodes only have 1 indegree -> detect cycle
+        if (has2Indegrees == -1) {
+            return detectCycle(edges, null);
+        }
+        // if there is a node which has 2 indegrees
+        // If there are multiple answers, return the answer that occurs last in the given 2D-array -> i = edges.length - 1
+        for (int i = edges.length - 1; i >= 0; i--) {
+            if (edges[i][1] == has2Indegrees) {
+                // if remove the edge, the graph has no cycle, return the edge
+                if (detectCycle(edges, edges[i]) == null) {
+                    return edges[i];
+                }
+            }
+        }
+        return new int[0];
+    }
 
+    private int[] detectCycle(int[][] edges, int[] skipEdge) {
+        DSU dsu = new DSU(edges.length + 1);
+        for (int[] edge : edges) {
+            if (Arrays.equals(edge, skipEdge)) continue;
+            if (!dsu.union(edge[0], edge[1])) {
+                return edge;
+            }
+        }
+        return null;
     }
 }
