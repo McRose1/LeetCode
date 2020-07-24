@@ -1,4 +1,4 @@
-package Array;
+package TwoPointers;
 
 /*  11. Container With Most Water
     Given n non-negative integers a1,a2,...,an, where each represents a point at coordinate(i,ai).
@@ -21,6 +21,7 @@ package Array;
 /*  Two pointers: Time = O(n) single pass Space = O(1)
     one at the beginning, one at the end.
     Since it is limited by the shorter line, moving the shorter line's pointer could turn out to be beneficial
+    每次向内移动较短边
  */
 public class ContainerWithMostWater {
     public int maxArea(int[] height) {
@@ -42,12 +43,13 @@ public class ContainerWithMostWater {
 }
 
 /*  Brute Force: Time = O(n^2) Space = O(1)
+    遍历左右边，找出所有面积，取最大
 
-        int maxarea = 0;
+        int maxArea = 0;
         for (int i = 0; i < height.length; i++) {
             for (int j = i + 1; j < height.length; j++) {
-                maxarea = Math.max(maxarea, Math.min(height[i], height[j]) * (j - i));
+                maxArea = Math.max(maxArea, Math.min(height[i], height[j]) * (j - i));
             }
         }
-        return maxarea;
+        return maxArea;
  */

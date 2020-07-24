@@ -1,4 +1,4 @@
-package Array;
+package Sort;
 
 /*  56. Merge Intervals
     Given a collection of intervals, merge all overlapping intervals.
@@ -19,33 +19,23 @@ import java.util.List;
 //  Sorting: Time = O(nlogn) Space = O(n)
 public class MergeIntervals {
     public int[][] merge(int[][] intervals) {
-        List<int[]> list = new ArrayList<>();
-        if (intervals == null || intervals.length == 0) return new int[0][0];
-
-        Arrays.sort(intervals, (int[] a, int[] b) -> {
-            return a[0] - b[0];
-        });
-
-        int[] prev = intervals[0];
+        if (intervals == null || intervals.length == 0) return intervals;
+        List<int[]> res = new ArrayList<>();
+        // 对 interval 以起始时间从小到大排序
+        Arrays.sort(intervals, (int[] a, int[] b) -> a[0] - b[0]);
+        res.add(intervals[0]);
 
         for (int i = 1; i < intervals.length; i++) {
-            int[] cur = intervals[i];
-
-            if (prev[1] >= cur[0]) {
-                cur[0] = prev[0];
-                cur[1] = Math.max(prev[1], cur[1]);
+            int[] lastArray = res.get(res.size() - 1);
+            // 末尾的区间的结束时间如果大于等于当前遍历到的区间的起始时间，进行 merge
+            // [1,3] [2,6] -> [1,6]
+            if (lastArray[1] >= intervals[i][0]) {
+                lastArray[1] = Math.max(lastArray[1], intervals[i][1]);
             } else {
-                list.add(prev);
+                res.add(intervals[i]);
             }
-            prev = cur;
         }
-        list.add(prev);
-
-        int[][] res = new int[list.size()][2];
-        for (int i = 0; i < list.size(); i++) {
-            res[i] = list.get(i);
-        }
-        return res;
+        return res.toArray(new int[res.size()][2]);
     }
 }
 

@@ -28,19 +28,19 @@ public class SearchinRotatedSortedArray {
         while (left + 1 < right) {
             int mid = left + (right - left) / 2;
             if (nums[mid] == target) return mid;
-            // 先确定 mid 在左边
+            // 如果 mid 在左半边，说明 left -> mid 这段数组是有序的，而 mid -> right 这段是无序的
             if (nums[mid] > nums[left]) {
-                // 再确定 target 在左边的 mid 左边
+                // 如果此时 target 在 left 和 mid 这段有序数组
                 if (target < nums[mid] && target >= nums[left]) {
                     right = mid;
-                // 再确定 target 在左边的 mid 右边
+                // 否则，target 在 mid 和 right 这段无序数组
                 } else left = mid;
-            // 先确定 mid 在右边
+            // 如果 mid 在右半边，说明 mid -> right 这段数组是有序的，而 left -> mid 这段是无序的
             } else {
-                // 再确定 target 在右边的 mid 右边
+                // 如果此时 target 在 mid 和 right 这段有序数组
                 if (target > nums[mid] && target <= nums[right]) {
                     left = mid;
-                // 再确定 target 在右边的 mid 左边
+                // 否则，target 在 left 和 mid 这段无序数组
                 } else right = mid;
             }
         }

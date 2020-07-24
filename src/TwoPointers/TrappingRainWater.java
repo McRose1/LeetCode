@@ -10,9 +10,6 @@ package TwoPointers;
  */
 
 /*  Two Pointer: Time = O(n) Space = O(1)
-    DP 方法的空间复杂度优化，从 DP 方法我们注意到只要 left_max_arr[i] > right_max_arr[i]，积水的高度将由 right_max_arr 决定，同理如果 right_max_arr[i] > left_max_arr[i]，积水的高度将由 right_max_arr 决定
-    所以我们可以认为如果一端有更高的条形块（例如右端），积水的高度依赖于当前方向的高度（从左到右）。
-    当我们发现另一侧（右侧）的条形块高度不是最高的，我们则开始从方向遍历（从右到左）。
     if there is a larger bar at one end (say right),
     we are assured that the water trapped would be dependant on height of bar in current direction (from left to right).
     As soon as we find the bar at other end (right) is smaller, we start iterating in opposite direction (from right to left).
@@ -22,7 +19,8 @@ public class TrappingRainWater {
         int left = 0;
         int right = height.length - 1;
         int res = 0;
-        int leftMax = 0, rightMax = 0;
+        int leftMax = 0;
+        int rightMax = 0;
         while (left < right) {
             // 左边界高度小于右边界高度，蓄水高度由左边界决定
             if (height[left] < height[right]) {
@@ -47,14 +45,13 @@ public class TrappingRainWater {
     max_right[i] 代表第 i 列右边最高的墙的高度
     根据短板效应，当前位置能存储的水量应该是它左边界最高和右边界最高的最小值再减去当前高度
 
-        if (height == null || height.length == 0) {
-            return 0;
-        }
+        if (height == null || height.length == 0) return 0;
+
         int n = height.length;
         int[] max_left = new int[n];
         int[] max_right = new int[n];
 
-        for (int i = 1; i < n - 1; i++) {
+        for (int i = 1; i < n; i++) {
             max_left[i] = Math.max(max_left[i - 1], height[i - 1]);
         }
         for (int i = n - 2; i >= 0; i--) {
@@ -62,9 +59,8 @@ public class TrappingRainWater {
         }
         int sum = 0;
         for (int i = 1; i < n - 1; i++) {
-            int min = Math.min(max_left[i], max_right[i]);
-            if (min > height[i]) {
-                sum += (min - height[i]);
+            if (Math.min(max_left[i], max_right[i]) > height[i]) {
+                sum += (Math.min(max_left[i], max_right[i]) - height[i]);
             }
         }
         return sum;
@@ -74,8 +70,6 @@ public class TrappingRainWater {
     Using the stack, we can do the calculations in only one iteration.
     Add the index of the bar to the stack if bar is smaller than or equal to the bar at top of stack
     pop the index and add result to ans if a bar longer than that at the top
-    积水只能在低洼处形成，当后面的柱子高度比前面的低时，是无法接到雨水的。
-    所以使用单调栈（index 对应的高度是单调递减的）储存可能储水的柱子，当找到一根比前面高的柱子，就可以计算接到的雨水。
 
     当遍历墙的高度的时候，如果当前高度小于栈顶的墙高度，说明这里会有积水，我们将墙的高度的下标入栈。
     如果当前高度大于栈顶的墙的高度，说明之前的积水到这里停下，我们可以计算下有多少积水了。计算完，就把当前的墙继续入栈，作为新的积水的墙。

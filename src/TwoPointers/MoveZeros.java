@@ -13,16 +13,36 @@ package TwoPointers;
     2. Minimize the total number of operations.
 
     Hint 1:
-    In-place means we should not allocating any space for extra array.
-    But we are allowed to modify the existing array.
-
+    In-place means we should not allocating any space for extra array. But we are allowed to modify the existing array.
     Hint 2:
     A two-pointer approach could be helpful here.
     The idea would be to have one pointer for iterating the array and another pointer that just works on the non-zero elements of the array.
  */
-//  Two Pointers
+/*  Two Pointers (1-Pass): Time = O(n) Space = O(1)
+    1 次遍历，遍历过程中直接交换 0 和非 0 的位置
+ */
 public class MoveZeros {
     public void moveZeros(int[] nums) {
+        int slow = 0;
+        int fast = 1;
+        while (fast < nums.length) {
+            if (nums[slow] == 0 && nums[fast] != 0) {
+                nums[slow] = nums[fast];
+                nums[fast] = 0;
+                slow++;
+            } else if (nums[slow] != 0) {
+                slow++;
+            }
+            fast++;
+        }
+     }
+}
+/*  Two Pointers (2-Pass): Time = O(n) Space = O(1)
+    1. fast pointer 'i' to scan input array
+    2. slow pointer 'index' to rewrite input array
+    遍历 2 遍，第 1 遍先把非 0 数字都覆盖到数组的头部，第 2 遍再把数组剩余的位置用 0 覆盖
+
+    public void moveZeroes(int[] nums) {
         // pointer works on the non-zero elements
         int index = 0;
         for (int i = 0; i < nums.length; i++) {
@@ -35,27 +55,5 @@ public class MoveZeros {
         for (int i = index; i < nums.length; i++) {
             nums[i] = 0;
         }
-     }
-}
-/*  my version
-
-    public void moveZeroes(int[] nums) {
-        int zero = 0;
-        int search = 1;
-        while (search < nums.length) {
-            if (nums[zero] == 0 && nums[search] != 0) {
-                swap(nums, zero, search);
-                zero++;
-            } else if (nums[zero] != 0) {
-                zero++;
-            }
-            search++;
-        }
-    }
-
-    private void swap(int[] nums, int a, int b) {
-        int temp = nums[a];
-        nums[a] = nums[b];
-        nums[b] = temp;
     }
  */
