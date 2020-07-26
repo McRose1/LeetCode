@@ -1,4 +1,4 @@
-package Graph;
+package UnionFind;
 
 /*  305. Number of Islands 2
     A 2d grid map of m rows and n columns is initially filled with water.
@@ -42,8 +42,9 @@ import java.util.Arrays;
 import java.util.List;
 //  Union Find
 public class NumberofIslands2 {
-    int[][] dirs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
-    public List<Integer> numIslands(int m, int n, int[][] positions) {  // [[0,0], [0,1], [1,2], [2,1]]
+    private int[][] dirs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+
+    public List<Integer> numIslands(int m, int n, int[][] positions) {
         List<Integer> res = new ArrayList<>();
         if (m <= 0 || n <= 0) return res;
 
@@ -51,37 +52,35 @@ public class NumberofIslands2 {
         int[] roots = new int[m * n];
         Arrays.fill(roots, -1);
 
-        // 转换成一维
-        for (int[] pair : positions) {               // [0, 0]; [0, 1]
-            int position = n * pair[0] + pair[1];   // 3*0+0=0; 3*0+1=1
-            roots[position] = position;             // roots[0]=0; roots[1]=1
-            count++;                                // 1; 2
+        for (int[] pair : positions) {
+            // 转换成一维 index
+            int pos = n * pair[0] + pair[1];
+            roots[pos] = pos;
+            count++;
 
             for (int[] dir : dirs) {
                 // 往四个方向遍历
                 int x = pair[0] + dir[0];
                 int y = pair[1] + dir[1];
-                int curPos = n * x + y;         // 3*0+1=1; curPos=0（回去）
+                int curPos = n * x + y;
                 // 排查边界和不是岛屿的情况
                 if (x < 0 || x >= m || y < 0 || y >= n || roots[curPos] == -1) {
                     continue;
                 }
-                int anoIsland = find(roots, curPos);    // find(roots, 0) -> 0
-                if (position != anoIsland) {            // 1 != 0
-                    roots[position] = anoIsland;        // roots[1] = 0
-                    position = anoIsland;               // position = 0
-                    count--;                            // count = 2 - 1 = 1
+                // Find 过程
+                while (roots[curPos] != curPos) {
+                    curPos = roots[curPos];
+                }
+                // Union 过程
+                if (pos != curPos) {
+                    roots[pos] = curPos;
+                    // 合并完的 root 变成 curPos
+                    pos = curPos;
+                    count--;
                 }
             }
             res.add(count);
         }
         return res;
-    }
-
-    private int find(int[] roots, int i) {
-        while (i != roots[i]) {
-            i = roots[i];
-        }
-        return i;       // 0
     }
 }
