@@ -22,6 +22,10 @@
 dp[i] = min(dp[i - cj] + 1)  
 - j = 0...n-1
 
+自底向上写起来要比自顶向下舒服很多，运行速度也更快
+
+**优先选择自底向上**
+
 ## DP (Top-down) Recursion with Memoization 
 ![Top-down](/src/images/%23322(1).png)
 
