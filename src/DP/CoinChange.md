@@ -16,6 +16,8 @@
 - dp[6] = dp[1] + 1 -> 2
 - dp[1] = 1
 
+其实可以反过来直接看成是爬楼梯问题，从 0 爬到 11，每次可以走 1 步、2 步和 5 步
+
 ## DP (Bottom-up) 
 ![Bottom-up](/src/images/%23322(2).png)
 
@@ -26,7 +28,7 @@ dp[i] = min(dp[i - cj] + 1)
 
 **优先选择自底向上**
 
-## DP (Top-down) Recursion with Memoization 
+## Recursion with Memoization (Top-down) 
 ![Top-down](/src/images/%23322(1).png)
 
 在上面的递归树中，我们可以看到许多子问题被多次计算。例如，F(1) 被计算了 13 次。
