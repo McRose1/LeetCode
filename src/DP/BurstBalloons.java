@@ -17,53 +17,60 @@ package DP;
     Explanation: nums = [3,1,5,8] --> [3,5,8] -->   [3,8]   -->  [8]  --> []
                  coins =  3*1*5      +  3*5*8    +  1*3*8      + 1*8*1   = 167
  */
-/*  DP: Time = O(n^3) Space = O(n^2)
+/*  DP (Bottom-up): Time = O(n^3) Space = O(n^2)
     dp[i][j] = maxCoins(nums[i]~nums[j])
-    ans = dp[1][n]
-    dp[i][j] = max{dp[i][k - 1] + nums[i - 1] * nums[k] * nums[j + 1]] + dp[k + 1][j] | i <= k <= j}
+    dp[i][j] = max{arr[i] x arr[k] x arr[j] + dp[i][k] + dp[k][j] | i < k < j}
  */
 public class BurstBalloons {
     public int maxCoins(int[] nums) {
         int n = nums.length;
+
+        // [3,1,5,8] -> [1,3,1,5,8,1] You may imagine nums[-1] = nums[n] = 1.
         int[] arr = new int[n + 2];
-        for (int i = 0; i < n; ++i) {
-            arr[i + 1] = nums[i];
-        }
+        System.arraycopy(nums, 0, arr, 1, n);
         arr[0] = arr[n + 1] = 1;
+
         int[][] dp = new int[n + 2][n + 2];
-        for (int l = 1; l <= n; ++l) {
-            for (int i = 1; i + l <= n + 1; ++i) {
-                int j = i + l - 1;
-                for (int k = i; k <= j; ++k) {
-                    dp[i][j] = Math.max(dp[i][j], dp[i][k - 1] + arr[i - 1] * arr[k] * arr[j + 1] +dp[k + 1][j]);
+        // i 从大到小，是这道题自底向上的关键，非常重要！！！
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = i + 2; j <= n + 1; j++) {
+                for (int k = i + 1; k < j; k++) {
+                    int sum = arr[i] * arr[k] * arr[j];
+                    sum += (dp[i][k] + dp[k][j]);
+                    dp[i][j] = Math.max(dp[i][j], sum);
                 }
             }
         }
-        return dp[1][n];
+        return dp[0][n + 1];
     }
 }
 
 /*  DP (Recursion with Memoization): Time = O(n^3) Space = O(n^2)
+    Top-down, Divide & Conquer
+
+    private int[] arr;
+    private int[][] memo;
 
     public int maxCoins(int[] nums) {
         int n = nums.length;
-        int[] arr = new int[n + 2];
-        for (int i = 0; i < n; i++) {
-            arr[i + 1] = nums[i];
-        }
+        arr = new int[n + 2];
+        System.arraycopy(nums, 0, arr, 1, n);
         arr[0] = arr[n + 1] = 1;
-        int[][] dp = new int[n + 2][n + 2];
-        return helper(1, n, arr, dp);
+
+        memo = new int[n + 2][n + 2];
+        return helper(0, n + 1);
     }
-    private int helper(int i, int j, int[] nums, int[][] dp) {
-        if (i > j) return 0;
-        if (dp[i][j] > 0) return dp[i][j];
-        for (int x = i; x <= j; x++) {
-            dp[i][j] = Math.max(dp[i][j],
-                       helper(i, x - 1, nums, dp)
-                       + nums[i - 1] * nums[x] * nums[j + 1]
-                       + helper(x + 1, j, nums, dp));
+    private int helper(int left, int right) {
+        // 递归的出口
+        if (left >= right - 1) return 0;
+        // 记忆化递归
+        if (memo[left][right] > 0) return memo[left][right];
+
+        for (int i = left + 1; i < right; i++) {
+            int sum = arr[left] * arr[i] * arr[right];
+            sum += helper(left, i) + helper(i, right);
+            memo[left][right] = Math.max(memo[left][right], sum);
         }
-        return dp[i][j];
+        return memo[left][right];
     }
  */
