@@ -25,20 +25,23 @@ package DP;
     exention -> exection (replace 'n' with 'c')
     exection -> execution (insert 'u')
  */
-
-import java.util.Arrays;
-
-/*  DP: Time = O(n^2) Space = O(n^2)
+/*  DP (Bottom-up): Time = O(n^2) Space = O(n^2)
     Replace         Delete
-    Insertion       Current
+    Insert          Current
  */
 public class EditDistance {
     public int minDistance(String word1, String word2) {
         int m = word1.length();
         int n = word2.length();
 
+        // 有一个字符串为空串
+        if (m * n == 0) {
+            return m + n;
+        }
+
         int[][] dp = new int[m + 1][n + 1];
 
+        // 边界状态初始化
         for (int i = 0; i <= m; i++) {
             dp[i][0] = i;
         }
@@ -48,16 +51,48 @@ public class EditDistance {
 
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
-                dp[i][j] = Integer.MAX_VALUE;
                 // 存在相同的字母，只用看去掉这个字母后的两个 substring 之间的关系
                 if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
                     dp[i][j] = dp[i - 1][j - 1];
                 } else {
-                    dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1]) + 1;
-                    dp[i][j] = Math.min(dp[i][j], dp[i - 1][j - 1] + 1);
+                    dp[i][j] = 1 + Math.min(dp[i - 1][j - 1], Math.min(dp[i][j - 1], dp[i - 1][j]));
                 }
             }
         }
         return dp[m][n];
     }
 }
+
+/*  Recursion with Memoization (Top-down)
+
+    private int[][] memo;
+
+    public int minDistance(String word1, String word2) {
+        memo = new int[word1.length() + 1][word2.length() + 1];
+        return helper(word1, word2);
+    }
+
+    private int helper(String word1, String word2) {
+        int m = word1.length();
+        int n = word2.length();
+        // base case
+        if (m == 0 || n == 0) {
+            return Math.max(m, n);
+        }
+
+        // 记忆化递归
+        if (memo[m][n] != 0) {
+            return memo[m][n];
+        }
+
+        // 末尾字母相同
+        if (word1.charAt(m - 1) == word2.charAt(n - 1)) {
+            memo[m][n] = helper(word1.substring(0, m - 1), word2.substring(0, n - 1));
+        } else {
+            memo[m][n] = 1 + Math.min(helper(word1, word2.substring(0, n - 1)),
+                             (Math.min(helper(word1.substring(0, m - 1), word2),
+                                      helper(word1.substring(0, m - 1), word2.substring(0, n - 1)))));
+        }
+        return memo[m][n];
+    }
+ */

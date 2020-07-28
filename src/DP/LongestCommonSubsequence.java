@@ -33,6 +33,9 @@ package DP;
     otherwise, dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
  */
 
+/*  DP: Time = O(n^2) Space = O(n^2)
+    See Hint!
+ */
 public class LongestCommonSubsequence {
     public int longestCommonSubsequence(String text1, String text2) {
         int m = text1.length();

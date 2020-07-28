@@ -1,4 +1,4 @@
-package Graph;
+package UnionFind;
 
 /*  323. Number of Connected Components in an Undirected Graph
     Given n nodes labeled from 0 to n-1 and a list of undirected edges (each edge is a pair of nodes),
@@ -24,16 +24,18 @@ package Graph;
 //  Union Find
 public class NumberofConnectedComponentsinanUndirectedGraph {
     public int countComponents(int n, int[][] edges) {
+        // 初始无向图的个数为点的个数
         int res = n;
 
         int[] roots = new int[n];
         for (int i = 0; i < n; i++) {
-            roots[i] = -1;
+            roots[i] = i;
         }
 
         for (int[] pair : edges) {
             int x = find(roots, pair[0]);
             int y = find(roots, pair[1]);
+            // Union
             if (x != y) {
                 roots[x] = y;
                 res--;
@@ -43,7 +45,7 @@ public class NumberofConnectedComponentsinanUndirectedGraph {
     }
 
     private int find(int[] roots, int i) {
-        while (roots[i] != -1) {
+        while (roots[i] != i) {
             i = roots[i];
         }
         return i;

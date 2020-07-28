@@ -46,16 +46,18 @@ public class CoinChange {
     }
 }
 
-/*  DP (Top-down) - Recursion with Memoization: Time = O(S*n) Space = O(S)
+/*  Recursion with Memoization (Top-down): Time = O(S*n) Space = O(S)
     F(S) - minimum number of coins needed to make change for amount S using coin denominations [C0 ... Cn-1]
     F(S) = F(S - C) + 1, compute F(S - Ci) for each possible denomination and choose the minimum among them.
     Uses backtracking and cut the partial solutions in the recursive tree, which doesn't lead to a viable solution.
 
+    private int[] memo;
     public int coinChange(int[] coins, int amount) {
         if (amount < 1) return 0;
-        return helper(coins, amount, new int[amount]);
+        memo = new int[amount + 1];
+        return helper(coins, amount);
     }
-    private int helper(int[] coins, int rem, int[] dp) {
+    private int helper(int[] coins, int rem) {
         // not valid
         if (rem < 0) return -1;
 
@@ -63,16 +65,48 @@ public class CoinChange {
         if (rem == 0) return 0;
 
         // already computed, so reuse（记忆化递归）
-        if (dp[rem - 1] != 0) return dp[rem - 1];
+        if (memo[rem] != 0) return memo[rem];
 
         int min = Integer.MAX_VALUE;
         for (int coin : coins) {
-            int count = helper(coins, rem - coin, dp);
+            int count = helper(coins, rem - coin);
             if (count >= 0 && count < min) {
                 min = count + 1;
             }
         }
-        dp[rem - 1] = (min == Integer.MAX_VALUE) ? -1 : min;
-        return dp[rem - 1];
+        memo[rem] = (min == Integer.MAX_VALUE) ? -1 : min;
+        return memo[rem];
+    }
+ */
+
+/*  Greedy + DFS + pruning（最快的）
+
+    public int coinChange(int[] coins, int amount) {
+        // 需要把 coins 从大到小排序
+        Integer[] nums = new Integer[coins.length];
+        int index = 0;
+        for (int coin : coins) {
+            nums[index++] = Integer.valueOf(coin);
+        }
+        Arrays.sort(nums, Collections.reverseOrder());
+        // 需要用数组来存，这样辅助函数对于 min 的修改才可以写入全局
+        int[] min = new int[] {Integer.MAX_VALUE};
+        dfs(nums, 0, amount, 0, min);
+        return min[0] == Integer.MAX_VALUE ? -1 : min[0];
+    }
+private void dfs(Integer[] nums, int idx, int amount, int count, int[] min) {
+        if (amount == 0) {
+            min[0] = Math.min(min[0], count);
+            return;
+        }
+
+        if (idx == nums.length) {
+            return;
+        }
+
+        int coin = nums[idx].intValue();
+        for (int i = amount / coin; i >= 0 && count + i < min[0]; i--) {
+            dfs(nums, idx + 1, amount - i * coin, count + i, min);
+        }
     }
  */
