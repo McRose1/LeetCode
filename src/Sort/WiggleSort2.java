@@ -16,14 +16,28 @@ package Sort;
     Follow up: Can you do it in O(n) time and/or in-place with O(1) extra space?
  */
 
+import java.util.Arrays;
+
+/*  找规律
+    排序，找中位数
+    大于中位数，左 -> 右，奇数位
+    小于中位数，右 -> 左，偶数位
+    中位数最后放
+ */
 public class WiggleSort2 {
     public void wiggleSort(int[] nums) {
-        for (int i = 1; i < nums.length; i++) {
-            if ((i % 2 == 1 && nums[i] <= nums[i - 1]) || (i % 2 == 0 && nums[i] >= nums[i - 1])) {
-                int temp = nums[i - 1];
-                nums[i - 1] = nums[i];
-                nums[i] = temp;
+        Arrays.sort(nums);
+        int n = nums.length;
+        int mid = (n - 1) / 2;
+        int index = 0;
+        int[] temp = new int[n];
+        for (int i = 0; i <= mid; i++) {
+            temp[index] = nums[mid - i];
+            if (index + 1 < n) {
+                temp[index + 1] = nums[n - 1 - i];
             }
+            index += 2;
         }
+        System.arraycopy(temp, 0, nums, 0, n);
     }
 }
