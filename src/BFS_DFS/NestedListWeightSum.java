@@ -17,6 +17,9 @@ package BFS_DFS;
 
 import java.util.List;
 
+/*  DFS: Time = O(n) Space = O(n)
+
+ */
 public class NestedListWeightSum {
     public int depthSum(List<NestedInteger> nestedList) {
         if (nestedList == null || nestedList.size() == 0) return 0;
@@ -24,8 +27,11 @@ public class NestedListWeightSum {
     }
 
     private int dfs(List<NestedInteger> nestedList, int depth) {
+        // 记得 reset sum
         int sum = 0;
+
         for (NestedInteger ni : nestedList) {
+            // 该 depth 只有一个整数
             if (ni.isInteger()) {
                 sum += depth * ni.getInteger();
             } else {

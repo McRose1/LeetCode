@@ -1,4 +1,4 @@
-package Array;
+package Greedy;
 
 /*  334. Increasing Triplet Subsequence
     Given an unsorted array return whether an increasing subsequence of length 3 exists or not in the array
@@ -24,20 +24,38 @@ package Array;
  */
 public class IncreasingTripletSubsequence {
     public boolean increasingTriplet(int[] nums) {
-        if (nums == null || nums.length == 0) {
+        if (nums == null || nums.length < 3) {
             return false;
         }
-        int min1 = Integer.MAX_VALUE, min2 = Integer.MAX_VALUE;
-        for (int i = 0; i < nums.length; i++) {
-            int cur = nums[i];
-            if (cur > min2) {
+        int min = Integer.MAX_VALUE;
+        int mid = Integer.MAX_VALUE;
+        for (int cur : nums) {
+            if (cur > mid) {
                 return true;
-            } else if (cur < min1) {
-                min1 = cur;
-            } else if (cur > min1 && cur < min2) {
-                min2 = cur;
+            } else if (cur < min) {
+                min = cur;
+            } else if (cur > min && cur < mid) {
+                mid = cur;
             }
         }
         return false;
     }
 }
+
+/*  my version
+
+        if (nums == null || nums.length < 3) return false;
+
+        int min = Integer.MAX_VALUE;
+        int mid = Integer.MAX_VALUE;
+        for (int num : nums) {
+            if (num > mid) {
+                return true;
+            }
+            if (num > min) {
+                mid = Math.min(num, mid);
+            }
+            min = Math.min(min, num);
+        }
+        return false;
+ */
