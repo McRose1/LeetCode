@@ -11,13 +11,28 @@ package SlidingWindow;
     m.next(5) = (10 + 3 + 5) / 3
  */
 
+import java.util.LinkedList;
+import java.util.Queue;
+
+/*  Queue
+    用队列模拟滑动窗口
+ */
 public class MovingAveragefromDataStream {
+    private Queue<Integer> queue;
+    private double sum = 0;
+    private int size;
     /** Initialize your data structure here. */
     public MovingAveragefromDataStream(int size) {
-
+        queue = new LinkedList<>();
+        this.size = size;
     }
 
     public double next(int val) {
-
+        if (queue.size() == size) {
+            sum -= queue.poll();
+        }
+        sum += val;
+        queue.offer(val);
+        return sum / queue.size();
     }
 }
