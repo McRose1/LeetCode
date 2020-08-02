@@ -1,4 +1,4 @@
-package Backtracking;
+package DP;
 
 /*  377. Combination Sum 4
     Give an integer array with all positive numbers and no duplicates,
@@ -26,46 +26,50 @@ package Backtracking;
     What limitation we need to add to the question to allow negative numbers?
  */
 
-/*  DP: Time = O(n*k) Space = O(k)
+/*  DP (Bottom-up): Time = O(n*k) Space = O(k)
     简化成爬楼梯，想象成一共 4 级楼梯，每次只能爬 1、2、3 级，一共有多少种爬法
     状态：最后一步从（target-num）开始走，子问题：target-1, target-2...target=0
-    转移方程：res[i] += res[i - num]
-
+    转移方程：dp[i] += dp[i - num]
  */
 public class CombinationSum4 {
     public int combinationSum4(int[] nums, int target) {
-        int[] sum = new int[target + 1];
-        sum[0] = 1;
+        int[] dp = new int[target + 1];
+        dp[0] = 1;
         for (int i = 1; i <= target; i++) {
             for (int num : nums) {
                 if (i >= num) {
-                    sum[i] += sum[i - num];
+                    dp[i] += dp[i - num];
                 }
             }
         }
-        return sum[target];
+        return dp[target];
     }
 }
 
-/*  DFS + Memoization(HashMap): Time = O(2^n) Space = O(n)
+/*  Recursion with Memoization (Top-down): Time = O(n*k) Space = O(n)
 
+    private int[] memo;
     public int combinationSum4(int[] nums, int target) {
         if (nums.length == 0) return 0;
-        HashMap<Integer, Integer> map = new HashMap<>();
-        return helper(nums, target, map);
+        memo = new int[target + 1];
+        Arrays.fill(memo, -1);
+        return helper(nums, target);
     }
 
-    private int helper(int[] nums, int target, HashMap<Integer, Integer> map) {
+    private int helper(int[] nums, int target) {
+        // 找到一种可能，加 1
         if (target == 0) return 1;
+        // 没有找到
         if (target < 0) return 0;
-        if (map.containsKey(target)) {
-            return map.get(target);
+        // 记忆化递归
+        if (memo[target] != -1) {
+            return memo[target];
         }
         int res = 0;
-        for (int i = 0; i < nums.length; i++) {
-            res += helper(nums, target - nums[i], map);
+        for (int num : nums) {
+            res += helper(nums, target - num);
         }
-        map.put(target, res);
+        memo[target] = res;
         return res;
     }
  */
