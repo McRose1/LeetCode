@@ -19,6 +19,7 @@ import java.util.TreeMap;
 
  */
 public class DataStreamasDisjointIntervals {
+    // <Interval起始点，Interval>
     TreeMap<Integer, int[]> treeMap;
     /** Initialize your data structure here. */
     public DataStreamasDisjointIntervals() {
@@ -26,20 +27,28 @@ public class DataStreamasDisjointIntervals {
     }
 
     public void addNum(int val) {
-        if (treeMap.containsKey(val)) {
-            return;
-        }
+        if (treeMap.containsKey(val)) return;
+
         Integer lowerKey = treeMap.lowerKey(val);
         Integer higherKey = treeMap.higherKey(val);
+
+        // [1, 1] [3, 3] + 2 -> [1, 3]
         if (lowerKey != null && higherKey != null && val == treeMap.get(lowerKey)[1] + 1 && val == treeMap.get(higherKey)[0] - 1) {
+            // [1, 1] -> [1, 3]
             treeMap.get(lowerKey)[1] = treeMap.get(higherKey)[1];
             treeMap.remove(higherKey);
-        } else if (lowerKey != null && val <= treeMap.get(lowerKey)[1] + 1) {
+        }
+        // [7, 7] + 8 -> [7, 8]
+        else if (lowerKey != null && val <= treeMap.get(lowerKey)[1] + 1) {
             treeMap.get(lowerKey)[1] = Math.max(val, treeMap.get(lowerKey)[1]);
-        } else if (higherKey != null && val == treeMap.get(higherKey)[0] - 1) {
+        }
+        // [7, 7] + 6 -> [6, 7]
+        else if (higherKey != null && val == treeMap.get(higherKey)[0] - 1) {
             treeMap.put(val, new int[] {val, treeMap.get(higherKey)[1]});
             treeMap.remove(higherKey);
-        } else {
+        }
+        // [1, 1] [7, 7] + 4 -> [1, 1] [4, 4] [7, 7]
+        else {
             treeMap.put(val, new int[] {val, val});
         }
     }

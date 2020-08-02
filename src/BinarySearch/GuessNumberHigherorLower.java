@@ -14,7 +14,6 @@ package BinarySearch;
     Input: n = 10, pick = 6
     Output: 6
  */
-import BinarySearch.GuessGame;
 
 //  Binary Search: Time = O(logn) Space = O(1)
 public class GuessNumberHigherorLower extends GuessGame {
@@ -34,16 +33,6 @@ public class GuessNumberHigherorLower extends GuessGame {
         return -1;
     }
 }
-
-/*  Brute Force: Time = O(n) Space = O(1)
-
-        for (int i = 1; i < n; i++) {
-            if (guess(i) == 0) {
-                return i;
-            }
-        }
-        return n;
- */
 
 /*  Ternary Search: Time = O(log3(n)) Space = O(1)
     Ternary Search does more comparisons than Binary Search in the worst case.
@@ -69,4 +58,14 @@ public class GuessNumberHigherorLower extends GuessGame {
             }
         }
         return -1;
+ */
+
+/*  Brute Force: Time = O(n) Space = O(1)
+
+        for (int i = 1; i < n; i++) {
+            if (guess(i) == 0) {
+                return i;
+            }
+        }
+        return n;
  */

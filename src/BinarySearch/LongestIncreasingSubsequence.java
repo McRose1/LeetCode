@@ -1,4 +1,4 @@
-package DP;
+package BinarySearch;
 
 /*  300. Longest Increasing Subsequence
     Given an unsorted array of integers, find the length of longest increasing subsequence.
@@ -15,8 +15,6 @@ package DP;
     Follow up:
     Could you improve it to O(nlogn) time complexity?
  */
-
-import java.util.Arrays;
 
 /*  Greedy + Binary Search: Time = O(nlogn) Space = O(n)
     Note: d array does not result in longest increasing subsequence, but length of dp array will give you length of LIS.
