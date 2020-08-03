@@ -1,4 +1,4 @@
-package Random;
+package Design;
 
 /*  381. Insert Delete GetRandom O(1) - Duplicates allowed
     Design a data structure that supports all following operations in average O(1) time.
@@ -38,25 +38,30 @@ public class InsertDeleteGetRandomO1_Duplicatedallowed {
     ArrayList<Integer> list;
     HashMap<Integer, Set<Integer>> map;
     Random rand;
+    /** Initialize your data structure here. */
     public InsertDeleteGetRandomO1_Duplicatedallowed() {
         list = new ArrayList<>();
         map = new HashMap<>();
         rand = new Random();
     }
 
+    /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
     public boolean insert(int val) {
         if (!map.containsKey(val)) {
-            map.put(val, new LinkedHashSet<Integer>());
+            // 一个元素现在可能有多个坐标，存在 LinkedHashSet 里以方便后面逐个删除
+            map.put(val, new LinkedHashSet<>());
         }
         map.get(val).add(list.size());
         list.add(val);
         return map.get(val).size() == 1;
     }
 
+    /** Removes a value from the collection. Returns true if the collection contained the specified element. */
     public boolean remove(int val) {
         if (!map.containsKey(val) || map.get(val).size() == 0) {
             return false;
         }
+        // LinkedHashSet 的迭代器按输入顺序输出
         int remove_idx = map.get(val).iterator().next();
         map.get(val).remove(remove_idx);
         int last = list.get(list.size() - 1);
@@ -67,6 +72,7 @@ public class InsertDeleteGetRandomO1_Duplicatedallowed {
         return true;
     }
 
+    /** Get a random element from the collection. */
     public int getRandom() {
         return list.get(rand.nextInt(list.size()));
     }

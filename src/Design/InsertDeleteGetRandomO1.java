@@ -1,4 +1,4 @@
-package Random;
+package Design;
 
 /*  380. Insert Delete GetRandom O(1)
     Design a data structure that supports all following operations in average O(1) time.
@@ -43,41 +43,45 @@ import java.util.Random;
     GetRandom O(1): array
  */
 public class InsertDeleteGetRandomO1 {
-    ArrayList<Integer> nums;
+    ArrayList<Integer> list;
     HashMap<Integer, Integer> map;
     Random rand;
+
+    /** Initialize your data structure here. */
     public InsertDeleteGetRandomO1() {
-        nums = new ArrayList<>();
+        list = new ArrayList<>();
         map = new HashMap<>();
         rand = new Random();
     }
 
+    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
     public boolean insert(int val) {
         if (map.containsKey(val)) {
             return false;
         }
-        map.put(val, nums.size());
-        nums.add(val);
+        map.put(val, list.size());
+        list.add(val);
         return true;
     }
 
+    /** Removes a value from the set. Returns true if the set contained the specified element. */
     public boolean remove(int val) {
         if (!map.containsKey(val)) {
             return false;
         }
+        // move the last element to the place idx of the element to delete
+        int lastElement = list.get(list.size() - 1);
         int idx = map.get(val);
-        if (idx < nums.size() - 1) {
-            // swap the value from current index to the last index
-            int lastVal = nums.get(nums.size() - 1);
-            nums.set(idx, lastVal);
-            map.put(lastVal, idx);
-        }
+        list.set(idx, lastElement);
+        map.put(lastElement, idx);
+        // delete the last element
         map.remove(val);
-        nums.remove(nums.size() - 1);
+        list.remove(list.size() - 1);
         return true;
     }
 
+    /** Get a random element from the set. */
     public int getRandom() {
-        return nums.get(rand.nextInt(nums.size()));
+        return list.get(rand.nextInt(list.size()));
     }
 }
