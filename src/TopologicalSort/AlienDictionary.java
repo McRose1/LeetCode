@@ -35,13 +35,14 @@ package TopologicalSort;
     Explanation: The order is invalid, so return "".
 
     Note:
-    You may assume all letters are in lowercase.
-    You may assume that if a is a prefix of b, then a must appear before b in the given dictionary.
-    If the order is invalid, return an empty string.
-    There may be multiple valid order of letters, return any one of them is fine.
+    o You may assume all letters are in lowercase.
+    o You may assume that if a is a prefix of b, then a must appear before b in the given dictionary.
+    o If the order is invalid, return an empty string.
+    o There may be multiple valid order of letters, return any one of them is fine.
  */
 
 import java.util.*;
+
 /*  Topological Sort + BFS
     "wrt", "wrf" => t->f
     "wrf", "er" => w->e
@@ -52,28 +53,34 @@ import java.util.*;
 public class AlienDictionary {
     public String alienOrder(String[] words) {
         if (words == null || words.length == 0) return "";
-        // 容器
+
         // 构建图：key 对应每个 char，value 是从这个 char 出发可达的其他 chars
         Map<Character, Set<Character>> graph = new HashMap<>();
+
         // 统计入度
         int[] inDegree= new int[26];
+
         // 两步走：1.构建图+统计入度；2.用 bfs 去更新入度
         buildGraph(words, graph, inDegree);
         return bfs(words, graph, inDegree);
     }
-    // 1.构建图+统计入度
+
+    // 1.构建图 (graph) + 统计入度 (inDegree)
     private void buildGraph(String[] words, Map<Character, Set<Character>> graph, int[] inDegree) {
+
         // 为每个 char 建好空图
         for (String word : words) {
             for (char c : word.toCharArray()) {
                 graph.putIfAbsent(c, new HashSet<>());
             }
         }
+
         // 填图+统计入度
         for (int i = 1; i < words.length; i++) {
             // 取出前后两个 String 作比较，比如 first-wrt, second-wrff
             String first = words[i - 1];                            // wrt
             String second = words[i];                               // wrff
+
             int len = Math.min(first.length(), second.length());    // 3
             // 对相邻 String 进行比较
             for (int j = 0; j < len; j++) {
@@ -92,10 +99,13 @@ public class AlienDictionary {
             }
         }
     }
+
     // 2.用 bfs 去更新入度，入度越小说明字典序越小，也就越后面才遍历到
+    // Topological Sort
     private String bfs(String[] words, Map<Character, Set<Character>> graph, int[] inDegree) {
         StringBuilder sb = new StringBuilder();
         Queue<Character> queue = new LinkedList<>();
+
         // bfs 起步->从图里的 char 去遍历，入度 + sb更新：入度为 0 的放进 queue
         for (char c : graph.keySet()) {
             if (inDegree[c - 'a'] == 0) {

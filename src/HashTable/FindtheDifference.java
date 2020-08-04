@@ -1,4 +1,4 @@
-package BitManipulation;
+package HashTable;
 
 /*  389. Find the Difference
     Given two strings s and t which consist of only lowercase letters.
@@ -15,7 +15,11 @@ package BitManipulation;
 
     Output:
     e
+
+    Explanation:
+    'e' is the letter that was added.
  */
+
 //  Set
 public class FindtheDifference {
     public char findTheDifference(String s, String t) {
@@ -33,7 +37,7 @@ public class FindtheDifference {
 }
 /*  XOR
 
-    char c = t.charAt(t.length() - 1);
+        char c = t.charAt(t.length() - 1);
         for (int i = 0; i < s.length(); i++) {
             c ^= s.charAt(i);
             c ^= t.charAt(i);

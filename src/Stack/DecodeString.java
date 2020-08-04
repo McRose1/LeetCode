@@ -18,40 +18,86 @@ package Stack;
 
 import java.util.Stack;
 
+/*  Stack
+
+ */
 public class DecodeString {
     public String decodeString(String s) {
         if (s == null || s.length() == 0) return "";
-        String res = "";
+
+        // 专门存次数
         Stack<Integer> countStack = new Stack<>();
-        Stack<String> resStack = new Stack<>();
+        // 存上一层的字符串
+        Stack<String> strStack = new Stack<>();
+        // tail 存的是当前层的字符串
+        StringBuilder tail = new StringBuilder();
+
+        // 3[a2[c]]
+        int n = s.length();
         int idx = 0;
-        while (idx < s.length()) {
-            if (Character.isDigit(s.charAt(idx))) {
+        while (idx < n) {
+            char c = s.charAt(idx);
+            if (Character.isDigit(c)) {
                 int count = 0;
                 // 由高位到低位
                 while (Character.isDigit(s.charAt(idx))) {
-                    count = 10 * count + (s.charAt(idx) - '0');     // 3; 2
+                    count = 10 * count + (s.charAt(idx) - '0');
                     idx++;
                 }
-                countStack.push(count);     // 3; 2
-            } else if (s.charAt(idx) == '[') {
+                countStack.push(count);         // 3; 2
+            } else if (c == '[') {
                 // 存储之前的结果
-                resStack.push(res);         // aaa
-                // 重置 res
-                res = "";
+                strStack.push(tail.toString());   // null; a
+                // 重置 sb
+                tail = new StringBuilder();
                 idx++;
-            } else if (s.charAt(idx) == ']') {
-                StringBuilder sb = new StringBuilder(resStack.pop());   // aaa
-                int repeat = countStack.pop();      // 3; 2
-                for (int i = 0; i < repeat; i++) {
-                    sb.append(res);
+            } else if (c == ']') {
+                StringBuilder temp = new StringBuilder(strStack.pop());     // temp = a; null
+                int repeatTimes = countStack.pop();     // 2; 3
+                while (repeatTimes-- > 0) {
+                    temp.append(tail);                // acc; accaccacc
                 }
-                res = sb.toString();           // aaa; aaabcbc
+                tail = temp;                  // sb = acc; accaccacc
                 idx++;
             } else {
-                res += s.charAt(idx++);     // a; bc
+                tail.append(c);       // a; c
+                idx++;
             }
         }
-        return res;
+        return tail.toString();
     }
 }
+
+/*  DFS
+
+    int i = 0;
+    public String decodeString(String s) {
+        int len = s.length();
+        if (len < 1) return "";
+        char[] cs = s.toCharArray();
+        StringBuilder sb = new StringBuilder();
+        while (i < len) {
+            int times = 0;
+            // get times
+            while (i < len && cs[i] <= '9' && cs[i] >= '0') {
+                times = times * 10 + cs[i] - '0';
+                i++;
+            }
+            // get word
+            if (cs[i] == '[') {
+                i++;
+                String word = decodeString(s);
+                while (times-- > 0) {
+                    sb.append(word);
+                }
+            } else if (cs[i] == ']') {
+                i++;
+                return sb.toString();
+            } else {
+                sb.append(cs[i]);
+                i++;
+            }
+        }
+        return sb.toString();
+    }
+ */

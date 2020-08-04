@@ -16,6 +16,8 @@ package Random;
 
     // Returns the random shuffling of array [1,2,3].
     solution.shuffle();
+
+    Hint: The solution expects that we always use the original array to shuffle() else some of the test cases fail.
  */
 
 import java.util.Random;
@@ -28,7 +30,9 @@ import java.util.Random;
     recently processed one.
  */
 public class ShuffleanArray {
+    // 需要返回的数组
     private int[] array;
+    // reset 需要用到的原数组
     private int[] original;
     Random rand = new Random();
 
@@ -36,7 +40,7 @@ public class ShuffleanArray {
         return rand.nextInt(max - min) + min;
     }
 
-    private void swapAt(int i, int j) {
+    private void swap(int i, int j) {
         int temp = array[i];
         array[i] = array[j];
         array[j] = temp;
@@ -44,18 +48,22 @@ public class ShuffleanArray {
 
     public ShuffleanArray(int[] nums) {
         array = nums;
+        // deep copy，之后无论 array 和 nums 怎么变，original 都不会变
         original = nums.clone();
     }
 
+    /** Resets the array to its original configuration and return it. */
     public int[] reset() {
         array = original;
+        // 相当于切断和 array 的连接
         original = original.clone();
         return array;
     }
 
+    /** Returns a random shuffling of the array. */
     public int[] shuffle() {
         for (int i = 0; i < array.length; i++) {
-            swapAt(i, randRange(i, array.length));
+            swap(i, randRange(i, array.length));
         }
         return array;
     }
@@ -83,7 +91,8 @@ public class ShuffleanArray {
 
     public int[] reset() {
         array = original;               // array = {1, 2, 3}
-        original = original.clone();    // deep copy to make sure changes in array will not change original
+        // deep copy to make sure changes in array will not change original
+        original = original.clone();
         return array;
     }
 

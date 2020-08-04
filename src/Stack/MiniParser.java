@@ -24,32 +24,45 @@ package Stack;
              a. An integer containing value 789.
  */
 
-/*
 import java.util.Stack;
 
+/*  Stack
+    '[': push current NestedInteger to stack and start a new one
+    ']': end current NestedInteger and pop a NestedInteger from stack to continue
+    ',': append a new number to current NestedInteger, if this ',' in not right after a brackets
+    0-9: continue
+ */
 public class MiniParser {
     public NestedInteger deserialize(String s) {    // [123,[456,[789]]]
+        // corner case: 不以左括号开头，说明必定没有嵌套，只是一个纯数字
         if (!s.startsWith("[")) {
-            return new NestedInteger(Integer.valueOf(s));
+            return new NestedInteger(Integer.parseInt(s));
         }
-
+        // [123,[456,[789]]]
         Stack<NestedInteger> stack = new Stack<>();
+        // res 为最外层的括号
         NestedInteger res = new NestedInteger();
         stack.push(res);
+        // start 用来标识数字的首 index
         int start = 1;
         for (int i = 1; i < s.length(); i++) {
             char c = s.charAt(i);
+            // 开始当前 NestedInteger
             if (c == '[') {
-                NestedInteger nestedInteger = new NestedInteger();
-                stack.peek().add(nestedInteger);
-                stack.push(nestedInteger);
+                NestedInteger ni = new NestedInteger();
+                // 在外层 NI 加入当前层 ni
+                stack.peek().add(ni);
+                // 进栈以便进入下一层
+                stack.push(ni);
                 start = i + 1;
             } else if (c == ',' || c == ']') {
+                // 说明逗号前面是数字
                 if (i > start) {
-                    Integer val = Integer.valueOf(s.substring(start, i));
+                    int val = Integer.parseInt(s.substring(start, i));
                     stack.peek().add(new NestedInteger(val));
                 }
                 start = i + 1;
+                // 结束当前 NestedInteger
                 if (c == ']') {
                     stack.pop();
                 }
@@ -58,5 +71,3 @@ public class MiniParser {
         return res;
     }
 }
-
- */
