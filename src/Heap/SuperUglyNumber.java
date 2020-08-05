@@ -1,4 +1,4 @@
-package PriorityQueue;
+package Heap;
 
 /*  313. Super Ugly Number
     Write a program to find the nth super ugly number.

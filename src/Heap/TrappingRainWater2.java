@@ -1,4 +1,4 @@
-package PriorityQueue;
+package Heap;
 
 /*  407. Trapping Rain Water 2
     Given an m x n matrix of positive integers representing the height of each unit cell in a 2D elevation map,

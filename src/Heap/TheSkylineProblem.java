@@ -1,4 +1,4 @@
-package PriorityQueue;
+package Heap;
 
 /*  218. The Skyline Problem
     A city's skyline is the outer contour of the silhouette formed by all the buildings in that city when viewed from a distance.

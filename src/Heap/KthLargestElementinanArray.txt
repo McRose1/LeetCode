@@ -3,9 +3,9 @@
 第一反应就想到了 quick select
 
 tag 是 divide&conquer 和 heap
-heap 很容易相当用 PriorityQueue
+heap 很容易相当用 Heap
 
-PriorityQueue 的默认排序是从小到大，也就是 minHeap
+Heap 的默认排序是从小到大，也就是 minHeap
 先全部 offer 进去
 一个一个 poll 出来直到 queue 的 size 等于 k 时
 这个想法有点浪费空间了。。。

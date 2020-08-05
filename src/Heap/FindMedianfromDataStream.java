@@ -1,4 +1,4 @@
-package PriorityQueue;
+package Heap;
 
 /*  295. Find Median from Data Stream
     Median is the middle value in an ordered integer list.

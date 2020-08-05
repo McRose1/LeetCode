@@ -1,4 +1,4 @@
-package PriorityQueue;
+package Heap;
 
 /*  347. Top K Frequent Elements
     Given a non-empty array of integers, return the K most frequent elements.
