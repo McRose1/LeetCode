@@ -18,27 +18,39 @@ package Tree;
         o The total number of nodes is between [0, 10^4].
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-/*  Recursion
+/*  Recursion: Time = O(n) Space = O(n)
 
  */
 public class MaximumDepthofNaryTree {
     public int maxDepth(Node root) {
        if (root == null) return 0;
 
-       int max = 1;
+       int depth = 1;
        for (Node child : root.children) {
-           max = Math.max(max, 1 + maxDepth(child));
+           depth = Math.max(depth, 1 + maxDepth(child));
        }
-       return max;
+       return depth;
     }
 }
 
-/*  Iteration 
+/*  Iteration: Time = O(n) Space = O(n)
 
-        Queue
+        if (root == null) return 0;
+
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(root);
+
+        int depth = 0;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            depth++;
+            for (int i = 0; i < size; i++) {
+                Node cur = queue.poll();
+                for (Node child : cur.children) {
+                    queue.offer(child);
+                }
+            }
+        }
+        return depth;
  */
