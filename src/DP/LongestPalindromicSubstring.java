@@ -14,6 +14,7 @@ package DP;
  */
 
 /*  Expand Around Center (DP optimized): Time = O(n^2) Space = O(1)
+    枚举所有可能的回文子串的中心位置：奇数个 / 偶数个
     1. if s[i~j] is a palindrome, s[i+1~j-1] us also a one
     2. if s[i~j] is not a palindrome, then s[i-1~j+1] can not be a palindrome
     e.g. abcea, bce is not a palindrome, abcea can't be one
@@ -25,7 +26,7 @@ public class LongestPalindromicSubstring {
     public String longestPalindrome(String s) {
         if (s == null || s.length() == 0) return "";
         int start = 0;
-        int len = 0;
+        int end = 0;
         // 每次循环选择一个中心，进行左右扩展，判断左右字符是否相等
         for (int i = 0; i < s.length(); i++) {
             // 字符串长度为奇数，中心元素只有 1 个："eab c bad"
@@ -33,15 +34,15 @@ public class LongestPalindromicSubstring {
             // 字符串长度为偶数，中心元素有 2 个："eab cc bad"
             int len2 = getLen(s, i, i + 1);
             // palindrome 最大长度
-            int cur = Math.max(len1, len2);
+            int maxLen = Math.max(len1, len2);
             // 更新最大长度
-            if (cur > len) {
+            if (maxLen > end - start) {
                 // 中心扩散，算出头和尾
-                len = cur;
-                start = i - (cur - 1) / 2;
+                start = i - (maxLen - 1) / 2;
+                end = i + maxLen / 2;
             }
         }
-        return s.substring(start, start + len);
+        return s.substring(start, end + 1);
     }
 
     private int getLen(String s, int left, int right) {
@@ -75,12 +76,38 @@ public class LongestPalindromicSubstring {
         return res;
  */
 
-/*  Manacher's Algorithm（马拉车算法）
+/*  DP (my version) 比 LC 快
+
+        if (s == null || s.length() == 0) return "";
+        int n = s.length();
+        boolean[][] dp = new boolean[n][n];
+        int len = 0;
+        int start = 0;
+        for (int j = 0; j < n; j++) {
+            for (int i = j; i >= 0; i--) {
+                if (s.charAt(i) == s.charAt(j) && (j - i < 2 || dp[i + 1][j - 1])) {
+                    dp[i][j] = true;
+                    if (dp[i][j]) {
+                        if (j - i + 1 > len) {
+                            start = i;
+                            len = j - i + 1;
+                        }
+                    }
+                }
+            }
+        }
+        return s.substring(start, start + len);
+ */
+
+/*  Manacher's Algorithm（马拉车算法）: Time = O(n) Space = O(1)
+    将原始字符串进行预处理，在预处理字符串上执行“动态规划”和“中心扩散”方法。
+    为了讲奇、偶数回文串的性质统一表示，将原始字符串进行预处理，用不在输入字符串中的字符隔开。
+    （预处理字符串的回文子串的长度 - 1）/ 2 = 原始字符串的回文子串的长度
 
  */
 
 
-/*  Brute Force: Time = O(n^3) Space = O(1)
+/*  Brute Force: Time = O(n^3) Space = O(1) -> TLE
     判断是否是 palindrome
     compare head and tail
 
@@ -125,5 +152,4 @@ public class LongestPalindromicSubstring {
         }
         return true;
     }
-
  */
