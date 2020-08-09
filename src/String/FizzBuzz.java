@@ -1,7 +1,8 @@
-/*
+package String;
+
+/*  412. Fizz Buzz
     Write a program that outputs the string representation of numbers from 1 to n.
-    But for multiples of three it should output "Fizz" instead of the number
-    and for the multiples of five output "Buzz".
+    But for multiples of three it should output "Fizz" instead of the number and for the multiples of five output "Buzz".
     For numbers which are multiples of both three and five output "FizzBuzz".
 
     Example:
@@ -30,22 +31,21 @@
 import java.util.ArrayList;
 import java.util.List;
 
+// Simulation
 public class FizzBuzz {
     public List<String> fizzBuzz(int n) {
-        List<String> fb = new ArrayList<>();
-        if (n == 0) return fb;
+        List<String> res = new ArrayList<>();
         for (int i = 1; i <= n; i++) {
             if (i % 15 == 0) {
-                fb.add("FizzBuzz");
+                res.add("FizzBuzz");
             } else if (i % 5 == 0) {
-                fb.add("Buzz");
+                res.add("Buzz");
             } else if (i % 3 == 0) {
-                fb.add("Fizz");
+                res.add("Fizz");
             } else {
-                String str = Integer.toString(i);
-                fb.add(str);
+                res.add(""+ i);
             }
         }
-        return fb;
+        return res;
     }
 }
