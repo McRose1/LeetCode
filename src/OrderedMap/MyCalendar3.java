@@ -60,5 +60,5 @@ public class MyCalendar3 {
 }
 
 /*  Segment Tree: Time = O(nlogn) Space = O(n)
-    
+    A node {[s, e), c} means interval [s, e) has c events
  */

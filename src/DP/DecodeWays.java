@@ -18,23 +18,27 @@ package DP;
     Output: 3
     Explanation: It could be decoded as "BZ" (2 26), "VF" (22 6), or "BBF" (2 2 6).
  */
-import java.util.Arrays;
+
 /*  DP (Bottom-Up): Time = O(n) Space = O(1)
     dp[i] to decode s[0] -> s[i]
  */
 public class DecodeWays {
     public int numDecodings(String s) {
-        if (s == null || s.length() == 0) return 0;
         int[] dp = new int[s.length() + 1];
         dp[0] = 1;
         // 第一个元素不能为 0
-        dp[1] = s.charAt(0) == '0' ? 0 : 1;
+        if (s.charAt(0) == '0') {
+            return 0;
+        }
+        dp[1] = 1;
         for (int i = 2; i <= s.length(); i++) {
-            int oneDigit = Integer.valueOf(s.substring(i - 1, i));
-            int twoDigit = Integer.valueOf(s.substring(i - 2, i));
+            int oneDigit = Integer.parseInt(s.substring(i - 1, i));
+            int twoDigit = Integer.parseInt(s.substring(i - 2, i));
+            // 1-9
             if (oneDigit >= 1) {
                 dp[i] += dp[i - 1];
             }
+            // 10-26
             if (twoDigit >= 10 && twoDigit <= 26) {
                 dp[i] += dp[i - 2];
             }
@@ -43,44 +47,49 @@ public class DecodeWays {
     }
 }
 
-/*  Recursion + Memoization (Top-Down DP): Time = O(n) Space = O(n)
+/*  Recursion with Memoization (Top-Down DP): Time = O(n) Space = O(n)
 
     public int numDecodings(String s) {
-        if (s == null || s.length() == 0) return 0;
         int[] memo = new int[s.length() + 1];
         Arrays.fill(memo, -1);
         return helper(s.toCharArray(), 0, memo);
     }
-    private int helper(char[] array, int level, int[] memo) {
-        if (memo[level] != -1) {
-            return memo[level];
+
+    private int helper(char[] arr, int idx, int[] memo) {
+        // 记忆化
+        if (memo[idx] != -1) {
+            return memo[idx];
         }
-        if (level == array.length) {
-            memo[level] = 1;
+        // 遍历完毕
+        if (idx == arr.length) {
+            memo[idx] = 1;
             return 1;
         }
         int ways = 0;
         // 取前面一个
         // 1 - 9
-        if (array[level] != '0') {
-            ways += helper(array, level + 1, memo);
+        if (arr[idx] != '0') {
+            ways += helper(arr, idx + 1, memo);
         }
         // 取前面两个
-        if (isValid(array, level)) {
-            ways += helper(array, level + 2, memo);
+        if (isValid(arr, idx)) {
+            ways += helper(arr, idx + 2, memo);
         }
-        memo[level] = ways;
+        memo[idx] = ways;
         return ways;
     }
+
     // check if array[start] and array[start + 1] forms a valid encoding
-    private boolean isValid(char[] array, int start) {
-        if (start + 1 >= array.length) return false;
+    private boolean isValid(char[] arr, int start) {
+        if (start + 1 >= arr.length) return false;
+
         // 10 - 19
-        if (array[start] == '1') {
+        if (arr[start] == '1') {
             return true;
         }
+
         // 21 - 26
-        if (array[start] == '2' && array[start + 1] - '6' <= 0) {
+        if (arr[start] == '2' && arr[start + 1] - '6' <= 0) {
             return true;
         }
         return false;

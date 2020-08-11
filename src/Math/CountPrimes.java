@@ -62,7 +62,7 @@ public class CountPrimes {
         return count;
     }
     private boolean isPrime(int num) {
-        if (num <= 1) return false;
+        if (num < 2) return false;
         // Loop's ending condition is i*i <= num instead of i <= sqrt(num) to avoid repeatedly calling an expensive function sqrt()
         for (int i = 2; i * i <= num; i++) {
             if (num % i == 0) return false;

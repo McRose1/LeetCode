@@ -66,6 +66,44 @@ public class RotateImage {
     }
 }
 
+/*  在单次循环中旋转 4 个矩形
+
+        int m = matrix.length;
+        for (int i = 0; i < (m + 1) / 2; i++) {
+            for (int j = 0; j < m / 2; j++) {
+                int temp = matrix[m - 1 - j][i];
+                matrix[m - 1 - j][i] = matrix[m - 1 - i][m - j - 1];
+                matrix[m - 1 - i][m - j - 1] = matrix[j][m - 1 - i];
+                matrix[j][m - 1 - i] = matrix[i][j];
+                matrix[i][j] = temp;
+            }
+        }
+ */
+
+/*  选择 4 个矩形
+
+        int m = matrix.length;
+        for (int i = 0; i < m / 2 + m % 2; i++) {
+            for (int j = 0; j < m / 2; j++) {
+                int[] temp = new int[4];
+                int row = i;
+                int col = j;
+                for (int k = 0; k < 4; k++) {
+                    temp[k] = matrix[row][col];
+                    int x = row;
+                    row = col;
+                    col = m - 1- x;
+                }
+                for (int k = 0; k < 4; k++) {
+                    matrix[row][col] = temp[(k + 3) % 4];
+                    int x = row;
+                    row = col;
+                    col = m - 1 - x;
+                }
+            }
+        }
+ */
+
 /*  my version
 
         for (int i = 0; i < matrix.length; i++) {
@@ -87,5 +125,4 @@ public class RotateImage {
                 right--;
             }
         }
-
  */
