@@ -10,6 +10,7 @@ package Array;
     3,2,1 → 1,2,3
     1,1,5 → 1,5,1
  */
+
 /*  Single Pass Approach: Time = O(n) Space = O(1)
     First, we observe that for any given sequence that is in descending order, no next larger permutation is possible.
     For example, no next permutation is possible for: [9,5,4,3,1]
