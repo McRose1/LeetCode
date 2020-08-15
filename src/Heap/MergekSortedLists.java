@@ -1,4 +1,4 @@
-package LinkedList;
+package Heap;
 
 /*  23. Merge k Sorted Lists
     Merge k sorted linked lists and return it as one sorted list.
@@ -13,6 +13,8 @@ package LinkedList;
     ]
     Output: 1->1->2->3->4->4->5->6
  */
+import LinkedList.ListNode;
+
 import java.util.PriorityQueue;
 /*  Compare using PriorityQueue: Time = O(nlogk) Space = O(k)
     use PriorityQueue to get the smallest number every time

@@ -17,11 +17,55 @@ package Stack;
 
 import java.util.Stack;
 
-/*  Monotonic Stack: Time = O(n) Space = O(n)
-    <val, count>：val 是 A[i] 的值，count 表示在 A[i] 前面，排在栈顶下的第 2 个元素后面，有多少个大于等于 A[i]（包括 A[i] 本身）
+/*  前驱/后继数组: Time = O(n) Space = O(n)
+    prev[] 代表 Previous Less Element（PLE）
+    next[] 代表 Next Less Element（NLE）
+    A:    [3, 1, 2, 4]
+    idx:   0  1  2  3
+    prev: -1 -1  1  2
+    next:  1  4  4  4
+    所以 (i - prev[i]) * (next[i] - i) 就是最小值为 i 的 subarray 的个数，再乘上 A[i] 就是 i 所贡献的值
  */
 public class SumofSubarrayMinimums {
     public int sumSubarrayMins(int[] A) {
+        int MOD = 1000000007;
+        int n = A.length;
+
+        Stack<Integer> stack = new Stack<>();
+
+        int[] prev = new int[n];
+        for (int i = 0; i < n; i++) {
+            while (!stack.isEmpty() && A[i] <= A[stack.peek()]) {
+                stack.pop();
+            }
+            prev[i] = stack.isEmpty() ? -1 : stack.peek();
+            stack.push(i);
+        }
+
+        stack = new Stack<>();
+        int[] next = new int[n];
+        for (int j = n - 1; j >= 0; j--) {
+            while (!stack.isEmpty() && A[j] < A[stack.peek()]) {
+                stack.pop();
+            }
+            next[j] = stack.isEmpty() ? n : stack.peek();
+            stack.push(j);
+        }
+
+        // Use prev/next array to count answer
+        long ans = 0;
+        for (int i = 0; i < n; i++) {
+            ans += (i - prev[i]) * (next[i] - i) * A[i];
+            ans %= MOD;
+        }
+
+        return (int) ans;
+    }
+}
+
+/*  Monotonic Stack: Time = O(n) Space = O(n)
+    <val, count>：val 是 A[i] 的值，count 表示在 A[i] 前面，排在栈顶下的第 2 个元素后面，有多少个大于等于 A[i]（包括 A[i] 本身）
+
         int MOD = 1000000007;
 
         Stack<int[]> stack = new Stack<>();
@@ -48,5 +92,4 @@ public class SumofSubarrayMinimums {
             res %= MOD;
         }
         return res;
-    }
-}
+ */
