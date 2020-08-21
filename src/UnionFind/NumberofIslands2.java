@@ -34,7 +34,7 @@ package UnionFind;
     0 1 0
 
     Follow up:
-    Can you do it in time complexity O(k log mn), where k is the length of the positions?
+    Can you do it in time complexity O(klogListmn), where k is the length of the positions?
  */
 
 import java.util.ArrayList;
@@ -52,9 +52,22 @@ public class NumberofIslands2 {
         int[] roots = new int[m * n];
         Arrays.fill(roots, -1);
 
+        boolean[] visited = new boolean[m * n];
+
         for (int[] pair : positions) {
+            int r = pair[0];
+            int c = pair[1];
+            if (r < 0 || r >= m || c < 0 || c >= n) {
+                res.add(count);
+                continue;
+            }
             // 转换成一维 index
-            int pos = n * pair[0] + pair[1];
+            int pos = r * n + c;
+            if (visited[pos]) {
+                res.add(count);
+                continue;
+            }
+            visited[pos] = true;
             roots[pos] = pos;
             count++;
 
@@ -62,7 +75,7 @@ public class NumberofIslands2 {
                 // 往四个方向遍历
                 int x = pair[0] + dir[0];
                 int y = pair[1] + dir[1];
-                int curPos = n * x + y;
+                int curPos = x * n + y;
                 // 排查边界和不是岛屿的情况
                 if (x < 0 || x >= m || y < 0 || y >= n || roots[curPos] == -1) {
                     continue;
