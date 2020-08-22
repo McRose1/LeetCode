@@ -31,19 +31,18 @@ public class ReverseString {
         }
     }
 }
-/*
-    Recursion + In-place: Time = O(N) Space = O(N)
+/*  Recursion + In-place: Time = O(N) Space = O(N)
     Base case: if (left >= right) do nothing
-    Recursion rule: swap s[left] and s[right] and call helper(left + 1, right - 1)
+    Recursion rule: swap s[left] and s[right] and call swap(left + 1, right - 1)
 
     public void reverseString(char[] s) {
-        helper(s, 0, s.length - 1);
+        swap(s, 0, s.length - 1);
     }
-    public void helper(char[] s, int left, int right) {
+    public void swap(char[] s, int left, int right) {
         if (left >= right) return;
         char tmp = s[left];
         s[left++] = s[right];
         s[right--] = tmp;
-        helper(s, left, right);
+        swap(s, left, right);
     }
  */
