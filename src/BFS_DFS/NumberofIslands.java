@@ -27,12 +27,18 @@ package BFS_DFS;
     访问过的 1 置为 0
  */
 public class NumberofIslands {
+
+    private int m;
+    private int n;
+
     public int numIslands(char[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) return 0;
 
+        m = grid.length;
+        n = grid[0].length;
         int count = 0;
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[0].length; j++) {
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 if (grid[i][j] == '1') {
                     count++;
                     dfs(grid, i, j);
@@ -44,7 +50,7 @@ public class NumberofIslands {
 
     private void dfs(char[][] grid, int i, int j) {
         // 这一步注意 grid[x][y] == '0' 的位置，必须先判断坐标是否越界，grid[x][y] 才不会 out of bound
-        if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] == '0') return;
+        if (i < 0 || i >= m || j < 0 || j >= n || grid[i][j] == '0') return;
 
         // 这一步是这题的关键，相当于起到 visited 数组的作用，保证 DFS 不会回退
         grid[i][j] = '0';
