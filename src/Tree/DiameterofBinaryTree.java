@@ -17,7 +17,7 @@ package Tree;
     Note: The length of path between two nodes is represented by the number of edges between them.
  */
 
-/*  Recursion
+/*  Recursion (DFS): Time = O(n) Space = O(h)
     两个叶子结点之间路径 = 根节点左右儿子的高度之和
  */
 public class DiameterofBinaryTree {

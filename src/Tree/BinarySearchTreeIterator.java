@@ -35,7 +35,7 @@ public class BinarySearchTreeIterator {
     public BinarySearchTreeIterator(TreeNode root) {
 
         // Stack for the recursion simulation
-        stack = new Stack();
+        stack = new Stack<>();
 
         // Remember that the algorithm starts with a call to the helper function with the root node as the input
         leftmostInorder(root);
@@ -53,20 +53,20 @@ public class BinarySearchTreeIterator {
     /** @return the next smallest number */
     public int next() {
         // Node at the top of the stack is the next smallest element
-        TreeNode topmostNode = stack.pop();
+        TreeNode node = stack.pop();
 
         // Need to maintain the invariant.
         // If the node has a right child, call the helper function for the right child.
-        if (topmostNode.right != null) {
-            leftmostInorder(topmostNode.right);
+        if (node.right != null) {
+            leftmostInorder(node.right);
         }
 
-        return topmostNode.val;
+        return node.val;
     }
 
     /** @return whether we have a next smallest number */
     public boolean hasNext() {
-        return stack.size() > 0;
+        return !stack.isEmpty();
     }
 }
 

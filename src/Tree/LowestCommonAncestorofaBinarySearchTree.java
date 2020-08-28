@@ -36,14 +36,14 @@ package Tree;
  */
 public class LowestCommonAncestorofaBinarySearchTree {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        int pVal = p.val;
-        int qVal = q.val;
-        int parentVal = root.val;
+        if (root == null || root == p || root == q) {
+            return root;
+        }
 
-        if (pVal < parentVal && qVal < parentVal) {
+        if (p.val < root.val && q.val < root.val) {
             // If both p and q are lesser than parent
             return lowestCommonAncestor(root.left, p, q);
-        } else if (pVal > parentVal && qVal > parentVal) {
+        } else if (p.val > root.val && q.val > root.val) {
             // If both p and q are greater than parent
             return lowestCommonAncestor(root.right, p, q);
         } else {

@@ -26,11 +26,12 @@ package Tree;
     p and q are different and both values will exist in the binary tree.
  */
 
-/*  Recursion: Time = O(n) Space = O(n)
+/*  Recursion (DFS): Time = O(n) Space = O(n)
     两个节点在子树的 LCA 就是两个节点在整个树的 LCA
  */
 public class LowestCommonAncestorofaBinaryTree {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        // 递归的出口
         if (root == null || root == p || root == q) {
             return root;
         }
@@ -42,21 +43,79 @@ public class LowestCommonAncestorofaBinaryTree {
         if (leftCommonAncestor == null) {
             return rightCommonAncestor;
         }
+
         // 右子树中没找到 LCA，那么一定在左子树
         if (rightCommonAncestor == null) {
             return leftCommonAncestor;
         }
+
         // LCA 既不在左子树也不在右子树，说明出现在当前 root
         return root;
     }
 }
 
-/*  Iteration: Time = O(n) Space = O(n)
+/*  力扣
+    (flson && frson) || ((x == p || x == q) && (flson || frson))
+
+    private TreeNode ans;
+
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        dfs(root, p, q);
+        return ans;
+    }
+
+    private boolean dfs(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null) return false;
+
+        boolean lson = dfs(root.left, p, q);
+        boolean rson = dfs(root.right, p, q);
+
+        if ((lson && rson) || ((root.val == p.val || root.val == q.val) && (lson || rson))) {
+            ans = root;
+        }
+        return lson || rson || (root.val == p.val || root.val == q.val);
+    }
+ */
+
+/*  力扣：存储父节点 (Recursion)
+
+    Map<Integer, TreeNode> parent = new HashMap<>();
+    Set<Integer> visited = new HashSet<>();
+
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        dfs(root);
+        while (p != null) {
+            visited.add(p.val);
+            p = parent.get(p.val);
+        }
+        while (q != null) {
+            if (visited.contains(q.val)) {
+                return q;
+            }
+            q = parent.get(q.val);
+        }
+        return null;
+    }
+
+    private void dfs(TreeNode root) {
+        if (root.left != null) {
+            parent.put(root.left.val, root);
+            dfs(root.left);
+        }
+        if (root.right != null) {
+            parent.put(root.right.val, root);
+            dfs(root.right);
+        }
+    }
+ */
+
+/*  Iteration using parent pointers: Time = O(n) Space = O(n)
     可以从 p 和 q 回溯以获取它们的公共祖先，得到的第一个公共节点就是 LCA
 
+        // Stack for tree traversal
         Stack<TreeNode> stack = new Stack<>();
 
-        // HashMap for parent node of every node
+        // HashMap for parent pointers
         Map<TreeNode, TreeNode> parent = new HashMap<>();
 
         parent.put(root, null);
@@ -79,14 +138,22 @@ public class LowestCommonAncestorofaBinaryTree {
         // Ancestors set for node p
         Set<TreeNode> ancestors = new HashSet<>();
 
+        // 自下向上
+
         // Process all ancestors for node p using parent pointers
         while (p != null) {
             ancestors.add(p);
             p = parent.get(p);
         }
         // The first ancestor of q which appears in p's ancestor set is their LCA
+        // 如果 q 是 p 的 parents 路径中的 parent，直接返回 q
+        // 否则，从 q 不断往上继续搜索 q 的 parent 是否和 p 的 parent 相同
         while (!ancestors.contains(q)) {
             q = parent.get(q);
         }
         return q;
+ */
+
+/*  Iterative without parent pointers
+
  */
