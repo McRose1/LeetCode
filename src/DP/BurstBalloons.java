@@ -17,12 +17,43 @@ package DP;
     Explanation: nums = [3,1,5,8] --> [3,5,8] -->   [3,8]   -->  [8]  --> []
                  coins =  3*1*5      +  3*5*8    +  1*3*8      + 1*8*1   = 167
  */
-/*  DP (Bottom-up): Time = O(n^3) Space = O(n^2)
+
+/*  二维 DP (Bottom-up): Time = O(n^3) Space = O(n^2)
+    全部都要反过来想，戳气球变成放气球
     dp[i][j] = maxCoins(nums[i]~nums[j])
     dp[i][j] = max{arr[i] x arr[k] x arr[j] + dp[i][k] + dp[k][j] | i < k < j}
  */
 public class BurstBalloons {
     public int maxCoins(int[] nums) {
+        int n = nums.length;
+
+        // [3,1,5,8] -> [1,3,1,5,8,1] You may imagine nums[-1] = nums[n] = 1.
+        int[] arr = new int[n + 2];
+        System.arraycopy(nums, 0, arr, 1, n);
+        arr[0] = arr[n + 1] = 1;
+
+        int[][] dp = new int[n + 2][n + 2];
+
+        // 因为过程变成放气球，所以从最小的子问题开始算，大问题依赖于小问题
+        for (int len = 2; len < n + 2; len++) {
+            // 左边界
+            for (int i = 0; i < n + 2 - len; i++) {
+                // 右边界
+                int j = i + len;
+                // 在这个边界内遍历每一种可能（固定左右边界，计算选择哪个气球放入能得到最大值）
+                for (int k = i + 1; k < j; k++) {
+                    int sum = arr[i] * arr[k] * arr[j];
+                    sum += (dp[i][k] + dp[k][j]);
+                    dp[i][j] = Math.max(dp[i][j], sum);
+                }
+            }
+        }
+        return dp[0][n + 1];
+    }
+}
+
+/*  LC
+
         int n = nums.length;
 
         // [3,1,5,8] -> [1,3,1,5,8,1] You may imagine nums[-1] = nums[n] = 1.
@@ -42,8 +73,8 @@ public class BurstBalloons {
             }
         }
         return dp[0][n + 1];
-    }
-}
+ */
+
 
 /*  DP (Recursion with Memoization): Time = O(n^3) Space = O(n^2)
     Top-down, Divide & Conquer
