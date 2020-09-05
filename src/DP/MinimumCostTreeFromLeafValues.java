@@ -23,14 +23,14 @@ package DP;
     6    2             2   4
 
     Constraints:
-    2 <= arr.length <= 40
-    1 <= arr[i] <= 15
-    It is guaranteed that the answer fits into a 32-bit signed integer (ie. it is less than 2^31).
+        o 2 <= arr.length <= 40
+        o 1 <= arr[i] <= 15
+        o It is guaranteed that the answer fits into a 32-bit signed integer (ie. it is less than 2^31).
 
     Hint:
-    Do a DP, where dp(i, j) is the answer for the subarray arr[i]..arr[j].
-    For each possible way to partition the subarray i <= k < j,
-    the answer is max(arr[i]..arr[k]) * max(arr[k+1]..arr[j]) + dp(i, k) + dp(k+1, j).
+        1. Do a DP, where dp(i, j) is the answer for the subarray arr[i]..arr[j].
+        2. For each possible way to partition the subarray i <= k < j,
+           the answer is max(arr[i]..arr[k]) * max(arr[k+1]..arr[j]) + dp(i, k) + dp(k+1, j).
  */
 
 /*  区间DP: Time = O(n^3) Space = O(n^2)
@@ -54,14 +54,14 @@ public class MinimumCostTreeFromLeafValues {
 
         int[][] dp = new int[n][n];
         // 从最小的区间开始遍历
-        for (int len = 1; len < n; len++) {
+        for (int len = 2; len <= n; len++) {
             // 左边界
-            for (int i = 0; i + len < n; i++) {
+            for (int i = 0; i + len - 1 < n; i++) {
                 // 右边界
-                int j = i + len;
+                int j = i + len - 1;
                 dp[i][j] = Integer.MAX_VALUE;
                 // 当前区间只有 2 个叶子节点
-                if (len == 1) {
+                if (len == 2) {
                     dp[i][j] = arr[i] * arr[j];
                 } else {
                     // k 作为 root 将二叉树分为左右子树

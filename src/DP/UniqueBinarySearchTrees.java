@@ -34,9 +34,9 @@ public class UniqueBinarySearchTrees {
 
         // 子问题，节点的数量从 2 -> n
         for (int i = 2; i <= n; i++) {
-            // 遍历每个节点作为 root 的可能
+            // j 是左子树的节点数量，相当于遍历 root 从 1 -> i 的所有可能
             for (int j = 0; j < i; j++) {
-                // j 是左子树的节点数量，i-j-1 是右子树的节点数量，加和为 i-1（去掉 root）
+                // i-j-1 是右子树的节点数量，加和为 i-1（去掉 root）
                 dp[i] += (dp[j] * dp[i - j - 1]);
             }
         }

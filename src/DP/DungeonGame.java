@@ -25,7 +25,7 @@ package DP;
 
 import java.util.Arrays;
 
-/*  DP (Bottom-Up): Time = O(n^2) Space = O(n^2)
+/*  DP (Bottom-Up): Time = O(mn) Space = O(mn)
     dp[i][j] = min(dp[i + 1][j], dp[i][j + 1]) - dungeon[i][j]
     dp[i][j] = 1 when it < 1
  */
@@ -44,11 +44,7 @@ public class DungeonGame {
         for (int i = m - 1; i >= 0; i--) {
             for (int j = n - 1; j >= 0; j--) {
                 int minHp = Math.min(dp[i + 1][j], dp[i][j + 1]) - dungeon[i][j];
-                if (minHp < 1) {
-                    dp[i][j] = 1;
-                } else {
-                    dp[i][j] = minHp;
-                }
+                dp[i][j] = Math.max(minHp, 1);
             }
         }
         return dp[0][0];
