@@ -1,4 +1,4 @@
-package Math;
+package DP;
 
 /*  264. Ugly Number 2
     Write a program to find the n-th ugly number.
@@ -31,19 +31,24 @@ package Math;
  */
 public class UglyNumber2 {
     public int nthUglyNumber(int n) {
+        // 丑数数组
         int[] dp = new int[n];
         // 相当于维护了 3 个指针
         int index2 = 0;
         int index3 = 0;
         int index5 = 0;
 
+        // 1 是第一个丑数
         dp[0] = 1;
         for (int i = 1; i < n; i++) {
             int next2 = dp[index2] * 2;
             int next3 = dp[index3] * 3;
             int next5 = dp[index5] * 5;
+            // 每次都有 3 种选择，从中选择最小的作为这次的丑数
             dp[i] = Math.min(next2, Math.min(next3, next5));
 
+            // 依次判断这个丑数是乘上 2、3、5 中的哪一个得到，将相应的指针后移一位
+            // 注意！可能存在多个选项符合条件，比如：6 = 3 * 2; 6 = 2 * 3
             if (dp[i] == dp[index2] * 2) {
                 index2++;
             }
@@ -58,11 +63,13 @@ public class UglyNumber2 {
     }
 }
 
-/*  TreeSet
+/*  TreeSet: Time = O(1) Space = O(1)
+    和 heap 的思路类似，比 heap 好在 set 的本质免去了对于 duplicate 的删除
 
         TreeSet<Long> tset = new TreeSet<>();
         tset.add(1l);
         for (int i = 1; i < n; i++) {
+            // 相当于依次 poll 出第 1~n-1 个丑数，最后在 TreeSet 顶上的就是最小的丑数也就是第 n 个丑数
             long first = tset.pollFirst();
             tset.add(first * 2);
             tset.add(first * 3);
@@ -71,21 +78,59 @@ public class UglyNumber2 {
         return tset.first().intValue();
  */
 
-/*  Heap
+/*  Heap: Time = O(1) Space = O(1)
+    用 PriorityQueue 来存但是要记得取出重复的计算如 6
 
         if (n == 1) return 1;
-        PriorityQueue<Long> queue = new PriorityQueue<>();
+        PriorityQueue<Long> minHeap = new PriorityQueue<>();
         queue.offer(1l);
 
         for (long i = 1; i < n; i++) {
-            long temp = queue.poll();
+            long temp = minHeap.poll();
             // remove duplicates
-            while (!queue.isEmpty() && queue.peek() == temp) {
-                temp = queue.poll();
+            while (!minHeap.isEmpty() && minHeap.peek() == temp) {
+                temp = minHeap.poll();
             }
-            queue.offer(temp * 2);
-            queue.offer(temp * 3);
-            queue.offer(temp * 5);
+            minHeap.offer(temp * 2);
+            minHeap.offer(temp * 3);
+            minHeap.offer(temp * 5);
         }
-        return queue.poll().intValue();
+        return minHeap.poll().intValue();
+ */
+
+/*  Brute Force (TLE)
+
+    public int nthUglyNumber(int n) {
+        if (n == 1) {
+            return 1;
+        }
+        if (n == 2) {
+            return 2;
+        }
+        if (n == 3) {
+            return 3;
+        }
+        n -= 3;
+        int num = 4;
+        while (n > 0) {
+            if (isUgly(num)) {
+                n--;
+            }
+            num++;
+        }
+        return --num;
+    }
+
+    private static boolean isUgly(int n) {
+        while (n % 5 == 0) {
+            n /= 5;
+        }
+        while (n % 3 == 0) {
+            n /= 3;
+        }
+        while (n % 2 == 0) {
+            n /= 2;
+        }
+        return n == 1;
+    }
  */

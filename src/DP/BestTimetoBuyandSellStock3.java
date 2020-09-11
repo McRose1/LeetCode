@@ -22,12 +22,13 @@ package DP;
     Output: 0
  */
 
-/*  一维 DP
+/*  一维 DP: Time = O(n) Space = O(n)
+
  */
 public class BestTimetoBuyandSellStock3 {
     public int maxProfit(int[] prices) {
         int n = prices.length;
-        if (prices == null || n < 2) return 0;
+        if (n < 2) return 0;
         int K = 2;
         int[] dp = new int[K + 1];
         int[] min = new int[K + 1];
@@ -47,7 +48,7 @@ public class BestTimetoBuyandSellStock3 {
     }
 }
 
-/*  Simplified DP
+/*  Simplified DP: Time = O(n) Space = O(1)
 
         int n = prices.length;
         if (prices == null || n < 2) return 0;
@@ -66,6 +67,42 @@ public class BestTimetoBuyandSellStock3 {
             dp2 = Math.max(dp2, prices[i] - min2);
         }
         return dp2;
+ */
+
+/*  2 个一维 DP 数组：Time = O(n) Space = O(n)
+
+        int n = prices.length;
+        if (n == 1) return 0;
+
+        int[] first = new int[n];
+        first[0] = 0;
+        int min = prices[0];
+        for (int i = 1; i < n; i++) {
+            min = Math.min(min, prices[i]);
+            if (prices[i] > prices[i - 1]) {
+                first[i] = Math.max(first[i - 1], prices[i] - min);
+            } else {
+                first[i] = first[i - 1];
+            }
+        }
+
+        int[] second = new int[n];
+        second[n - 1] = 0;
+        int max = prices[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            max = Math.max(max, prices[i]);
+            if (prices[i] < prices[i + 1]) {
+                second[i] = Math.max(second[i + 1], max - prices[i]);
+            } else {
+                second[i] = second[i + 1];
+            }
+        }
+
+        int res = Integer.MIN_VALUE;
+        for (int i = 0; i < n; i++) {
+            res = Math.max(res, first[i] + second[i]);
+        }
+        return res;
  */
 
 /*  State Machine: Time = O(n) Space = O(1)
