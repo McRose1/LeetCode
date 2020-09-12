@@ -55,6 +55,66 @@ public class LongestPalindromicSubstring {
         return right - left - 1;
     }
 }
+
+/*  Manacher's Algorithm（马拉车算法）: Time = O(n) Space = O(1)
+    将原始字符串进行预处理，在预处理字符串上执行“动态规划”和“中心扩散”方法。
+    为了讲奇、偶数回文串的性质统一表示，将原始字符串进行预处理，用不在输入字符串中的字符隔开。
+    （预处理字符串的回文子串的长度 - 1）/ 2 = 原始字符串的回文子串的长度
+
+    public String longestPalindrome(String s) {
+        int start = 0;
+        int end = -1;
+        StringBuilder sb = new StringBuilder();
+        sb.append('#');
+        for (int i = 0; i < s.length(); i++) {
+            sb.append(s.charAt(i));
+            sb.append('#');
+        }
+        sb.append('#');
+        s = sb.toString();
+
+        List<Integer> list = new ArrayList<>();
+        int right = -1;
+        int j = -1;
+        for (int i = 0; i < s.length(); i++) {
+            int curLen;
+            if (right >= i) {
+                int i_sym = j * 2 - i;
+                int minLen = Math.min(list.get(i_sym), right - i);
+                curLen = expand(s, i - minLen, i + minLen);
+            } else {
+                curLen = expand(s, i, i);
+            }
+
+            list.add(curLen);
+            if (i + curLen > right) {
+                j = i;
+                right = i + curLen;
+            }
+            if (curLen * 2 + 1 > end - start) {
+                start = i - curLen;
+                end = i + curLen;
+            }
+        }
+
+        StringBuilder res = new StringBuilder();
+        for (int i = start; i <= end; i++) {
+            if (s.charAt(i) != '#') {
+                res.append(s.charAt(i));
+            }
+        }
+        return res.toString();
+    }
+
+    private static int expand(String s, int left, int right) {
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
+        }
+        return (right - left - 2) / 2;
+    }
+ */
+
 /*  DP（二维）: Time = O(n^2) Space = O(n^2)
 
         int n = s.length();
@@ -98,14 +158,6 @@ public class LongestPalindromicSubstring {
         }
         return s.substring(start, start + len);
  */
-
-/*  Manacher's Algorithm（马拉车算法）: Time = O(n) Space = O(1)
-    将原始字符串进行预处理，在预处理字符串上执行“动态规划”和“中心扩散”方法。
-    为了讲奇、偶数回文串的性质统一表示，将原始字符串进行预处理，用不在输入字符串中的字符隔开。
-    （预处理字符串的回文子串的长度 - 1）/ 2 = 原始字符串的回文子串的长度
-
- */
-
 
 /*  Brute Force: Time = O(n^3) Space = O(1) -> TLE
     判断是否是 palindrome
