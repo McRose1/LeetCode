@@ -34,14 +34,13 @@ package Matrix;
     2. In this question, we represent the board using a 2D array.
        In principle, the board is infinite, which would cause problems when the active area encroaches the border of the array.
        How would you address these problems?
-
  */
+
 /*  In-place: Time = O(mn) Space = O(1)
-    We only have two states live(1) or dead(0) for a cell. We can use some dummy cell value to signify previous state of the cell along with the new changed value.
-    1. If the value of the cell was 1 originally but it has now become 0 after applying the rule, then we can change the value to -1.
-    The negative sign signifies the cell is now dead(0) but the magnitude signifies the cell was a live(1) originally.
-    2. If the value of the cell was 0 originally but it has now become 1 after applying the rule, then we can change the value to 2.
-    The positive sign signifies the cell is now live(1) but the magnitude of 2 signifies the cell was a dead(0) cell originally.
+    We only have two states live(1) or dead(0) for a cell.
+    我们可以拓展一些复合状态使其包含之前的状态。
+    如果细胞之前的状态是 0，在更新之后变成了 1，定义为 2。
+    如果细胞之前的状态是 1，在更新之后变成了 0，定义为 -1。
  */
 public class GameofLife {
     public void gameOfLife(int[][] board) {

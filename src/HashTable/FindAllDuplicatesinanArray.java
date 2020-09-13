@@ -1,6 +1,7 @@
-/*
-    Given an array of integers, 1 ≤ a[i] ≤ n (n = size of array),
-    some elements appear twice and others appear once.
+package HashTable;
+
+/*  442. Find All Duplicates in an Array
+    Given an array of integers, 1 ≤ a[i] ≤ n (n = size of array), some elements appear twice and others appear once.
     Find all the elements that appear twice in this array.
     Could you do it without extra space and O(n) runtime?
 
@@ -10,10 +11,14 @@
     Output:
     [2,3]
  */
-// hint: 1 ≤ a[i] ≤ n (n = size of array) index: 0-7, nums: 1-8
-// when find a number i, negate the number at the index of i - 1 (which records i) -- like the bit method
+
 import java.util.ArrayList;
 import java.util.List;
+
+/*  No extra space: Time = O(n) Space = O(1)
+    hint: 1 ≤ a[i] ≤ n (n = size of array) index: 0-7, nums: 1-8
+    when find a number i, negate the number at the index of i - 1 (which records i) -- like the bit method
+ */
 
 public class FindAllDuplicatesinanArray {
     public List<Integer> findDuplicates(int[] nums) {
@@ -30,15 +35,8 @@ public class FindAllDuplicatesinanArray {
     }
 }
 
-/*
-    HashSet (O(n), O(n))
+/*  HashSet Time = O(n) Space = O(n)
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
-public class FindAllDuplicatesinanArray {
-    public List<Integer> findDuplicates(int[] nums) {
         List<Integer> dup = new ArrayList<>();
         HashSet<Integer> set = new HashSet<>();
         for (int i = 0; i < nums.length; i++) {
@@ -49,6 +47,4 @@ public class FindAllDuplicatesinanArray {
             }
         }
         return dup;
-    }
-}
  */
