@@ -25,7 +25,9 @@ HashSet<String>(wordDict)
 记忆化递归这个思想一定要掌握
 
 再继续优化：DP
-dp[i] is true if WB of substring 0 to i is true
+boolean[] dp = new boolean[s.length()];
+dp[i] 代表 [0, i) 是否能被 break
+两层循环，一层确定字符串的头，一层确定字符串的尾，每次取 substring 判断 wordDict 是否有相同的这段字符串
 
 
 

@@ -1,10 +1,31 @@
+# 174. Dungeon Game
 二维 DP 题
 
 限制条件：每次只能往右走或者往下走
 很容易想到初始化，第一行第一列都是纯粹的加和
 但这题并不是纯粹的 path sum 问题，所以才会上升为 hard 难度
 
-快乐女孩：
+这题主要还是需要利用逆向思维！
+
+## LC
+我们发现，如果按照从左上往右下的顺序进行动态规划，对于每一条路径，我们需要同时记录两个值。
+1. 从出发点到当前点的路径和
+2. 从出发点到当前点所需的最小初始值
+
+但是如果我们考虑从右下往左上的顺序进行动态规划。令 dp[i][j] 表示从坐标 (i, j) 到终点所需的最小初始值。
+
+这样一来，我们就无需担心路径和的问题，只需要关注最小初始值。
+
+对于 dp[i][j]，我们只要关心 dp[i][j+1] 和 dp[i + 1][j] 的最小值 min。
+
+记当前格子的值为 dungeon(i, j)，那么在坐标 (i, j) 的初始值只要达到 min - dungeon(i, j) 即可。
+
+同时，初始值还必须大于等于 1.
+
+状态转移方程：
+dp[i][j] = max(min(dp[i + 1][j], dp[i][j + 1]) - dungeon(i, j), 1)
+
+## 快乐女孩：
 这个 DP 是自底向上的
 不是基于以前的值
 因为已经确定能够到达终点
@@ -15,7 +36,7 @@ For simplicity and generality：
 use dp[m + 1][n + 1]
 dp[i][j] = Math.min(dp[i + 1][j], dp[i][j + 1]) - dungeon[i][j]
 Once it < 1, dp[i][j] = 1       
-when dungeon[i][j] is large positve, the health point needed to reach there may be below 0, so use 1 instead
+when dungeon[i][j] is large positive, the health point needed to reach there may be below 0, so use 1 instead
 Otherwise, keep the value
 
 -2(K)       -3          3

@@ -1,0 +1,23 @@
+# 1143. Longest Common Subsequence
+最长公共子序列，非常典型的二维 DP 题
+
+## DP
+Hint 其实把答案都说了
+
+dp[i][j] 代表 [0,i] 的 text1 和 [0,j] 的 text2 之间的最长公共子序列
+
+LCS("ace", "abcde") = 1 + LCS("ac", "abcd") 
+                    = 1 + max(LCS("a", "abcd"), LCS("ac", "abc"))
+                    = 1 + .........
+ 
+    0 1 2 3 4 5
+    # a b c d e 
+0 # 0 0 0 0 0 0 
+1 a 0 1 1 1 1 1 
+2 c 0 1 1 2 2 2
+3 e 0 1 1 1 2 3
+
+if (text1.charAt(i) == text2.charAt(j)) -> dp[i][j] = dp[i - 1][j - 1] + 1
+else                                    -> dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1])
+
+实现的时候特别要注意 dp[m + 1][n + 1] 多加一位，这样算 dp[i - 1][j - 1] 的时候会舒服很多

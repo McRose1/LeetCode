@@ -1,0 +1,25 @@
+# 516. Longest Palindromic Subsequence 
+
+    0 1 2 3 4
+    b b b a b
+0 b 1 2 3 3 4
+1 b   1 2 2 3
+2 b     1 1 3
+3 a       1 1
+4 b         1
+
+很明显是一道区间 DP 题，最外层循环为 subsequence 的长度，从 1 ~ N
+
+len == 1 时，只有 1 个元素自身成为 palindrome，所以 max = 1
+
+i, j 分别为 subsequence 的左边界和右边界，每次判断左边界字符是否和右边界字符相同
+
+如果相同，又分为 2 种可能
+  1. len == 2，比如 aa，这种情况，直接让 max = 2
+  2. 否则，比如 aba，除去一头一尾这 2 个 a，再去计算中间的 subsequence 的长度，也就是 = 2 + dp[i + 1][j - 1]（左边界右移一位，右边界左移一位）
+
+如果不相同，比如 bbba，需要找前面的值         (abbb)
+  1. 去掉左边界 -> bba -> max = 2           bbb -> 3
+  2. 去掉右边界 -> bbb -> max = 3           abb -> 2
+取二者之间最大的作为 bbba 的 max
+

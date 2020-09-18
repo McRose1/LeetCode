@@ -1,17 +1,30 @@
+# 72. Edit Distance 
 二维 DP hard 题
 
 每次只看末尾匹配 -> 子问题
 
+模式识别：一旦涉及子问题，可以用自顶向下的递归和自底向上的动态规划。
+
+每次 Edit 都有 3 个选项：
+1. Insert：继续比较 word1[0...i] 和 word2[0...j-1] 的结果
+2. Delete：继续比较 word1[0...i-1] 和 word2[0...j] 的结果
+3. Replace：继续比较 word1[0...i-1] 和 word2[0...j-1] 的结果
+选择上述 3 个选项中最小的那个加 1
+
+从状态转移抽象出状态转移方程：
+if (word1[i] == word2[j]) -> dp[i][j] = dp[i - 1][j - 1]    
+else                      -> dp[i][j] = 1 + min(dp[i][j - 1],      -> Insert
+                                                dp[i - 1][j],      -> Delete
+                                                dp[i - 1][j - 1])  -> Replace 
+
 "horse" -> "ros"
 
-B2B：
-    r o s
-  0 1 2 3
-h 1 1 2 3
-o 2 2 1 2
-r 3 2 2 2
-s 4 3 3 2
-e 5 4 4 3 -> answer 
+    0 1 2 3 4 5  
+    # h o r s e
+0 # 0 1 2 3 4 5 
+1 r 1 1 2 2 3 4  
+2 o 2 2 1 2 3 4 
+3 s 3 3 2 2 2 3 -> answer
 
 
 花花酱：
