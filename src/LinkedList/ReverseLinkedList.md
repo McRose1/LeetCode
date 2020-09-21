@@ -4,17 +4,17 @@
 ## 迭代: Time = O(n) Space = O(1)
 个人认为比递归要好想一些
 
-要记得除了 cur 节点外，还需要维护 cur 前面的 pre 节点和 cur 后面的 next 节点
+要记得除了 head (cur) 节点外，还需要维护 head 前面的 pre 节点和 head 后面的 **next 节点**
 
-初始化 cur = head; pre = null;
+pre = null;
 
-在一次 while 循环中，首先声明一个临时的 next 节点，为原链表 cur 节点的下一个节点，为了后续能继续沿着这个原链表遍历下去
+在一次 while 循环中，**首先声明一个临时的 next 节点，为原链表 head 节点的下一个节点，为了后续能继续沿着这个原链表遍历下去**
 
-接着就是翻转链表的操作，把 cur 的 next 指针指向 pre 节点：cur.next = pre;
+接着就是翻转链表的操作，把 head 的 next 指针指向 prev 节点：head.next = prev;
 
-紧接着需要更新 cur 和 pre 为下一次翻转做准备：pre = cur; cur = next;
+紧接着需要更新 head 和 prev 为下一次翻转做准备：prev = head; head = next;
 
-遍历到原链表的尾部，记得是 return pre，因为最后一个节点的时候：cur = null, pre = 原链表尾部节点（也就是翻转链表的头节点）
+遍历到原链表的尾部，**记得是 return prev**，因为最后一个节点的时候：head = null, prev = 原链表尾部节点（也就是翻转链表的头节点）
 
 ## 递归: Time = O(n) Space = O(n)
 先从前往后不断调用函数本身，不断压栈，直到到达原链表的尾部节点

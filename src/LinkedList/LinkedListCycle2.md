@@ -1,3 +1,4 @@
+# 142 Linked List Cycle 2
 和第一题的区别在于上一题只要求输出时候有环
 
 这一题要求输出环开始的 index，无环输出 null
@@ -7,18 +8,25 @@ follow up 是不使用任何空间辅助
 应该还是用双指针来做
 
 就感觉依稀有些记忆，先找到 cycle，然后让一个 pointer 从这个相遇点开始走，另一个 pointer 从起点开始走，都走一步
+
 下一次的相遇保证就是 cycle 的起点
 
-LC 官方：
+## LC 官方：
 可以用空间的话，可以用 HashSet
 
-follow up
-Floyd 算法：
+但是题目要求 Space = O(1)
+
+## Floyd 算法：
 第一阶段，找出列表是否有 cycle，没有 cycle，直接返回 null 并退出
+
 第二阶段，给定阶段 1 找到的相遇点，阶段 2 将找到 cycle 的入口
 
 2⋅distance(tortoise) = distance(hare)
+
 2(F+a) = F+a+b+a
+
 2F+2a = F+2a+b
+
 F = b 
+
 因为 F=b ，指针从 h 点出发和从链表的头出发，最后会遍历相同数目的节点后在环的入口处相遇。

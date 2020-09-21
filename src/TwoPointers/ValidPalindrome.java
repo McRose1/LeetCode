@@ -12,13 +12,17 @@ package TwoPointers;
     Input: "race a car"
     Output: false
  */
-//  Two Pointers: Time = O(n) Space = O(1)
+
+/*  Two Pointers: Time = O(n) Space = O(1)
+
+ */
 public class ValidPalindrome {
     public boolean isPalindrome(String s) {
         if (s.length() == 0) return true;
         int i = 0;
         int j = s.length() - 1;
         while (i < j) {
+            // 数字不能跳过！！！
             while (i < j && !Character.isLetterOrDigit(s.charAt(i))) {
                 i++;
             }
@@ -32,6 +36,35 @@ public class ValidPalindrome {
         return true;
     }
 }
+
+/*  my version (sb)
+
+        if (s == null || s.length() == 0) return true;
+
+        if (s.length() == 1 && Character.isLetter(s.charAt(0))) {
+            return true;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            if (Character.isLetterOrDigit(s.charAt(i))) {
+                sb.append(Character.toLowerCase(s.charAt(i)));
+            }
+        }
+        String ss = sb.toString();
+
+        int i = 0;
+        int j = ss.length() - 1;
+        while (i < j) {
+
+            if (ss.charAt(i) != ss.charAt(j)) {
+                return false;
+            } else {
+                i++;
+                j--;
+            }
+        }
+        return true;
+ */
 
 /*  my version
 

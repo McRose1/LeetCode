@@ -27,7 +27,11 @@ package LinkedList;
 
     Follow-up: Can you solve it without using extra space?
  */
-//  Two Pointers: Time = O(n) Space = O(1)
+
+/*  Two Pointers: Time = O(n) Space = O(1)
+    先按第一题的方法找快慢指针的相遇点；
+    然后把快指针变成慢指针，从头开始每次一步，慢指针从相遇点开始每次走一步，下一次的相遇点就是循环链表的循环起始点
+ */
 public class LinkedListCycle2 {
     public ListNode detectCycle(ListNode head) {
         if (head == null || head.next == null) return null;

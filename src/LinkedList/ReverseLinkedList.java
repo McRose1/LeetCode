@@ -20,15 +20,14 @@ public class ReverseLinkedList {
     public ListNode reverseList(ListNode head) {
         if (head == null || head.next == null) return head;
 
-        ListNode pre = null;
-        ListNode cur = head;
-        while (cur != null) {
-            ListNode next = cur.next;
-            cur.next = pre;
-            pre = cur;
-            cur = next;
+        ListNode prev = null;
+        while (head != null) {
+            ListNode next = head.next;
+            head.next = prev;
+            prev = head;
+            head = next;
         }
-        return pre;
+        return prev;
     }
 }
 
@@ -41,7 +40,6 @@ public class ReverseLinkedList {
     nk.next.next = nk;
     Be very careful that n1's next must point to null
 
-    public ListNode reverseList(ListNode head) {
         if (head == null || head.next == null) return head;
 
         // 调用递归一直到链表的尾部，再一个一个地往前 return
@@ -51,7 +49,6 @@ public class ReverseLinkedList {
         head.next = null;       // 5->4->null
         // 递归回退返回翻转链表的头节点
         return newHead;        // return 5
-    }
 */
 
 /*  Recursion 2
