@@ -35,7 +35,10 @@ package String;
     Hint: You may notice that left shift cancels the right shift, so count the total left shift times,
     (may be negative if the final result is right shift), and perform it once.
  */
-//  String.substring()
+
+/*  String.substring()
+
+ */
 public class PerformStringShifts {
     public String stringShift(String s, int[][] shift) {
         int pos = 0, len = s.length();
@@ -52,37 +55,37 @@ public class PerformStringShifts {
 /*  my version
 
         int len = s.length();
-        int count = 0;
+        int move = 0;
         for (int[] sh : shift) {
             if (sh[0] == 0) {
-                count -= sh[1];
+                move -= sh[1];
             } else {
-                count += sh[1];
+                move += sh[1];
             }
         }
         StringBuilder sb = new StringBuilder();
         int index = 0;
-        if (count == 0) {
+        if (move == 0) {
             return s;
-        } else if (count > 0) {
-            count = count % len;
-            index = len - count;
-            for (int i = 0; i < count; i++) {
+        } else if (move > 0) {
+            move = move % len;
+            index = len - move;
+            for (int i = 0; i < move; i++) {
                 sb.append(s.charAt(index++));
             }
             index = 0;
-            for (int i = count; i < len; i++) {
+            for (int i = move; i < len; i++) {
                 sb.append(s.charAt(index++));
             }
             return sb.toString();
         } else {
-            count = (-count % len) * (-1);
-            index = -count;
-            for (int i = 0; i < len + count; i++) {
+            move = (-move % len) * (-1);
+            index = -move;
+            for (int i = 0; i < len + move; i++) {
                 sb.append(s.charAt(index++));
             }
             index = 0;
-            for (int i = len + count; i < len; i++) {
+            for (int i = len + move; i < len; i++) {
                 sb.append(s.charAt(index++));
             }
             return sb.toString();
